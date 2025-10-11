@@ -1,41 +1,29 @@
+import { Link } from "react-router-dom";
+
 function Carrito() {
     return (
-    <>  
-        <div className="wrapper">
-            <aside>
-                <header>
-                    <h1 className="logo">Level Up Gamer</h1>
-                </header>
-                <nav>
-                    <ul>
-                        <li>
-                            <a className="boton-volver" href="./LevelUpGamer.html">
-                                <i className="bi bi-arrow-left-circle-fill"></i>Seguir comprando
-                            </a>
-                        </li>
-                        
-                        <li>
-                            <a className="boton-carrito active" href="./carrito.html">
-                                <i className="bi bi-cart-fill"></i>Carrito
-                            </a>
-                        </li>
-                    
-                    </ul>
-                
-                </nav>
-                <footer>
-                    <p className="texto-footer">© 2025</p>
-                </footer>
-
-
-            </aside>
+        <>
             <main>
                 <h2 className="titulo-principal">Todos los productos</h2>
+                <ul className="acciones-carrito-local">
+                    <li>
+                        <Link className="boton-volver" to="/productos">
+                            <i className="bi bi-arrow-left-circle-fill"></i> Seguir comprando
+                        </Link>
+                    </li>
+
+                    <li>
+                        <Link className="boton-carrito active" to="/carrito">
+                            <i className="bi bi-cart-fill"></i> Carrito
+                        </Link>
+                    </li>
+                </ul>
+
                 <div className="contenedor-carrito">
                     <p className="carrito-vacio">Tu carrito esta vacio. <i className="bi bi-emoji-frown"></i></p>
                     <div className="carrito-productos disabled">
                         <div className="carrito-producto">
-                            <img className= "carrito-producto-imagen" src="./imgs/catan900x1200.w610.h610.backdrop.webp" alt=""/>
+                            <img className="carrito-producto-imagen" src="./imgs/catan900x1200.w610.h610.backdrop.webp" alt="" />
                             <div className="carrito-producto-titulo">
                                 <small>Titulo</small>
                                 <h3>Catan</h3>
@@ -50,12 +38,12 @@ function Carrito() {
                             </div>
                             <div className="carrito-producto-subtotal">
                                 <small>Subtotal</small>
-                                <p>$29.990</p> 
+                                <p>$29.990</p>
                             </div>
                             <button className="carrito-producto-eliminar">Eliminar <i className="bi bi-trash-fill"></i></button>
                         </div>
                         <div className="carrito-producto">
-                            <img className= "carrito-producto-imagen" src="./imgs/2000370634407-1.jpg" alt=""/>
+                            <img className="carrito-producto-imagen" src="./imgs/2000370634407-1.jpg" alt="" />
                             <div className="carrito-producto-titulo">
                                 <small>Titulo</small>
                                 <h3>Carcassonne</h3>
@@ -70,7 +58,7 @@ function Carrito() {
                             </div>
                             <div className="carrito-producto-subtotal">
                                 <small>Subtotal</small>
-                                <p>$24.000</p> 
+                                <p>$24.000</p>
                             </div>
                             <button className="carrito-producto-eliminar">Eliminar<i className="bi bi-trash-fill"></i></button>
                         </div>
@@ -95,9 +83,8 @@ function Carrito() {
 
             </main>
 
-        </div>
 
-    </>
+        </>
     )
 }
 

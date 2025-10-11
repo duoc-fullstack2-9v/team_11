@@ -5,9 +5,12 @@ import Header from './components/Header'
 function Productos() {
     return (
     <>
+<<<<<<< HEAD
         <div className="wrapper">
             <Header></Header>
             <Footer></Footer>
+=======
+>>>>>>> 342bd61d15fe94ec45d641abcaeabedd7eb14adc
             <main>
                 <h2 className="titulo-principal">Compra los mejores productos al mejor precio!</h2>
                 <div className="contenedor-producto">
@@ -91,14 +94,8 @@ function Productos() {
                             <button className="producto-agregar">Agregar</button>
                         </div>
                     </div>
-
-
                 </div>
-
             </main>
-
-        </div>
-
     </>
     )
 }

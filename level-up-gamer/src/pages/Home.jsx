@@ -8,46 +8,18 @@ import '../styles/main.css';
 
 function Home() {
   const [count, setCount] = useState(0);
+  
+  
+  useEffect(() => {
+        console.log("iniciado")
+  }, [count]);
+
 
   return (
-<<<<<<< HEAD
-    <div className="wrapper">
-      <Header />
-=======
-    <>
-        <main>
-            <div className="contenedor-ofertas">
-                <div
-                    id="featuredCarousel"
-                    className="carousel slide"
-                    data-bs-ride="carousel"
-                    data-bs-interval="2500">
-
-                    <div className="carousel-inner">
-                        <div className="carousel-item active">
-                            <img className="d-block w-100 borde-carrusel"
-                                src="/imgs/resident-evil-4-hd-proyect-generacionxbox.jpg" alt="First slide"/>
-                        </div>
-                        <div className="carousel-item">
-                            <img className="d-block w-100 borde-carrusel" src="./imgs/godofwar.jpg" alt="Second slide"/>
-                        </div>
-                        <div className="carousel-item">
-                            <img className="d-block w-100 borde-carrusel" src="./imgs/silenciogill.png" alt="Third slide"/>
-                        </div>
-                    </div>
-                    <a className="carousel-control-prev" href="#carouselExampleSlidesOnly" role="button" data-slide="prev">
-                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span className="sr-only">Previous</span>
-                    </a>
-                    <a className="carousel-control-next" href="#carouselExampleSlidesOnly" role="button" data-slide="next">
-                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span className="sr-only">Next</span>
-                    </a>
-                </div>
->>>>>>> 342bd61d15fe94ec45d641abcaeabedd7eb14adc
+    
 
       <main>
-        {/* Carrusel de ofertas */}
+        
         <div className="contenedor-ofertas">
           <div id="carouselExampleSlidesOnly" className="carousel slide" data-ride="carousel" data-interval="2500">
             <div className="carousel-inner">
@@ -118,15 +90,9 @@ function Home() {
         </div>
       </main>
 
-<<<<<<< HEAD
-      <Footer />
+      
     </div>
   );
-=======
-        </main>
-    </>
-  )
->>>>>>> 342bd61d15fe94ec45d641abcaeabedd7eb14adc
 }
 
 export default Home;

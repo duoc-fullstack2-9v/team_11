@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
+import reactLogo from '../assets/react.svg'
 import viteLogo from '/vite.svg'
-import './App.css'
-import Header from './components/Header'
+import '../App.css'
+import Header from '../components/Header'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
@@ -13,7 +13,6 @@ function Home() {
   return (
     <>
     <div className="wrapper">
-        <Header></Header>
         <main>
             <div className="contenedor-ofertas">
                 <div id="carouselExampleSlidesOnly" className="carousel slide" data-ride="carousel" data-interval="2500">

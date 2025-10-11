@@ -1,3 +1,6 @@
+import ProductoHome from "../components/ProductoHome";
+
+
 function Productos() {
     return (
     <>

@@ -2,6 +2,10 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import Header from './components/Header'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
 
 function Home() {
   const [count, setCount] = useState(0)
@@ -9,47 +13,7 @@ function Home() {
   return (
     <>
     <div className="wrapper">
-        <aside>
-            <img className="logo-imagen" src="./imgs/imagen_2025-09-05_021420718-removebg-preview.png"
-                alt="Logo de mi tienda"/>
-
-
-            <header>
-                <h1 className="logo">Level Up Gamer</h1>
-            </header>
-            <nav>
-                <ul className="menu">
-                    <li>
-                        <a className="boton-menu boton login active" href="./Login.html"><i
-                                className="bi bi-person-raised-hand"></i>Iniciar sesion</a>
-                    </li>
-                    <li>
-                        <a className="boton-menu boton home" href="./Home.html"><i
-                                className="bi bi-hand-index-thumb-fill"></i>Home</a>
-                    </li>
-                    <li>
-                        <a className="boton-menu boton categoria" href="./LevelUpGamer.html"><i
-                                className="bi bi-hand-index-thumb-fill"></i>Catalogo</a>
-                    </li>
-
-                    <li>
-                        <a className="boton-menu boton-carrito" href="./carrito.html">
-                            <i className="bi bi-cart-fill"></i>Carrito<span id="numerito" className="numerito">0</span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a className="boton-menu boton categoria"><i className="bi bi-hand-index-thumb-fill"></i>Soporte</a>
-                    </li>
-                </ul>
-
-            </nav>
-            <footer>
-                <p className="texto-footer">© 2025</p>
-            </footer>
-
-
-        </aside>
+        <Header></Header>
         <main>
             <div className="contenedor-ofertas">
                 <div id="carouselExampleSlidesOnly" className="carousel slide" data-ride="carousel" data-interval="2500">

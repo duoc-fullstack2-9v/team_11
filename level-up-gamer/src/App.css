@@ -1,7 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-
-
 #root {
   max-width: 1280px;
   margin: 0 auto;

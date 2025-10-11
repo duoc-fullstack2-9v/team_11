@@ -1,11 +1,13 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
+import reactLogo from '../assets/react.svg'
 import viteLogo from '/vite.svg'
+<<<<<<< HEAD
 import './App.css'
 import Header from './components/Header'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import Footer from './components/Footer';
+
 
 
 function Home() {
@@ -14,8 +16,11 @@ function Home() {
   return (
     <>
     <div className="wrapper">
+<<<<<<< HEAD
         <Header></Header>
         <Footer></Footer>
+=======
+>>>>>>> 09a4bf71fab20a166f59f05d05afe732ea4b45bb
         <main>
             <div className="contenedor-ofertas">
                 <div id="carouselExampleSlidesOnly" className="carousel slide" data-ride="carousel" data-interval="2500">
@@ -23,7 +28,7 @@ function Home() {
                     <div className="carousel-inner">
                         <div className="carousel-item active">
                             <img className="d-block w-100 borde-carrusel"
-                                src="./imgs/resident-evil-4-hd-proyect-generacionxbox.jpg" alt="First slide"/>
+                                src="/imgs/resident-evil-4-hd-proyect-generacionxbox.jpg" alt="First slide"/>
                         </div>
                         <div className="carousel-item">
                             <img className="d-block w-100 borde-carrusel" src="./imgs/godofwar.jpg" alt="Second slide"/>

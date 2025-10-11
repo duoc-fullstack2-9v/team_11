@@ -3,7 +3,7 @@ import { NavLink, Link } from "react-router-dom";
 function Header({ cantidadCarrito = 0 }) {
     return (
         <aside>
-            <img className="logo-imagen" src="./imgs/imagen_2025-09-05_021420718-removebg-preview.png"
+            <img className="logo-imagen" src="/imgs/imagen_2025-09-05_021420718-removebg-preview.png"
                 alt="Logo de mi tienda" />
             
             <header>

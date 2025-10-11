@@ -15,7 +15,7 @@ function Home() {
                     <div className="carousel-inner">
                         <div className="carousel-item active">
                             <img className="d-block w-100 borde-carrusel"
-                                src="./imgs/resident-evil-4-hd-proyect-generacionxbox.jpg" alt="First slide"/>
+                                src="/imgs/resident-evil-4-hd-proyect-generacionxbox.jpg" alt="First slide"/>
                         </div>
                         <div className="carousel-item">
                             <img className="d-block w-100 borde-carrusel" src="./imgs/godofwar.jpg" alt="Second slide"/>

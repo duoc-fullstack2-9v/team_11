@@ -21,7 +21,7 @@ function Perfil() {
                         <div className="perfil-datos">
                             <img
                                 className="perfil-foto"
-                                src="./imgs/default-profile.png"
+                                src="/imgs/default-profile.png"
                                 alt="Foto de perfil"
                                 onerror={(e) => (e.currentTarget.style.display = "none")}
                             />

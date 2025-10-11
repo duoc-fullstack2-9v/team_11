@@ -5,6 +5,7 @@ import './App.css'
 import Header from './components/Header'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import Footer from './components/Footer';
 
 
 function Home() {
@@ -14,6 +15,7 @@ function Home() {
     <>
     <div className="wrapper">
         <Header></Header>
+        <Footer></Footer>
         <main>
             <div className="contenedor-ofertas">
                 <div id="carouselExampleSlidesOnly" className="carousel slide" data-ride="carousel" data-interval="2500">

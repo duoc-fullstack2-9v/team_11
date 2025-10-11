@@ -1,50 +1,13 @@
-import ProductoHome from "../components/ProductoHome";
 
+import Footer from './components/Footer';
+import Header from './components/Header'
 
 function Productos() {
     return (
     <>
         <div className="wrapper">
-            <aside>
-                <img className="logo-imagen" src="./imgs/imagen_2025-09-05_021420718-removebg-preview.png" alt="Logo de mi tienda"/>
-            
-            
-                <header>
-                    <h1 className="logo">Level Up Gamer</h1>
-                </header>
-                <nav>
-                    <ul className="menu">
-                        <li>
-                            <a className="boton-menu boton login active" href="./Login.html"><i
-                                    className="bi bi-person-raised-hand"></i>Iniciar sesion</a>
-                        </li>
-                        <li>
-                            <a className="boton-menu boton home" href="./Home.html"><i
-                                    className="bi bi-hand-index-thumb-fill"></i>Home</a>
-                        </li>
-                        <li>
-                            <a className="boton-menu boton categoria" href="./LevelUpGamer.html"><i
-                                    className="bi bi-hand-index-thumb-fill"></i>Catalogo</a>
-                        </li>
-
-                        <li>
-                            <a className="boton-menu boton-carrito" href="./carrito.html">
-                                <i className="bi bi-cart-fill"></i>Carrito<span id="numerito" className="numerito">0</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a className="boton-menu boton categoria"><i className="bi bi-hand-index-thumb-fill"></i>Soporte</a>
-                        </li>
-                    </ul>
-                
-                </nav>
-                <footer>
-                    <p className="texto-footer">© 2025</p>
-                </footer>
-
-
-            </aside>
+            <Header></Header>
+            <Footer></Footer>
             <main>
                 <h2 className="titulo-principal">Compra los mejores productos al mejor precio!</h2>
                 <div className="contenedor-producto">

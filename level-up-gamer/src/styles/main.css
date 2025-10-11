@@ -136,6 +136,7 @@ main {
     border-radius: 2rem;
     padding: 2rem;
     overflow-y: auto;
+    width: 100%;
 }
 
 .titulo-principal {
@@ -218,9 +219,9 @@ main {
 /*Home*/
 .contenedor-producto-home {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 1rem;
-    width: 95%;
+    width: 100%;
     max-width: 1400px;
     margin: 2rem auto;
 }
@@ -393,15 +394,14 @@ main {
 
 .carousel-inner {
     width: 100%;
-    height: 500px;
+    height: 600px;
 }
 
 .carousel-inner img {
     max-width: 100%;
     height: 500px;
     border-radius: 1rem;
-    object-fit: cover
-        /* ancho completo del contenedor */
+    object-fit: cover;
 }
 
 .carouselExampleSlidesOnly {
@@ -455,3 +455,12 @@ main {
     cursor: pointer;
     margin-left: 0.5rem;
 }
+
+.contenedor-ofertas{
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: transparent;
+    padding: 0;
+}
+

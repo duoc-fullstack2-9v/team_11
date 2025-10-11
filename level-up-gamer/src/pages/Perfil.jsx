@@ -1,4 +1,4 @@
-import { Links, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/login.css"; //se reutiliza estilo de login en perfil
 
 function Perfil() {

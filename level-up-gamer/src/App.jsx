@@ -9,7 +9,7 @@ import Productos from './pages/Productos.jsx';
 import Carrito from './pages/Carrito.jsx';
 import Perfil from './pages/Perfil.jsx';
 
-import "./App.css";  
+import "./styles/main.css";
 
 function App() {
   return (

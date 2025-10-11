@@ -14,15 +14,19 @@ import "./styles/main.css";
 function App() {
   return (
     <>
-      <Header/>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/productos" element={<Productos/>}/>
-        <Route path="/carrito" element={<Carrito/>}/>
-        <Route path="/perfil" element={<Perfil/>}/>
-      </Routes>
-      <Footer/>
+      <div className="wrapper">
+        <Header />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/productos" element={<Productos />} />
+            <Route path="/carrito" element={<Carrito />} />
+            <Route path="/perfil" element={<Perfil />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
     </>
   );
 }

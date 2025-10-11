@@ -132,10 +132,10 @@ aside {
 
 main {
     background-color: var(--clr-green);
-    margin: 1rem;
-    margin-left: 0;
+    margin: 1rem 1rem 1rem 0;
     border-radius: 2rem;
     padding: 2rem;
+    overflow-y: auto;
 }
 
 .titulo-principal {
@@ -392,6 +392,7 @@ main {
 }
 
 .carousel-inner {
+    width: 100%;
     height: 500px;
 }
 

@@ -48,6 +48,7 @@ function Header({ cantidadCarrito = 0 }) {
                     </li>
                 </ul>
             </nav>
+            <footer><p className="texto-footer">© 2025</p></footer>
 
         </aside>
     );

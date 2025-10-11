@@ -7,10 +7,13 @@ function Home() {
 
   return (
     <>
-    <div className="wrapper">
         <main>
             <div className="contenedor-ofertas">
-                <div id="carouselExampleSlidesOnly" className="carousel slide" data-ride="carousel" data-interval="2500">
+                <div
+                    id="featuredCarousel"
+                    className="carousel slide"
+                    data-bs-ride="carousel"
+                    data-bs-interval="2500">
 
                     <div className="carousel-inner">
                         <div className="carousel-item active">
@@ -75,9 +78,6 @@ function Home() {
 
 
         </main>
-
-    </div>
-
     </>
   )
 }

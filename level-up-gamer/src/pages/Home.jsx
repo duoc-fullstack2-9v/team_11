@@ -1,27 +1,28 @@
-import { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { useState, useEffect } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import '../styles/main.css';
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import "../styles/main.css";
 
 function Home() {
   const [count, setCount] = useState(0);
-  
-  
+
   useEffect(() => {
-        console.log("iniciado")
+    console.log("iniciado");
   }, [count]);
 
-
   return (
-    
-
+    <>
       <main>
-        
         <div className="contenedor-ofertas">
-          <div id="carouselExampleSlidesOnly" className="carousel slide" data-ride="carousel" data-interval="2500">
+          <div
+            id="carouselExampleSlidesOnly"
+            className="carousel slide"
+            data-bs-ride="carousel"
+            data-bs-interval="2500"
+          >
             <div className="carousel-inner">
               <div className="carousel-item active">
                 <img
@@ -31,20 +32,44 @@ function Home() {
                 />
               </div>
               <div className="carousel-item">
-                <img className="d-block w-100 borde-carrusel" src="/imgs/godofwar.jpg" alt="Second slide" />
+                <img
+                  className="d-block w-100 borde-carrusel"
+                  src="/imgs/godofwar.jpg"
+                  alt="Second slide"
+                />
               </div>
               <div className="carousel-item">
-                <img className="d-block w-100 borde-carrusel" src="/imgs/silenciogill.png" alt="Third slide" />
+                <img
+                  className="d-block w-100 borde-carrusel"
+                  src="/imgs/silenciogill.png"
+                  alt="Third slide"
+                />
               </div>
             </div>
-            <a className="carousel-control-prev" href="#carouselExampleSlidesOnly" role="button" data-slide="prev">
-              <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span className="sr-only">Previous</span>
-            </a>
-            <a className="carousel-control-next" href="#carouselExampleSlidesOnly" role="button" data-slide="next">
-              <span className="carousel-control-next-icon" aria-hidden="true"></span>
-              <span className="sr-only">Next</span>
-            </a>
+            <button
+              className="carousel-control-prev"
+              type="button"
+              data-bs-target="#carouselExampleSlidesOnly"
+              data-bs-slide="prev"
+            >
+              <span
+                className="carousel-control-prev-icon"
+                aria-hidden="true"
+              ></span>
+              <span className="visually-hidden">Previous</span>
+            </button>
+            <button
+              className="carousel-control-next"
+              type="button"
+              data-bs-target="#carouselExampleSlidesOnly"
+              data-bs-slide="next"
+            >
+              <span
+                className="carousel-control-next-icon"
+                aria-hidden="true"
+              ></span>
+              <span className="visually-hidden">Next</span>
+            </button>
           </div>
         </div>
 
@@ -59,7 +84,11 @@ function Home() {
         {/* Productos */}
         <div className="contenedor-producto-home">
           <div className="producto-home">
-            <img className="producto-home-imagen" src="/imgs/Oferta semanal.png" alt="" />
+            <img
+              className="producto-home-imagen"
+              src="/imgs/Oferta semanal.png"
+              alt=""
+            />
             <div className="producto-detalles-home">
               <h3 className="producto-titulo-home">Street Fighter vs Tekken</h3>
               <p className="producto-precio-home">$29.990</p>
@@ -69,7 +98,11 @@ function Home() {
           </div>
 
           <div className="producto-home">
-            <img className="producto-home-imagen" src="/imgs/oferta-bayoneta.png" alt="" />
+            <img
+              className="producto-home-imagen"
+              src="/imgs/oferta-bayoneta.png"
+              alt=""
+            />
             <div className="producto-detalles-home">
               <h3 className="producto-titulo-home">Bayonetta</h3>
               <p className="producto-precio-home">$29.990</p>
@@ -79,7 +112,11 @@ function Home() {
           </div>
 
           <div className="producto-home">
-            <img className="producto-home-imagen" src="/imgs/dmc-oferta.png" alt="" />
+            <img
+              className="producto-home-imagen"
+              src="/imgs/dmc-oferta.png"
+              alt=""
+            />
             <div className="producto-detalles-home">
               <h3 className="producto-titulo-home">Devil my cry 5</h3>
               <p className="producto-precio-home">$29.990</p>
@@ -89,11 +126,8 @@ function Home() {
           </div>
         </div>
       </main>
-
-      
-    </div>
+    </>
   );
 }
 
 export default Home;
-

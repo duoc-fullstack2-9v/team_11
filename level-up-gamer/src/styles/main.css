@@ -220,7 +220,7 @@ main {
 .contenedor-producto-home {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
+    gap: 1.5rem;
     width: 100%;
     max-width: 1400px;
     margin: 2rem auto;
@@ -234,6 +234,7 @@ main {
     border-radius: 1rem;
     overflow: hidden;
     text-align: center;
+    
 }
 
 .producto-home-imagen {
@@ -241,6 +242,7 @@ main {
     height: 300px;
     /* más alto que en catálogo */
     object-fit: cover;
+    
 }
 
 .producto-titulo-home {

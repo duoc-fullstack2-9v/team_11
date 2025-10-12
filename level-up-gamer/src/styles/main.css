@@ -225,6 +225,9 @@ main {
     max-width: 1400px;
     margin: 2rem auto;
 }
+.titulo-ofertas{
+    color: var(--clr-main);
+}
 
 .producto-home {
     background-color: var(--clr-main);

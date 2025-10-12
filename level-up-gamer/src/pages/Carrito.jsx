@@ -12,21 +12,17 @@ function Carrito() {
                         </Link>
                     </li>
 
-                    <li>
-                        <Link className="boton-carrito active" to="/carrito">
-                            <i className="bi bi-cart-fill"></i> Carrito
-                        </Link>
-                    </li>
+                   
                 </ul>
 
                 <div className="contenedor-carrito">
                     <p className="carrito-vacio">Tu carrito esta vacio. <i className="bi bi-emoji-frown"></i></p>
                     <div className="carrito-productos disabled">
                         <div className="carrito-producto">
-                            <img className="carrito-producto-imagen" src="./imgs/catan900x1200.w610.h610.backdrop.webp" alt="" />
+                            <img className="carrito-producto-imagen" src="/imgs/skyrim.webp" alt="" />
                             <div className="carrito-producto-titulo">
                                 <small>Titulo</small>
-                                <h3>Catan</h3>
+                                <h3>Skyrim</h3>
                             </div>
                             <div clss="carrito-producto-cantidad">
                                 <small>Cantidad</small>
@@ -43,18 +39,18 @@ function Carrito() {
                             <button className="carrito-producto-eliminar">Eliminar <i className="bi bi-trash-fill"></i></button>
                         </div>
                         <div className="carrito-producto">
-                            <img className="carrito-producto-imagen" src="./imgs/2000370634407-1.jpg" alt="" />
+                            <img className="carrito-producto-imagen" src="/imgs/resident-evil-4-hd-proyect-generacionxbox.jpg" alt="" />
                             <div className="carrito-producto-titulo">
                                 <small>Titulo</small>
-                                <h3>Carcassonne</h3>
+                                <h3>Resident evil 4</h3>
                             </div>
                             <div clss="carrito-producto-cantidad">
-                                <small>Cantidad 2</small>
+                                <small>Cantidad 1</small>
                                 <p>1</p>
                             </div>
                             <div className="carrito-producto-precio">
                                 <small>Precio</small>
-                                <p>$12.000</p>
+                                <p>$39.990</p>
                             </div>
                             <div className="carrito-producto-subtotal">
                                 <small>Subtotal</small>

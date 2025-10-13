@@ -1,14 +1,44 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/login.css";
+import { findUser, saveUser, startSession } from "../utils/auth";
+import "../styles/inicioSesion.css";
 
-function Login() {
-    const [view, setView] = useState("login");
-    const navigate = useNavigate(); //esto debería redirigir tras login
+function InicioSesion() {
+    const [view, setView] = useState("inicioSesion");
+    const [error, setError] = useState("");
+    const navigate = useNavigate(); //esto debería redirigir tras inicioSesion
 
-    const handleSubmit = (e) => {
+    const iniciarSesion = e => {
         e.preventDefault();
-        navigate("/"); //con esto vuelve al Home
+        const formulario = new FormData(e.target);
+        const usuario = formulario.get("usuario");
+        const contrasena = formulario.get("contrasena");
+
+        const user = findUser(usuario);
+        if (!user || user.contrasena !== contrasena){
+            setError("Usuario o contraseña incorrectos");
+            return;
+        }
+        startSession(user);
+        navigate("/perfil"); //redirige a perfil
+    }
+
+    const registrarse = (e) => {
+        e.preventDefault();
+        const formulario_reg = new FormData(e.target);
+        const usuario = formulario_reg.get("usuario");
+        const correo = formulario_reg.get("correo");
+        const contrasena = formulario_reg.get("contrasena");
+
+        if (findUser(usuario)) {
+            setError("Ese usuario ya existe");
+            return;
+        }
+
+        const nuevoUsuario = {usuario, correo, contrasena}; 
+        saveUser(nuevoUsuario);
+        startSession(nuevoUsuario);
+        navigate("/perfil");
     }
 
     return (
@@ -19,55 +49,53 @@ function Login() {
 
                         <button
                             className="auth-switch"
-                            onClick={() =>
-                                setView(view === "login" ? "register" : "login")
-                            }
+                            onClick={() => {
+                                setError("");
+                                setView(v => (v === "inicioSesion" ? "registro" : "inicioSesion"));
+                            }}
                         >
-                            {view === "login" ? "Registrarse" : "Iniciar sesión"}
+                            {view === "inicioSesion" ? "Registrarse" : "Iniciar sesión"}
                         </button>
 
-                        {view === "login" && (
+                        {error && <p className="mensaje-error">{error}</p>}
+
+                        {view === "inicioSesion" && (
                             <section className="auth-card">
                                 <h2>Iniciar sesión</h2>
-                                <form className="formulario" onSubmit={handleSubmit}>
+                                <form className="formulario" onSubmit={iniciarSesion}>
                                     <div className="formulario-grupo">
                                         <label htmlFor="usuario">Usuario</label>
                                         <input
-                                            type="text"
                                             id="usuario"
                                             name="usuario"
-                                            className="formulario-control"
-                                            required
+                                            required className="formulario-control"
                                         />
                                     </div>
                                     <div className="formulario-grupo">
-                                        <label htmlFor="password">Contraseña</label>
+                                        <label htmlFor="contrasena">Contraseña</label>
                                         <input
                                             type="password"
-                                            id="password"
-                                            name="password"
-                                            className="formulario-control"
-                                            required
+                                            id="contrasena"
+                                            name="contrasena"
+                                            required className="formulario-control"
                                         />
                                     </div>
-                                    <button type="submit" className="boton-primario">Ingresar
+                                    <button className="boton-primario">Ingresar
                                     </button>
                                 </form>
                             </section>
                         )}
 
-                        {view === "register" && (
+                        {view === "registro" && (
                             <section className="auth-card">
                                 <h2>Registrarse</h2>
-                                <form className="formulario" onSubmit={handleSubmit}>
+                                <form className="formulario" onSubmit={registrarse}>
                                     <div className="formulario-grupo">
                                         <label htmlFor="reg-usuario">Nombre de usuario</label>
                                         <input
-                                            type="text"
                                             id="reg-usuario"
                                             name="usuario"
-                                            className="formulario-control"
-                                            required
+                                            required className="formulario-control"
                                         />
                                     </div>
                                     <div className="formulario-grupo">
@@ -76,21 +104,20 @@ function Login() {
                                             type="email"
                                             id="reg-correo"
                                             name="correo"
-                                            className="formulario-control"
-                                            required
+                                            required className="formulario-control"
                                         />
                                     </div>
                                     <div className="formulario-grupo">
-                                        <label htmlFor="reg-password">Contraseña</label>
+                                        <label htmlFor="reg-contrasena">Contraseña</label>
                                         <input
-                                            type="text"
-                                            id="reg-password"
-                                            name="password"
+                                            type="password"
+                                            id="reg-contrasena"
+                                            name="contrasena"
                                             className="formulario-control"
                                             required
                                         />
                                     </div>
-                                    <button type="submit" className="boton-primario">Crear cuenta
+                                    <button className="boton-primario">Crear cuenta
                                     </button>
                                 </form>
                             </section>
@@ -102,4 +129,4 @@ function Login() {
     )
 }
 
-export default Login;
+export default InicioSesion;

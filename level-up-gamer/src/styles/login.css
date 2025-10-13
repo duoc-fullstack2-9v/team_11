@@ -1,0 +1,91 @@
+/* Estilos exclusivos para la página de login */
+
+/* Centrando el contenido de la página de login */
+.auth-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    min-height: 100dvh;
+}
+
+/* Envoltorio para cuando agregue registro al lado */
+.auth-page .contenedor-auth {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+    max-width: 800px;
+    width: 100%;
+}
+
+/* auth-card (La cajita donde está envuelto el login) */
+.auth-page .auth-card {
+    width: min(420px, 92vw);
+    background: transparent; /* Así se ve el fondo actual de la página */
+    border: 2px solid var(--clr-border, #000);
+    border-radius: 18px;
+    padding: 1.5rem 1.75rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,.15);
+}
+
+.auth-page .auth-card h2{
+    margin: 0 0 1rem;
+    font-size: 2rem;
+}
+
+/* Campos del formulario */
+.auth-page .formulario-grupo {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-page .formulario-control {
+    padding: .7rem .8rem;
+    border: 1px solid var(--clr-input-border, #ccc);
+    border-radius: 10px;
+}
+
+.auth-page .formulario-control:focus {
+    outline: none;
+    border-color: var(--clr-accent, currentColor);
+    box-shadow: 0 0 0 3px color-mix(in oklab, currentColor 20%, transparent);
+}
+
+.auth-page .boton-primario {
+    width: 100%;
+    padding: .85rem;
+    border: 2px solid currentColor;
+    border-radius: 12px;
+    border-color: #000;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* Ocultar / mostrar paneles */
+.hidden {
+    display: none !important;
+}
+
+/* Contexto de posicionamiento */
+.auth-page .auth-caja {
+    position: relative;
+    display: inline-block;
+}
+
+/* Link Registrarse alineado en esquina superior derecha de la card */
+.auth-page .auth-switch {
+    position: absolute;
+    right: .25rem;
+    bottom: 100%;
+    margin-bottom: .5rem;
+    font-weight: 700;
+    font-size: 1.2rem;
+    text-decoration:crimson;
+}
+
+.mensaje-error{
+    color: crimson;
+    margin-top: .5rem;
+}

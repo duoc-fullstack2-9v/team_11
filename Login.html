@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autenticación</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./main.css">
+    <link rel="stylesheet" href="./login.css">
+</head>
+
+<body class="auth-page">
+
+    <div class="wrapper">
+        <aside>
+            <img class="logo-imagen" src="./imgs/imagen_2025-09-05_021420718-removebg-preview.png"
+                alt="Logo de mi tienda">
+
+
+            <header>
+                <h1 class="logo">Level Up Gamer</h1>
+            </header>
+            <nav>
+                <ul class="menu">
+                    <li>
+                        <a class="boton-menu boton login active" href="./Login.html"><i
+                                class="bi bi-person-raised-hand"></i>Iniciar sesion</a>
+                    </li>
+                    <li>
+                        <a class="boton-menu boton home" href="./Home.html"><i
+                                class="bi bi-hand-index-thumb-fill"></i>Home</a>
+                    </li>
+                    <li>
+                        <a class="boton-menu boton categoria" href="./LevelUpGamer.html"><i
+                                class="bi bi-hand-index-thumb-fill"></i>Catalogo</a>
+                    </li>
+
+                    <li>
+                        <a class="boton-menu boton-carrito" href="./carrito.html">
+                            <i class="bi bi-cart-fill"></i>Carrito<span id="numerito" class="numerito">0</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="boton-menu boton categoria"><i class="bi bi-hand-index-thumb-fill"></i>Soporte</a>
+                    </li>
+                </ul>
+
+            </nav>
+            <footer>
+                <p class="texto-footer">© 2025</p>
+            </footer>
+
+
+        </aside>
+        <main class="login-main">
+            <div class="contenedor-auth">
+                <div class="auth-caja">
+                    <!-- "Link" de Registrarse -->
+                    <a href="#" id="auth-switch" class="auth-switch" data-target="register">Registrarse</a>
+                    
+                    <section class="auth-card" data-view="login">
+                        <!-- Formulario de login -->
+                        <div class="auth-panel" id="panel-login">
+                            <h2>Iniciar sesión</h2>
+                            <form action="Login.html" method="post" class="formulario">
+                                <div class="formulario-grupo">
+                                    <label for="usuario">Usuario</label>
+                                    <input type="text" id="usuario" name="usuario" class="formulario-control" required>
+                                </div>
+
+                                <div class="formulario-grupo">
+                                    <label for="password">Contraseña</label>
+                                    <input type="password" id="password" name="password" class="formulario-control" required>
+                                </div>
+
+                                <button type="submit" class="boton-primario">Ingresar</button>
+                            </form>
+                        </div>
+
+                        <!-- Formulario para registro -->
+                        <div class="auth-panel hidden" id="panel-register">
+                            <h2>Registrarse</h2>
+                            <form id="formulario-registro" class="formulario">
+                                <div class="formulario-grupo">
+                                    <label for="reg-usuario">Nombre de usuario</label>
+                                    <input type="text" id="reg-usuario" name="usuario" class="formulario-control" required>
+                                </div>
+                                <div class="formulario-grupo">
+                                    <label for="reg-correo">Correo</label>
+                                    <input type="email" id="reg-correo" name="correo" class="formulario-control" required>
+                                </div>
+                                <div class="formulario-grupo">
+                                    <label for="reg-password">Contraseña</label>
+                                    <input type="password" id="reg-password" name="password" class="formulario-control" required>
+                                </div>
+                                <button type="submit" class="boton-primario">Crear cuenta</button>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="./js/main.js"></script>
+</body>
+</html>

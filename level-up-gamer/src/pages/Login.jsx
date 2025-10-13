@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { findUser, saveUser, startSession } from "../utils/auth";
-import "../styles/inicioSesion.css";
+import "../styles/Login.css";
 
 function InicioSesion() {
     const [view, setView] = useState("inicioSesion");

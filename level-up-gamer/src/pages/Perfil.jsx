@@ -1,16 +1,31 @@
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { getSession, endSession } from "../utils/auth";
 import "../styles/login.css"; //se reutiliza estilo de login en perfil
 
 function Perfil() {
     const navigate = useNavigate();
 
-    // Datos de ejemplo de usuario
-    const usuario = "pruebaUser";
-    const correo = "prueba@correo.com";
+    /* Estado con los datos del usuario */
+    const [usuarioSesion, setUsuarioSesion] = useState(null);
 
-    const handleLogout = () => {
+    useEffect(() => {
+        const sesion = getSession();
+        if (!sesion) {
+            navigate("/login");
+        } else {
+            setUsuarioSesion(sesion);
+        }
+    }, [navigate]
+    );
+
+    /* Cierre de sesión */
+    const cerrarSesion = () => {
+        endSession();
         navigate("/login");
     }
+
+    if (!usuarioSesion) return null;
 
     return (
         <>
@@ -23,20 +38,20 @@ function Perfil() {
                                 className="perfil-foto"
                                 src="/imgs/default-profile.png"
                                 alt="Foto de perfil"
-                                onerror={(e) => (e.currentTarget.style.display = "none")}
+                                onError={(e) => (e.currentTarget.style.display = "none")}
                             />
                             <p>
-                                <strong>Usuario:</strong> <span id="perfil-usuario">—</span>
+                                <strong>Usuario:</strong> <span>{usuarioSesion.usuario}</span>
                             </p>
                             <p>
-                                <strong>Correo:</strong> <span id="perfil-correo">—</span>
+                                <strong>Correo:</strong> <span>{usuarioSesion.correo}</span>
                             </p>
                         </div>
 
                         <div className="perfil-acciones">
                             <Link className="boton-primario" to="/productos">Ir al catálogo</Link>
 
-                            <button className="boton-primario" onClick={handleLogout}>
+                            <button className="boton-primario" onClick={cerrarSesion}>
                                 Cerrar sesión
                             </button>
                         </div>

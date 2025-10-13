@@ -84,3 +84,8 @@
     font-size: 1.2rem;
     text-decoration:crimson;
 }
+
+.mensaje-error{
+    color: crimson;
+    margin-top: .5rem;
+}

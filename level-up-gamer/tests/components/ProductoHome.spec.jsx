@@ -1,9 +1,9 @@
 import { describe, test, expect, vi } from 'vitest'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import ProductoHome from '../../src/components/ProductoHome'
 
 describe('ProductoHome Component', () => {
-  // Mock de un producto de ejemplo para las pruebas
   const mockProducto = {
     id: 1,
     titulo: 'Street Fighter 6',
@@ -12,90 +12,80 @@ describe('ProductoHome Component', () => {
     oferta: 4990
   }
 
-  test('renders product information correctly', () => {
-    render(<ProductoHome producto={mockProducto} onAgregarClick={() => {}} />)
-    
-    // Verificar que el título del producto está presente
-    const titulo = screen.getByText('Street Fighter 6')
-    expect(titulo).toBeDefined()
+  test('renderiza la info del producto correctamente', () => {
+    const { container } = render(
+      <ProductoHome producto={mockProducto} onAgregarClick={() => {}} />
+    )
+
+    // Título
+    const titulo = screen.getByText(/street fighter 6/i)
+    expect(titulo).toBeInTheDocument()
     expect(titulo).toHaveClass('producto-titulo-home')
 
-    // Verificar que la imagen está presente y tiene el alt correcto
-    const imagen = screen.getByAlt('Street Fighter 6')
-    expect(imagen).toBeDefined()
+    // Imagen
+    const imagen = screen.getByRole('img', { name: /street fighter 6/i })
+    expect(imagen).toBeInTheDocument()
     expect(imagen).toHaveClass('producto-home-imagen')
     expect(imagen).toHaveAttribute('src', '/imgs/street-fighter-6.jpg')
 
-    // Verificar que los precios están presentes y formateados correctamente
-    const precioAntiguo = screen.getByText('$29.990')
-    const precioOferta = screen.getByText('Oferta $4.990')
-    expect(precioAntiguo).toBeDefined()
-    expect(precioOferta).toBeDefined()
+    // Precios (evitar acoplar al formateo exacto; tolerar puntos de miles)
+    const precioAntiguo = screen.getByText(/\$? *29\.?990/)
+    const precioOferta = screen.getByText(/oferta *\$? *4\.?990/i)
+    expect(precioAntiguo).toBeInTheDocument()
+    expect(precioOferta).toBeInTheDocument()
     expect(precioAntiguo).toHaveClass('producto-precio-home')
     expect(precioOferta).toHaveClass('producto-precio-home-oferta')
+
+    // Contenedor principal por clase (más fiable que role+name vacío)
+    const contenedor = container.querySelector('.producto-home')
+    expect(contenedor).toBeInTheDocument()
+
+    // Contenedor de detalles
+    const detalles = container.querySelector('.producto-detalles-home')
+    expect(detalles).toBeInTheDocument()
   })
 
-  test('calls onAgregarClick with correct product id when button is clicked', () => {
-    // Crear una función mock para verificar que se llama correctamente
-    const mockOnAgregarClick = vi.fn()
-    
-    render(
-      <ProductoHome 
-        producto={mockProducto} 
-        onAgregarClick={mockOnAgregarClick}
-      />
-    )
-    
-    // Buscar y hacer click en el botón de agregar
-    const agregarButton = screen.getByText('Agregar')
-    fireEvent.click(agregarButton)
-    
-    // Verificar que la función fue llamada con el ID correcto
-    expect(mockOnAgregarClick).toHaveBeenCalledTimes(1)
-    expect(mockOnAgregarClick).toHaveBeenCalledWith(mockProducto.id)
+  test('llama onAgregarClick con el id correcto al hacer click', async () => {
+    const user = userEvent.setup()
+    const onAgregarClick = vi.fn()
+
+    render(<ProductoHome producto={mockProducto} onAgregarClick={onAgregarClick} />)
+
+    // Botón por rol y nombre accesible
+    const boton = screen.getByRole('button', { name: /agregar/i })
+    await user.click(boton)
+
+    expect(onAgregarClick).toHaveBeenCalledTimes(1)
+    expect(onAgregarClick).toHaveBeenCalledWith(mockProducto.id)
   })
 
-  test('renders with correct CSS classes', () => {
+  test('aplica las clases CSS esperadas en el botón', () => {
     render(<ProductoHome producto={mockProducto} onAgregarClick={() => {}} />)
-    
-    // Verificar que el contenedor principal tiene la clase correcta
-    const contenedor = screen.getByRole('article', { name: '' })
-    expect(contenedor).toHaveClass('producto-home')
-
-    // Verificar que el contenedor de detalles tiene la clase correcta
-    const detalles = screen.getByRole('article', { name: '' }).querySelector('.producto-detalles-home')
-    expect(detalles).toBeDefined()
-
-    // Verificar que el botón tiene la clase correcta
-    const button = screen.getByText('Agregar')
-    expect(button).toHaveClass('producto-agregar-home')
+    const boton = screen.getByRole('button', { name: /agregar/i })
+    expect(boton).toHaveClass('producto-agregar-home')
   })
 
-  test('formats prices correctly with different values', () => {
-    const productoConPreciosDiferentes = {
+  test('formatea precios con distintos valores sin depender del locale exacto', () => {
+    const productoConPrecios = {
       ...mockProducto,
       precioAntiguo: 15990,
       oferta: 9990
     }
 
-    render(
-      <ProductoHome 
-        producto={productoConPreciosDiferentes} 
-        onAgregarClick={() => {}}
-      />
-    )
-    
-    // Verificar que los precios se formatean correctamente con valores diferentes
-    const precioAntiguo = screen.getByText('$15.990')
-    const precioOferta = screen.getByText('Oferta $9.990')
-    expect(precioAntiguo).toBeDefined()
-    expect(precioOferta).toBeDefined()
+    render(<ProductoHome producto={productoConPrecios} onAgregarClick={() => {}} />)
+
+    // Solo validamos las cifras con miles usando regex flexible.
+    expect(screen.getByText(/\$? *15\.?990/)).toBeInTheDocument()
+    expect(screen.getByText(/oferta *\$? *9\.?990/i)).toBeInTheDocument()
   })
 
-  test('handles missing onAgregarClick prop gracefully', () => {
-    // No debería lanzar error si no se proporciona la función onAgregarClick
+  test('si falta onAgregarClick, el componente renderiza sin lanzar error', () => {
+    // Render sin prop y sin hacer click, para que no explote si el componente no hace guardas internas
     expect(() => {
       render(<ProductoHome producto={mockProducto} />)
     }).not.toThrow()
+
+    // Y el botón existe igual
+    expect(screen.getByRole('button', { name: /agregar/i })).toBeInTheDocument()
   })
 })

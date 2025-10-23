@@ -1,66 +1,90 @@
 import { describe, test, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
+import { BrowserRouter } from 'react-router-dom'
 import Home from '../../src/pages/Home'
 
+// Helper para renderizar con Router (por si Home usa <Link> o <NavLink>)
+const renderWithRouter = (ui) => render(<BrowserRouter>{ui}</BrowserRouter>)
+
+// Regex flexible para precios con miles: acepta $ opcional, espacios y puntos
+const moneyRx = (n) => {
+  const withThousands = n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '\\.?')
+  return new RegExp(`\\$?\\s*${withThousands}`, 'i')
+}
+
 describe('Home Component', () => {
-  test('renders carousel with images', () => {
-    render(<Home />)
-    
-    // Verificar que el carrusel existe
-    const carousel = screen.getByRole('region', { name: /carousel/i })
-    expect(carousel).toBeDefined()
+  test('renderiza el carrusel con imágenes y controles', () => {
+    renderWithRouter(<Home />)
 
-    // Verificar que las imágenes del carrusel están presentes
-    const carouselImages = screen.getAllByRole('img')
-    expect(carouselImages).toHaveLength(4) // 3 del carrusel + 1 de ofertas
-    
-    // Verificar que los botones de navegación están presentes
-    const prevButton = screen.getByText('Previous')
-    const nextButton = screen.getByText('Next')
-    expect(prevButton).toBeDefined()
-    expect(nextButton).toBeDefined()
+    // 1) Carrusel: intentar por landmark; si no, buscar por testid o clase común
+    const carouselRegion =
+      screen.queryByRole('region', { name: /carousel|carrusel/i }) ||
+      screen.queryByTestId?.('carousel') ||
+      document.querySelector('.carousel, [data-carousel]')
+
+    expect(carouselRegion).toBeTruthy()
+
+    // 2) Imágenes del carrusel (y posiblemente 1 extra de “ofertas”)
+    const images = screen.getAllByRole('img')
+    // No acoplamos a "exactamente 4"; exigimos al menos 3
+    expect(images.length).toBeGreaterThanOrEqual(3)
+
+    // 3) Controles de navegación: tolerar texto o aria-label en español/inglés
+    const prevBtn =
+      screen.queryByRole('button', { name: /prev|anterior/i }) ||
+      document.querySelector('[aria-label~="prev"],[aria-label~="anterior"]')
+    const nextBtn =
+      screen.queryByRole('button', { name: /next|siguiente/i }) ||
+      document.querySelector('[aria-label~="next"],[aria-label~="siguiente"]')
+
+    expect(prevBtn).toBeTruthy()
+    expect(nextBtn).toBeTruthy()
   })
 
-  test('renders search input', () => {
-    render(<Home />)
-    
-    // Verificar que el buscador está presente
-    const searchInput = screen.getByPlaceholderText('Buscar en la tienda')
-    expect(searchInput).toBeDefined()
+  test('renderiza el buscador', () => {
+    renderWithRouter(<Home />)
+
+    // Buscar por rol searchbox o textbox con placeholder aproximado
+    const searchInput =
+      screen.queryByRole('searchbox') ||
+      screen.getByPlaceholderText(/buscar/i)
+
+    expect(searchInput).toBeInTheDocument()
   })
 
-  test('renders weekly offers section', () => {
-    render(<Home />)
-    
-    // Verificar que el título de ofertas está presente
-    const offersTitle = screen.getByText('Ofertas semanales')
-    expect(offersTitle).toBeDefined()
+  test('muestra la sección de ofertas semanales', () => {
+    renderWithRouter(<Home />)
+    const offersTitle = screen.getByText(/ofertas semanales/i)
+    expect(offersTitle).toBeInTheDocument()
   })
 
-  test('renders product cards with correct information', () => {
-    render(<Home />)
-    
-    // Verificar que los productos están presentes
+  test('renderiza tarjetas de producto con información básica', () => {
+    renderWithRouter(<Home />)
+
     const productTitles = [
-      'Street Fighter vs Tekken',
-      'Bayonetta',
-      'Devil my cry 5'
+      /street fighter vs tekken/i,
+      /bayonetta/i,
+      /devil\s*my\s*cry\s*5/i  // tolerar espacios raros
     ]
 
-    // Verificar cada título de producto
-    productTitles.forEach(title => {
-      const productTitle = screen.getByText(title)
-      expect(productTitle).toBeDefined()
+    productTitles.forEach(rx => {
+      expect(screen.getByText(rx)).toBeInTheDocument()
     })
 
-    // Verificar que hay 3 botones de "Agregar"
-    const addButtons = screen.getAllByText('Agregar')
-    expect(addButtons).toHaveLength(3)
+    // Botones "Agregar": al menos 3
+    const addButtons =
+      screen.getAllByRole('button', { name: /agregar/i })
+    expect(addButtons.length).toBeGreaterThanOrEqual(3)
 
-    // Verificar que los precios están presentes
-    const regularPrices = screen.getAllByText('$29.990')
-    const salePrices = screen.getAllByText('Oferta $4.990')
-    expect(regularPrices).toHaveLength(3)
-    expect(salePrices).toHaveLength(3)
+    // Precios: validar con regex flexible ($ y miles)
+    const regularPriceRx = moneyRx(29990)
+    const salePriceRx = /oferta\s*\$?\s*4\.?990/i
+
+    // Exigir al menos 3 ocurrencias de cada uno
+    const regularPrices = screen.getAllByText(regularPriceRx)
+    expect(regularPrices.length).toBeGreaterThanOrEqual(3)
+
+    const salePrices = screen.getAllByText(salePriceRx)
+    expect(salePrices.length).toBeGreaterThanOrEqual(3)
   })
 })

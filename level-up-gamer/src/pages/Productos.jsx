@@ -108,12 +108,8 @@ function Productos() {
           Compra los mejores productos al mejor precio!
         </h2>
         <div className="contenedor-producto">
-          {productos.map((p) => (
-            <ProductoHome
-              key={p.id}
-              producto={p}
-              onAgregarClick={handleAgregar}
-            />
+          {productos.map((p, idx) => (
+            <ProductoHome key={`${p.id}-${idx}`} producto={p} onAgregarClick={handleAgregar} />
           ))}
         </div>
       </main>

@@ -1,17 +1,13 @@
-import { describe, test, expect, vi } from 'vitest'
+import { describe, test, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
-import { BrowserRouter } from 'react-router-dom'
-import Login from '../../src/pages/Login'
-import * as auth from '../../src/utils/auth'
 
-// Mock de las funciones de autenticación
+// 1) MOCKS ANTES DE IMPORTAR EL COMPONENTE Y EL MÓDULO
 vi.mock('../../src/utils/auth', () => ({
   findUser: vi.fn(),
   saveUser: vi.fn(),
   startSession: vi.fn()
 }))
 
-// Mock del hook useNavigate
 const mockNavigate = vi.fn()
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom')
@@ -21,120 +17,96 @@ vi.mock('react-router-dom', async () => {
   }
 })
 
-// Wrapper para los componentes que usan React Router
-const renderWithRouter = (component) => {
-  return render(
-    <BrowserRouter>
-      {component}
-    </BrowserRouter>
-  )
-}
+// 2) AHORA SÍ, IMPORTS REALES DEL COMPONENTE Y DEPENDENCIAS
+import { BrowserRouter } from 'react-router-dom'
+import Login from '../../src/pages/Login'
+import * as auth from '../../src/utils/auth'
 
-describe('Login Component', () => {
+// Helper para envolver con Router
+const renderWithRouter = (ui) => render(<BrowserRouter>{ui}</BrowserRouter>)
+
+describe('Login Component (auth local)', () => {
   beforeEach(() => {
-    // Limpiar todos los mocks antes de cada prueba
     vi.clearAllMocks()
   })
 
-  test('renders login form by default', () => {
+  test('renderiza el formulario de login por defecto', () => {
     renderWithRouter(<Login />)
-    
-    // Verificar que el formulario de inicio de sesión está presente
-    expect(screen.getByText('Iniciar sesión')).toBeDefined()
-    expect(screen.getByLabelText('Usuario')).toBeDefined()
-    expect(screen.getByLabelText('Contraseña')).toBeDefined()
-    expect(screen.getByText('Ingresar')).toBeDefined()
+
+    // Vista inicio de sesión
+    expect(screen.getByRole('heading', { name: /iniciar sesión/i })).toBeInTheDocument()
+    expect(screen.getByLabelText('Usuario')).toBeInTheDocument()
+    expect(screen.getByLabelText('Contraseña')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Ingresar' })).toBeInTheDocument()
+    // El switch muestra "Registrarse" cuando estamos en login
+    expect(screen.getByRole('button', { name: 'Registrarse' })).toBeInTheDocument()
   })
 
-  test('switches between login and register views', () => {
+  test('al hacer click en el switch cambia a la vista de registro', () => {
     renderWithRouter(<Login />)
-    
-    // Inicialmente muestra el formulario de login
-    expect(screen.getByText('Iniciar sesión')).toBeDefined()
-    
-    // Click en el botón de cambio a registro
-    const switchButton = screen.getByText('Registrarse')
-    fireEvent.click(switchButton)
-    
-    // Ahora debe mostrar el formulario de registro
-    expect(screen.getByText('Crear cuenta')).toBeDefined()
-    expect(screen.getByLabelText('Nombre de usuario')).toBeDefined()
-    expect(screen.getByLabelText('Correo')).toBeDefined()
-    expect(screen.getByLabelText('Contraseña')).toBeDefined()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Registrarse' }))
+
+    // Ahora el heading es "Registrarse" (tu componente lo hace así)
+    expect(screen.getByRole('heading', { name: 'Registrarse' })).toBeInTheDocument()
+    expect(screen.getByLabelText('Nombre de usuario')).toBeInTheDocument()
+    expect(screen.getByLabelText('Correo')).toBeInTheDocument()
+    expect(screen.getByLabelText('Contraseña')).toBeInTheDocument()
+    // El botón principal es "Crear cuenta"
+    expect(screen.getByRole('button', { name: 'Crear cuenta' })).toBeInTheDocument()
+    // Y el switch ahora muestra "Iniciar sesión"
+    expect(screen.getByRole('button', { name: 'Iniciar sesión' })).toBeInTheDocument()
   })
 
-  test('handles successful login', async () => {
-    // Mock de un usuario existente
-    const mockUser = {
-      usuario: 'testuser',
-      contrasena: 'password123'
-    }
+  test('login exitoso', () => {
+    const mockUser = { usuario: 'testuser', contrasena: 'password123' }
     auth.findUser.mockReturnValue(mockUser)
-    
+
     renderWithRouter(<Login />)
-    
-    // Llenar el formulario
-    const usuarioInput = screen.getByLabelText('Usuario')
-    const contrasenaInput = screen.getByLabelText('Contraseña')
-    fireEvent.change(usuarioInput, { target: { value: 'testuser' } })
-    fireEvent.change(contrasenaInput, { target: { value: 'password123' } })
-    
-    // Enviar el formulario
-    const form = screen.getByRole('button', { name: 'Ingresar' })
-    fireEvent.click(form)
-    
-    // Verificar que se llamaron las funciones correctas
+
+    fireEvent.change(screen.getByLabelText('Usuario'), { target: { value: 'testuser' } })
+    fireEvent.change(screen.getByLabelText('Contraseña'), { target: { value: 'password123' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Ingresar' }))
+
     expect(auth.findUser).toHaveBeenCalledWith('testuser')
     expect(auth.startSession).toHaveBeenCalledWith(mockUser)
     expect(mockNavigate).toHaveBeenCalledWith('/perfil')
   })
 
-  test('handles failed login', () => {
-    // Mock de usuario no encontrado
+  test('login fallido muestra error y no navega', () => {
     auth.findUser.mockReturnValue(null)
-    
+
     renderWithRouter(<Login />)
-    
-    // Llenar el formulario con credenciales incorrectas
-    const usuarioInput = screen.getByLabelText('Usuario')
-    const contrasenaInput = screen.getByLabelText('Contraseña')
-    fireEvent.change(usuarioInput, { target: { value: 'wronguser' } })
-    fireEvent.change(contrasenaInput, { target: { value: 'wrongpass' } })
-    
-    // Enviar el formulario
-    const form = screen.getByRole('button', { name: 'Ingresar' })
-    fireEvent.click(form)
-    
-    // Verificar que se muestra el mensaje de error
-    expect(screen.getByText('Usuario o contraseña incorrectos')).toBeDefined()
+
+    fireEvent.change(screen.getByLabelText('Usuario'), { target: { value: 'wronguser' } })
+    fireEvent.change(screen.getByLabelText('Contraseña'), { target: { value: 'wrongpass' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Ingresar' }))
+
+    expect(screen.getByText('Usuario o contraseña incorrectos')).toBeInTheDocument()
     expect(mockNavigate).not.toHaveBeenCalled()
   })
 
-  test('handles successful registration', () => {
-    // Mock de usuario no existente (para registro exitoso)
+  test('registro exitoso', () => {
     auth.findUser.mockReturnValue(null)
-    
+
     renderWithRouter(<Login />)
-    
-    // Cambiar a vista de registro
-    const switchButton = screen.getByText('Registrarse')
-    fireEvent.click(switchButton)
-    
-    // Llenar el formulario de registro
-    const usuarioInput = screen.getByLabelText('Nombre de usuario')
-    const correoInput = screen.getByLabelText('Correo')
-    const contrasenaInput = screen.getByLabelText('Contraseña')
-    
-    fireEvent.change(usuarioInput, { target: { value: 'newuser' } })
-    fireEvent.change(correoInput, { target: { value: 'test@test.com' } })
-    fireEvent.change(contrasenaInput, { target: { value: 'newpass123' } })
-    
-    // Enviar el formulario
-    const form = screen.getByRole('button', { name: 'Crear cuenta' })
-    fireEvent.click(form)
-    
-    // Verificar que se llamaron las funciones correctas
+
+    // Cambiamos a la vista de registro
+    fireEvent.click(screen.getByRole('button', { name: 'Registrarse' }))
+
+    // Rellenamos el form de registro
+    fireEvent.change(screen.getByLabelText('Nombre de usuario'), { target: { value: 'newuser' } })
+    fireEvent.change(screen.getByLabelText('Correo'), { target: { value: 'test@test.com' } })
+    fireEvent.change(screen.getByLabelText('Contraseña'), { target: { value: 'newpass123' } })
+
+    fireEvent.click(screen.getByRole('button', { name: 'Crear cuenta' }))
+
     expect(auth.saveUser).toHaveBeenCalledWith({
+      usuario: 'newuser',
+      correo: 'test@test.com',
+      contrasena: 'newpass123'
+    })
+    expect(auth.startSession).toHaveBeenCalledWith({
       usuario: 'newuser',
       correo: 'test@test.com',
       contrasena: 'newpass123'
@@ -142,51 +114,33 @@ describe('Login Component', () => {
     expect(mockNavigate).toHaveBeenCalledWith('/perfil')
   })
 
-  test('handles registration with existing username', () => {
-    // Mock de usuario existente
+  test('registro con usuario existente muestra error', () => {
     auth.findUser.mockReturnValue({ usuario: 'existinguser' })
-    
+
     renderWithRouter(<Login />)
-    
-    // Cambiar a vista de registro
-    const switchButton = screen.getByText('Registrarse')
-    fireEvent.click(switchButton)
-    
-    // Llenar el formulario
-    const usuarioInput = screen.getByLabelText('Nombre de usuario')
-    const correoInput = screen.getByLabelText('Correo')
-    const contrasenaInput = screen.getByLabelText('Contraseña')
-    
-    fireEvent.change(usuarioInput, { target: { value: 'existinguser' } })
-    fireEvent.change(correoInput, { target: { value: 'test@test.com' } })
-    fireEvent.change(contrasenaInput, { target: { value: 'pass123' } })
-    
-    // Enviar el formulario
-    const form = screen.getByRole('button', { name: 'Crear cuenta' })
-    fireEvent.click(form)
-    
-    // Verificar que se muestra el mensaje de error
-    expect(screen.getByText('Ese usuario ya existe')).toBeDefined()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Registrarse' }))
+
+    fireEvent.change(screen.getByLabelText('Nombre de usuario'), { target: { value: 'existinguser' } })
+    fireEvent.change(screen.getByLabelText('Correo'), { target: { value: 'test@test.com' } })
+    fireEvent.change(screen.getByLabelText('Contraseña'), { target: { value: 'pass123' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Crear cuenta' }))
+
+    expect(screen.getByText('Ese usuario ya existe')).toBeInTheDocument()
     expect(auth.saveUser).not.toHaveBeenCalled()
     expect(mockNavigate).not.toHaveBeenCalled()
   })
 
-  test('clears error message when switching views', () => {
-    renderWithRouter(<Login />)
-    
-    // Provocar un error de login
+  test('al cambiar de vista se limpia el error', () => {
     auth.findUser.mockReturnValue(null)
-    const loginButton = screen.getByText('Ingresar')
-    fireEvent.click(loginButton)
-    
-    // Verificar que el error está presente
-    expect(screen.getByText('Usuario o contraseña incorrectos')).toBeDefined()
-    
-    // Cambiar de vista
-    const switchButton = screen.getByText('Registrarse')
-    fireEvent.click(switchButton)
-    
-    // Verificar que el error ya no está presente
+    renderWithRouter(<Login />)
+
+    // Provocamos error en login
+    fireEvent.click(screen.getByRole('button', { name: 'Ingresar' }))
+    expect(screen.getByText('Usuario o contraseña incorrectos')).toBeInTheDocument()
+
+    // Cambiamos a registro: el componente hace setError("")
+    fireEvent.click(screen.getByRole('button', { name: 'Registrarse' }))
     expect(screen.queryByText('Usuario o contraseña incorrectos')).toBeNull()
   })
 })

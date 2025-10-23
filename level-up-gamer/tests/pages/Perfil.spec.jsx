@@ -1,5 +1,6 @@
-import { describe, test, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
+import '@testing-library/jest-dom'
 import { BrowserRouter } from 'react-router-dom'
 import Perfil from '../../src/pages/Perfil'
 import * as auth from '../../src/utils/auth'
@@ -7,7 +8,7 @@ import * as auth from '../../src/utils/auth'
 // Mock de las funciones de autenticación
 vi.mock('../../src/utils/auth', () => ({
   getSession: vi.fn(),
-  endSession: vi.fn()
+  endSession: vi.fn(),
 }))
 
 // Mock del hook useNavigate
@@ -16,150 +17,117 @@ vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom')
   return {
     ...actual,
-    useNavigate: () => mockNavigate
+    useNavigate: () => mockNavigate,
   }
 })
 
-// Wrapper para los componentes que usan React Router
-const renderWithRouter = (component) => {
-  return render(
-    <BrowserRouter>
-      {component}
-    </BrowserRouter>
-  )
-}
+// Helper para renderizar con Router
+const renderWithRouter = (ui) =>
+  render(<BrowserRouter>{ui}</BrowserRouter>)
 
 describe('Perfil Component', () => {
   beforeEach(() => {
-    // Limpiar todos los mocks antes de cada prueba
     vi.clearAllMocks()
   })
 
-  test('redirects to login when no session exists', () => {
-    // Mock de sesión vacía
+  it('redirige a /login cuando no existe sesión', () => {
     auth.getSession.mockReturnValue(null)
-    
+
     renderWithRouter(<Perfil />)
-    
-    // Verificar que se redirige a login
+
     expect(mockNavigate).toHaveBeenCalledWith('/login')
   })
 
-  test('renders profile information when session exists', () => {
-    // Mock de una sesión activa
-    const mockSession = {
-      usuario: 'testuser',
-      correo: 'test@example.com'
-    }
+  it('muestra la información del perfil cuando existe sesión', () => {
+    const mockSession = { usuario: 'testuser', correo: 'test@example.com' }
     auth.getSession.mockReturnValue(mockSession)
-    
+
     renderWithRouter(<Perfil />)
-    
-    // Verificar que se muestra el título
-    expect(screen.getByText('Mi perfil')).toBeDefined()
-    
-    // Verificar que se muestran los datos del usuario
-    expect(screen.getByText('Usuario:')).toBeDefined()
-    expect(screen.getByText('testuser')).toBeDefined()
-    expect(screen.getByText('Correo:')).toBeDefined()
-    expect(screen.getByText('test@example.com')).toBeDefined()
+
+    // Título
+    expect(
+      screen.getByRole('heading', { name: /mi perfil/i })
+    ).toBeInTheDocument()
+
+    // Datos
+    expect(screen.getByText('Usuario:')).toBeInTheDocument()
+    expect(screen.getByText('testuser')).toBeInTheDocument()
+    expect(screen.getByText('Correo:')).toBeInTheDocument()
+    expect(screen.getByText('test@example.com')).toBeInTheDocument()
   })
 
-  test('handles logout correctly', () => {
-    // Mock de una sesión activa
-    const mockSession = {
-      usuario: 'testuser',
-      correo: 'test@example.com'
-    }
+  it('cierra sesión correctamente', () => {
+    const mockSession = { usuario: 'testuser', correo: 'test@example.com' }
     auth.getSession.mockReturnValue(mockSession)
-    
+
     renderWithRouter(<Perfil />)
-    
-    // Click en el botón de cerrar sesión
-    const logoutButton = screen.getByText('Cerrar sesión')
+
+    const logoutButton = screen.getByRole('button', { name: /cerrar sesión/i })
     fireEvent.click(logoutButton)
-    
-    // Verificar que se llamaron las funciones correctas
+
     expect(auth.endSession).toHaveBeenCalled()
     expect(mockNavigate).toHaveBeenCalledWith('/login')
   })
 
-  test('displays profile picture', () => {
-    // Mock de una sesión activa
-    const mockSession = {
-      usuario: 'testuser',
-      correo: 'test@example.com'
-    }
+  it('muestra la foto de perfil con clases y src correctos', () => {
+    const mockSession = { usuario: 'testuser', correo: 'test@example.com' }
     auth.getSession.mockReturnValue(mockSession)
-    
+
     renderWithRouter(<Perfil />)
-    
-    // Verificar que la imagen de perfil está presente
-    const profileImage = screen.getByAlt('Foto de perfil')
-    expect(profileImage).toBeDefined()
-    expect(profileImage).toHaveClass('perfil-foto')
-    expect(profileImage).toHaveAttribute('src', '/imgs/default-profile.png')
+
+    const img = screen.getByAltText('Foto de perfil')
+    expect(img).toBeInTheDocument()
+    expect(img).toHaveClass('perfil-foto')
+    expect(img).toHaveAttribute('src', '/imgs/default-profile.png')
   })
 
-  test('handles profile picture load error', () => {
-    // Mock de una sesión activa
-    const mockSession = {
-      usuario: 'testuser',
-      correo: 'test@example.com'
-    }
+  it('oculta la imagen si ocurre un error de carga', () => {
+    const mockSession = { usuario: 'testuser', correo: 'test@example.com' }
     auth.getSession.mockReturnValue(mockSession)
-    
+
     renderWithRouter(<Perfil />)
-    
-    // Simular error de carga de imagen
-    const profileImage = screen.getByAlt('Foto de perfil')
-    fireEvent.error(profileImage)
-    
-    // Verificar que la imagen se oculta
-    expect(profileImage.style.display).toBe('none')
+
+    const img = screen.getByAltText('Foto de perfil')
+    fireEvent.error(img)
+
+    expect(img.style.display).toBe('none')
   })
 
-  test('contains link to catalog', () => {
-    // Mock de una sesión activa
-    const mockSession = {
-      usuario: 'testuser',
-      correo: 'test@example.com'
-    }
+  it('contiene el enlace al catálogo', () => {
+    const mockSession = { usuario: 'testuser', correo: 'test@example.com' }
     auth.getSession.mockReturnValue(mockSession)
-    
+
     renderWithRouter(<Perfil />)
-    
-    // Verificar que el enlace al catálogo está presente
-    const catalogLink = screen.getByText('Ir al catálogo')
-    expect(catalogLink).toBeDefined()
-    expect(catalogLink).toHaveClass('boton-primario')
-    expect(catalogLink.getAttribute('href')).toBe('/productos')
+
+    const link = screen.getByRole('link', { name: /ir al catálogo/i })
+    expect(link).toBeInTheDocument()
+    expect(link).toHaveClass('boton-primario')
+    expect(link).toHaveAttribute('href', '/productos')
   })
 
-  test('renders with correct CSS classes', () => {
-    // Mock de una sesión activa
-    const mockSession = {
-      usuario: 'testuser',
-      correo: 'test@example.com'
-    }
+  it('renderiza con las clases CSS principales', () => {
+    const mockSession = { usuario: 'testuser', correo: 'test@example.com' }
     auth.getSession.mockReturnValue(mockSession)
-    
-    renderWithRouter(<Perfil />)
-    
-    // Verificar las clases CSS principales
-    expect(screen.getByRole('main')).toHaveClass('perfil-main', 'auth-page')
-    expect(screen.getByRole('region')).toHaveClass('perfil-card')
-    expect(screen.getByRole('region').querySelector('.perfil-datos')).toBeDefined()
-    expect(screen.getByRole('region').querySelector('.perfil-acciones')).toBeDefined()
-  })
 
-  test('renders nothing when session is loading', () => {
-    // Mock de una sesión que aún no se ha cargado
-    auth.getSession.mockReturnValue(null)
-    
     const { container } = renderWithRouter(<Perfil />)
-    
-    // Verificar que el componente no renderiza nada mientras carga
+
+    const main = screen.getByRole('main')
+    expect(main).toHaveClass('perfil-main', 'auth-page')
+
+    const heading = screen.getByRole('heading', { name: /mi perfil/i })
+    const section = heading.closest('section')
+    expect(section).not.toBeNull()
+    expect(section).toHaveClass('perfil-card')
+
+    expect(section.querySelector('.perfil-datos')).not.toBeNull()
+    expect(section.querySelector('.perfil-acciones')).not.toBeNull()
+  })
+
+  it('no renderiza nada cuando no hay sesión (estado inicial)', () => {
+    auth.getSession.mockReturnValue(null)
+
+    const { container } = renderWithRouter(<Perfil />)
+
     expect(container.firstChild).toBeNull()
   })
 })

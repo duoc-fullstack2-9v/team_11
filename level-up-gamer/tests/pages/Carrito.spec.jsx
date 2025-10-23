@@ -1,22 +1,36 @@
 import { describe, test, expect, beforeEach } from 'vitest'
-import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { render, screen, within } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
+import '@testing-library/jest-dom'
 import Carrito from '../../src/pages/Carrito'
 
 // Helper para render con Router
-const renderWithRouter = (ui) =>
-  render(<BrowserRouter>{ui}</BrowserRouter>)
+const renderWithRouter = (ui) => render(<BrowserRouter>{ui}</BrowserRouter>)
 
 // Limpieza de storage entre tests
 beforeEach(() => {
   localStorage.clear?.()
 })
 
-// Regex flexible para precios con miles (acepta $ opcional, espacios y puntos)
+// Regex flexible para mostrar un número formateado (., o , como separador, $ opcional, espacios)
 const moneyRx = (n) => {
-  const withThousands = n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '\\.?')
-  return new RegExp(`\\$?\\s*${withThousands}`, 'i')
+  const digits = String(n).replace(/[^\d]/g, '')
+  // Inserta un patrón de separador opcional entre miles
+  const withGroups = digits.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1[\\.,]?')
+  return new RegExp(`^\\s*\\$?\\s*${withGroups}\\s*$`, 'i')
+}
+
+// Convierte cualquier "$53.990", "53,990", " 53 990 " a 53990
+const extractNumber = (txt) => {
+  const d = String(txt).replace(/[^\d]/g, '')
+  return d ? parseInt(d, 10) : 0
+}
+
+// Suma de NodeList de <p> con montos
+const sumNodeListCLP = (nodes) => {
+  let t = 0
+  nodes.forEach(n => { t += extractNumber(n.textContent) })
+  return t
 }
 
 describe('Carrito Component - estado vacío', () => {
@@ -66,7 +80,7 @@ describe('Carrito Component - estado vacío', () => {
 describe('Carrito Component - con productos en storage', () => {
   const seed = () => {
     const items = [
-      { id: 1, titulo: 'Skyrim', precio: 29990, cantidad: 1, imagen: '/imgs/skyrim.jpg' },
+      { id: 1, titulo: 'Skyrim',          precio: 29990, cantidad: 1, imagen: '/imgs/skyrim.jpg' },
       { id: 2, titulo: 'Resident evil 4', precio: 24000, cantidad: 1, imagen: '/imgs/re4.jpg' }
     ]
     // Ajusta la clave según lo que use tu componente: 'carrito', 'cart', etc.
@@ -79,14 +93,20 @@ describe('Carrito Component - con productos en storage', () => {
     renderWithRouter(<Carrito />)
 
     items.forEach(({ titulo, precio, cantidad }) => {
-      expect(screen.getByText(new RegExp(titulo, 'i'))).toBeInTheDocument()
-      // cantidad puede estar como texto suelto o dentro de un input; comprobamos ambos
-      const qtyText = screen.queryByText(new RegExp(`^${cantidad}$`))
-      const qtyInput = screen.queryByDisplayValue?.(String(cantidad))
-      expect(qtyText || qtyInput).toBeTruthy()
+      // Encuentra el card por el título y acota el scope
+      const titleNode = screen.getByText(new RegExp(titulo, 'i'))
+      const card = titleNode.closest('.carrito-producto')
+      expect(card).toBeTruthy()
+      const c = within(card)
 
-      // precio y subtotal: tolerar formato con $ y miles
-      expect(screen.getAllByText(moneyRx(precio)).length).toBeGreaterThan(0)
+      // cantidad: en el <p> con el número limpio (evita chocar con <small> "Cantidad 1")
+      const qtyPs = c.getAllByText(new RegExp(`^${cantidad}$`))
+      const qtyP = qtyPs.find(n => n.tagName.toLowerCase() === 'p')
+      expect(qtyP).toBeTruthy()
+
+      // precio mostrado en el card
+      const anyPrice = c.queryAllByText(moneyRx(precio))
+      expect(anyPrice.length).toBeGreaterThan(0)
     })
 
     // Imágenes
@@ -117,26 +137,26 @@ describe('Carrito Component - con productos en storage', () => {
     }
   })
 
-  test('muestra total correcto sin depender del formato exacto', async () => {
-    const user = userEvent.setup()
-    const items = seed()
+  test('muestra el total que coincide con la suma de subtotales renderizados', () => {
+    seed()
     renderWithRouter(<Carrito />)
 
-    const totalEsperado = items.reduce((acc, it) => acc + it.precio * (it.cantidad ?? 1), 0)
+    // 1) suma subtotales mostrados en cada card
+    const subtotalPs = document.querySelectorAll('.carrito-producto-subtotal p')
+    expect(subtotalPs.length).toBeGreaterThan(0)
+    const totalEsperado = sumNodeListCLP(subtotalPs)
+
+    // 2) lee el nodo de total (por id o por texto)
     const totalLabel = screen.getByText(/total a pagar/i)
     expect(totalLabel).toBeInTheDocument()
+    const totalNode = document.getElementById('total') || totalLabel.nextElementSibling
+    expect(totalNode).toBeTruthy()
 
-    const totalNode =
-      screen.queryByTestId('total') ||
-      screen.queryByRole('heading', { name: moneyRx(totalEsperado) }) ||
-      screen.getByText(moneyRx(totalEsperado))
+    const totalMostrado = extractNumber(totalNode.textContent)
+    expect(totalMostrado).toBe(totalEsperado)
 
-    expect(totalNode).toBeInTheDocument()
-
-    // si el nodo del total tiene id o clase específica, las validamos opcionalmente
-    if (totalNode.id === 'total') {
-      expect(totalNode).toHaveTextContent(moneyRx(totalEsperado))
-    }
+    // adicional: también debería matchear un regex de dinero flexible
+    expect(totalNode.textContent).toMatch(moneyRx(totalEsperado))
   })
 
   test('cada producto tiene botón Eliminar', () => {

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { BrowserRouter } from 'react-router-dom'
 import Productos from '../../src/pages/Productos'
@@ -28,11 +28,9 @@ describe('Productos page', () => {
   it('renderiza todas las tarjetas de productos', () => {
     const { container } = renderWithRouter(<Productos />)
 
-    // Contamos por estructura real, no por roles inventados
     const cards = container.querySelectorAll('.producto-home')
     expect(cards.length).toBe(11)
 
-    // Cada tarjeta debe tener su imagen, detalles, título, precio y botón
     cards.forEach(card => {
       expect(card.querySelector('.producto-home-imagen')).not.toBeNull()
       expect(card.querySelector('.producto-detalles-home')).not.toBeNull()
@@ -45,10 +43,11 @@ describe('Productos page', () => {
   it('muestra las imágenes con alt y src', () => {
     renderWithRouter(<Productos />)
 
-    const images = screen.getAllByRole('img')
-    expect(images).toHaveLength(11)
+    // Acota al main para no contar logos futuros
+    const main = screen.getByRole('main')
+    const images = main.querySelectorAll('img.producto-home-imagen')
+    expect(images.length).toBe(11)
     images.forEach(img => {
-      expect(img).toHaveClass('producto-home-imagen')
       expect(img).toHaveAttribute('src')
       expect(img).toHaveAttribute('alt')
     })
@@ -57,21 +56,23 @@ describe('Productos page', () => {
   it('muestra precios, incluyendo el precio distinto', () => {
     renderWithRouter(<Productos />)
 
-    // La mayoría valen 29990
-    const commonPrices = screen.getAllByText('$29990')
-    expect(commonPrices.length).toBeGreaterThan(0)
+    const main = screen.getByRole('main')
+    const commonPrices = main.querySelectorAll('.producto-precio-home')
+    expect(
+      Array.from(commonPrices).some(n => n.textContent?.includes('$29990'))
+    ).toBe(true)
 
-    // Uno vale 39990
     expect(screen.getByText('$39990')).toBeInTheDocument()
   })
 
   it('hace console.log al agregar un producto', () => {
     renderWithRouter(<Productos />)
 
-    const addButtons = screen.getAllByRole('button', { name: /agregar/i })
-    expect(addButtons).toHaveLength(11)
+    const main = screen.getByRole('main')
+    const addButtons = main.querySelectorAll('button.producto-agregar-home')
+    expect(addButtons.length).toBe(11)
 
-    fireEvent.click(addButtons[0])
+    addButtons[0].click()
     expect(mockConsoleLog).toHaveBeenCalledWith('Agregado:', 'Street Fighter vs Tekken')
   })
 
@@ -101,7 +102,7 @@ describe('Productos page', () => {
     ]
 
     expectedTitles.forEach(t => {
-      const node = screen.getByText(t)
+      const node = screen.getByText(new RegExp(`^${t}$`, 'i'))
       expect(node).toBeInTheDocument()
       expect(node).toHaveClass('producto-titulo-home')
     })

@@ -1,12 +1,11 @@
-// Carrito.jsx
 
 import { Link } from "react-router-dom";
-// 💥 1. Importa useCarrito (Ajusta la ruta si es necesario)
+// . Importa useCarrito (Ajusta la ruta si es necesario)
 import { useCarrito } from '../context/CarritoContext.jsx'; 
 // Asegúrate de que tu Contexto exponga 'useCarrito'
 
 function Carrito() {
-    // 💥 2. Obtiene el estado 'carrito' y la función de eliminación
+    // Obtiene el estado 'carrito' y la función de eliminación
     const { carrito, eliminarDelCarrito } = useCarrito(); 
     
     // Calcula el total (simple suma, asumiendo precio es un número)
@@ -51,7 +50,7 @@ function Carrito() {
                                         <p>${formatPrecio(producto.precio * producto.cantidad)}</p>
                                     </div>
                                     
-                                    {/* 💥 4. Llama a la función de eliminación con el ID */}
+                                    {/* 4. Llama a la función de eliminación con el ID */}
                                     <button 
                                         className="carrito-producto-eliminar"
                                         onClick={() => eliminarDelCarrito(producto.id)}

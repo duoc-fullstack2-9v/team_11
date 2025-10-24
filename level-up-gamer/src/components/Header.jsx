@@ -1,5 +1,5 @@
 import { NavLink, Link } from "react-router-dom";
-// 💥 1. Importar el hook useCarrito
+// Importar el hook useCarrito
 import { useCarrito } from "../context/CarritoContext.jsx";
 // Asegúrate de que esta ruta sea correcta, si Header está en 'components', la ruta podría ser:
 // import { useCarrito } from '../context/CarritoContext.jsx'; 
@@ -7,10 +7,10 @@ import { useCarrito } from "../context/CarritoContext.jsx";
 // Ya no necesitamos recibir la prop cantidadCarrito
 function Header() {
     
-    // 💥 2. Usar el hook para obtener el estado del carrito
+    //Usar el hook para obtener el estado del carrito
     const { carrito } = useCarrito();
 
-    // 💥 3. Calcular la cantidad total de ítems
+    //  Calcular la cantidad total de ítems
     // Suma la propiedad 'cantidad' de cada producto en el carrito
     const totalItems = carrito.reduce((acc, producto) => acc + producto.cantidad, 0);
 

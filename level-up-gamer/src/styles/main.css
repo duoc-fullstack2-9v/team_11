@@ -3,7 +3,7 @@
     --clr-main: #330033; 
     /* Blanco Suave para texto de menú y detalles */
     --clr-main-light: #f0f0f0; 
-    /* Fondo del área principal (Cambiado de verde a Morado Oscuro) */
+    /* Fondo del área principal */
     --clr-green: #330033; 
     /* Color de botones "Agregar" (Púrpura vibrante/Magenta) */
     --clr-purple: #ad089d; 
@@ -13,7 +13,7 @@
     --clr-white: #fff;
 }
 
-html, body{
+html, body {
     height: 100%;
     /* Fondo Morado Oscuro */
     background: var(--clr-main); 
@@ -40,12 +40,13 @@ a {
     text-decoration: none;
 }
 
+/* ============================= */
+/* WRAPPER Y SIDEBAR             */
+/* ============================= */
 .wrapper {
     display: grid;
     grid-template-columns: 280px 1fr;
-    /* ancho fijo del sidebar */
     min-height: 100vh;
-    /* que ocupe todo el alto */
     /* Fondo Morado Oscuro */
     background: #791266; 
 }
@@ -104,8 +105,9 @@ aside {
     border-radius: .5rem;
 }
 
+/* Corrección de esquinas */
 .boton-menu.active::before {
-    content: ''; /* Asegurar que se renderice el pseudo-elemento */
+    content: ''; 
     position: absolute;
     width: 1rem;
     height: 2rem;
@@ -113,12 +115,11 @@ aside {
     right: 0;
     background-color: transparent;
     border-bottom-right-radius: .5rem;
-    /* Morado Oscuro para la esquina */
     box-shadow: 0 1rem 0 var(--clr-main); 
 }
 
 .boton-menu.active::after {
-    content: ''; /* Asegurar que se renderice el pseudo-elemento */
+    content: ''; 
     position: absolute;
     width: 1rem;
     height: 2rem;
@@ -126,17 +127,15 @@ aside {
     right: 0;
     background-color: transparent;
     border-top-right-radius: .5rem;
-    /* Morado Oscuro para la esquina */
     box-shadow: 0 -1rem 0 var(--clr-main); 
 }
 
-.boton-menu>i.bi-hand-index-thumb-fill {
+.boton-menu > i.bi-hand-index-thumb-fill {
     transform: rotateZ(90deg);
 }
 
 .boton-carrito {
     margin-top: .5rem;
-    /*para la separacion entre textos*/
 }
 
 .numerito {
@@ -151,6 +150,9 @@ aside {
     font-size: .85rem;
 }
 
+/* ============================= */
+/* MAIN Y PRODUCTOS              */
+/* ============================= */
 main {
     /* Fondo del área principal Morado Oscuro */
     background-color: var(--clr-main); 
@@ -165,85 +167,49 @@ main {
     /* Título principal a Blanco */
     color: var(--clr-white); 
     margin-bottom: 2rem;
-
 }
 
 .contenedor-producto {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 15px;
-    /* esto es el espacio entre los productos */
     margin: 2rem 0;
 }
 
-.producto {
-    display: flex;
-    flex-direction: column;
-    /* aquí los hijos deberían estar apilados verticalmente, por qué no funcionaaaaaa */
-    width: 200px;
-    /* ancho fijo para cada producto  */
-    /*  width: 100%; /* ocupa toda la columna */
-    height: 100%;
-    /* el alto se ajusta al contenido */
-    box-sizing: border-box;
-    margin: 5px;
-}
-
-.producto-imagen {
-    max-width: 100%;
-    height: 200px;
-    border-radius: 1rem;
-    object-fit: cover;
-    /* se supone que con esto se evita deformar la imagen */
-}
-
-.producto-detalles-home{
-    /* Fondo completamente negro (¡FORZADO!) */
+.producto-detalles-home {
+    /* Fondo completamente negro */
     background-color: #000000 !important; 
-    
     color: var(--clr-white);
     padding: 0.5rem;
-    /* Borde de acento Púrpura */
     border: 2px solid var(--clr-purple); 
     border-radius: 0.5rem;
     margin: 0.5rem;
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-
     height: 120px;
 }
 
-
-.producto-precio {
-    color: var(--clr-main-light);
-}
-
-.producto-titulo {
-    font-size: 1rem;
-    color: white;
-}
-
 .producto-agregar {
+    /* ... estilos de boton agregar ... */
     border: 0;
     background-color: var(--clr-purple);
-    color: var(--clr-main-light); /* Texto blanco suave */
+    color: var(--clr-main-light);
     padding: .25rem;
     text-transform: uppercase;
     border-radius: 0.5rem;
     text-align: center;
     cursor: pointer;
-    border: 2px solid var(--clr-purple); /* Borde Púrpura */
+    border: 2px solid var(--clr-purple);
     transition: background-color .2s, color .2s;
 }
 
 .producto-agregar:hover {
     background-color: var(--clr-main);
-    color: var(--clr-purple); /* Texto a púrpura en hover */
+    color: var(--clr-purple);
     border: 2px solid var(--clr-purple);
 }
 
-/*Home*/
 .contenedor-producto-home {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -252,187 +218,203 @@ main {
     max-width: 1500px;
     margin: 2rem auto;
 }
-.titulo-ofertas{
-    /* Título a blanco */
-    color: var(--clr-white); 
-}
 
 .producto-home {
-    /* Fondo Morado Oscuro */
     background-color: var(--clr-main);
     border-radius: 1rem;
     overflow: hidden;
     text-align: center;
-    
 }
 
 .producto-home-imagen {
     width: 100%;
     height: 300px;
-    /* más alto que en catálogo */
     object-fit: cover;
-    
-}
-
-.producto-titulo-home {
-    font-size: 1.2rem;
-    color: #fff
-}
-
-.producto-precio-home {
-    font-size: 1rem;
-    color: #fff
 }
 
 .producto-agregar-home {
+    /* ... estilos de boton agregar home ... */
     padding: 0.6rem 1rem;
     font-size: 1rem;
     margin-bottom: 1rem;
     border: 0;
     background-color: var(--clr-purple);
-    color: var(--clr-main-light); /* Texto blanco suave */
+    color: var(--clr-main-light); 
     padding: .25rem;
     text-transform: uppercase;
     border-radius: 0.5rem;
     text-align: center;
     cursor: pointer;
-    border: 2px solid var(--clr-purple); /* Borde Púrpura */
+    border: 2px solid var(--clr-purple); 
     transition: background-color .2s, color .2s;
 }
 
 .producto-agregar-home:hover {
     background-color: var(--clr-main);
-    color: var(--clr-purple); /* Texto a púrpura en hover */
+    color: var(--clr-purple);
     border: 2px solid var(--clr-purple);
 }
 
-.producto-precio-home-oferta {
-    color: var(--clr-red);
-}
-
-/**carritovacio**/
+/* ============================= */
+/* CARRITO (ESTILOS CORREGIDOS)  */
+/* ============================= */
 .carrito-vacio,
 .carrito-comprado {
-    color: var(--clr-white); /* Texto a blanco */
+    color: var(--clr-white); 
 }
 
+/* Contenedor principal del carrito */
+.contenedor-carrito {
+    color: var(--clr-white);
+    max-width: 1000px; 
+    margin: 1rem auto; 
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Fila de producto individual */
 .carrito-producto {
     display: grid;
-    /* Usamos Grid para organizar: Imagen | Título/Precio | Eliminar */
-    grid-template-columns: 4rem 1fr auto; 
-    align-items: center;
+    /* Grid de 6 columnas: Imagen | Título | Cantidad | Precio | Subtotal | Eliminar */
+    grid-template-columns: 80px 1fr 100px 100px 100px 50px; 
+    gap: 1.5rem; 
+    align-items: center; 
     
-    background-color: transparent; 
-    padding: 1rem 0; 
-    margin: 0; /* Eliminamos el margen lateral de 2rem */
-    
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
-    width: 100%; /* Ocupa el 100% del max-width de .contenedor-carrito */
-    height: auto; 
+    background-color: #550055; /* Fondo del ítem del carrito para diferenciarlo */
+    padding: 1rem; 
+    border-radius: 0.5rem;
+    margin-bottom: 1rem; 
+}
+
+.carrito-producto:last-child {
+    border-bottom: none;
 }
 
 .carrito-producto-imagen {
-    width: 15em;
-    border-radius: 1rem;
+    width: 100%; 
+    max-height: 80px;
+    object-fit: cover;
+    border-radius: 0.3rem;
 }
 
-.carrito-producto-small {
-    font-size: .1rem;
+.carrito-producto small {
+    display: block;
+    color: #cccccc; 
+    font-size: 0.75rem;
+    margin-bottom: 0.2rem;
+}
 
+/* QUITAR Márgenes fijos que causaban el desorden */
+.carrito-producto-titulo,
+.carrito-producto-cantidad,
+.carrito-producto-precio,
+.carrito-producto-subtotal {
+    text-align: left;
+    margin: 0; /* Eliminar márgenes fijos */
+    padding: 0;
+}
+
+.carrito-producto-titulo h3 {
+    font-size: 1rem;
+    font-weight: 600;
 }
 
 .carrito-producto-eliminar {
     border: 0;
     background-color: transparent;
-    color: var(--clr-red);
-
-}
-.carrito-producto:last-child {
-    border-bottom: none; /* Eliminar el separador del último elemento */
-}
-
-.contenedor-carrito {
-    display: flex;
-    color: var(--clr-white); /* Texto a blanco */
-    flex-direction: column;
-    gap: 0.5rem;
-    max-width:px; 
-    margin: 1auto;
+    color: var(--clr-red); /* Color de ícono de eliminación */
+    cursor: pointer;
+    font-size: 1.2rem;
+    text-align: right; 
 }
 
+.carrito-producto-eliminar i {
+    color: var(--clr-red); 
+}
+
+/* Acciones (Total y Botón de Pago) */
 .carrito-acciones {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end; 
+    align-items: flex-end; 
+    width: 100%;
+    margin-top: 2rem;
 }
 
 .carrito-acciones-derecha {
     display: flex;
-
-}
-.carrito-producto-precio {
-    /* Fondo semi-transparente para imitar el rectángulo en la app */
-    background-color: rgba(255, 254, 254, 0.304);
-    
-    /* Padding para que el contenido tenga espacio alrededor */
-    padding: 0.5rem 0.8rem; /* Aumentamos el padding para que se vea mejor */
-    
-    border-radius: 0.4rem;
-    color: var(--clr-white);
-    
-    /* 💥 ELIMINAR O CORREGIR: Quitamos el margin-left que causaba que se cortara */
-    margin-left: 0; 
-    
-    /* Opcional: Si este contenedor debe ser de ancho fijo */
-     width:240px; 
-    
-    /* Asegurar que el contenido interno se muestre bien (ej. si Precio y Subtotal están aquí) */
-    display: inline-block; /* Asegura que el contenedor se ajuste solo al contenido */
+    flex-direction: column; 
+    align-items: flex-end;
+    gap: 1rem;
+    width: 300px; 
 }
 
 .carrito-acciones-total {
     display: flex;
-    /* Fondo Púrpura */
-    background-color: var(--clr-purple); 
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--clr-main); 
     padding: 1rem;
-    color: var(--clr-main-light); /* Texto blanco suave */
-    text-transform: uppercase;
-    border-top-left-radius: 1rem;
-    border-top-right-radius: 1rem;
-    border-bottom-left-radius: 1rem;
-    border-bottom-right-radius: 1rem;
-
+    border-radius: 0.5rem;
+    width: 100%;
 }
 
-.carrito-acciones-eliminar {
-    border: 0;
-    padding: 1rem;
-    border-radius: 1rem;
-    text-transform: uppercase;
+.total-pagar {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--clr-main-light);
+}
+
+#total {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ff66c4; /* Resalta el total */
+}
+
+.carrito-acciones-comprar {
+    border: 0; 
+    background-color: #e6007e; 
+    padding: 1rem 2rem; 
+    color: var(--clr-white); 
+    text-transform: uppercase; 
+    font-weight: 700; 
+    font-size: 1.1rem; 
     cursor: pointer;
+    border-radius: 0.5rem; 
+    width: 100%; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+    transition: background-color 0.3s ease; 
+    text-align: center;
 }
 
-.carrito-acciones-vaciar {
-    border: 0;
-    /* Fondo Púrpura */
-    background-color: var(--clr-purple); 
-    padding: 1rem;
-    color: var(--clr-main-light); /* Texto blanco suave */
-    text-transform: uppercase;
-    cursor: pointer;
+.carrito-acciones-comprar:hover {
+    background-color: #c9006b; 
 }
 
+/* Estilos de precio (si se usan fuera del grid) */
+.carrito-producto-precio {
+    /* Mantener solo si se usa para un contenedor de precio/subtotal agrupado */
+    /* background-color: rgba(255, 254, 254, 0.304); */
+    padding: 0.5rem 0.8rem;
+    border-radius: 0.4rem;
+    color: var(--clr-white);
+    display: inline-block;
+    margin-left: 0; 
+}
 
-/* Estilos para el carrusel */
+/* ============================= */
+/* OTROS ESTILOS VARIOS          */
+/* ============================= */
+
 .borde-carrusel {
-    
-    border:#ad089d 2px solid; /* Borde púrpura */
+    border:#ad089d 2px solid; 
     border-radius: 8px;
     box-sizing: border-box;
-
 }
 
 .carousel-item img {
-    border: 4px solid var(--clr-main-light); /* Borde blanco */
+    border: 4px solid var(--clr-main-light);
     border-radius: 8px;
     border:#ad089d 2px solid; 
 }
@@ -458,61 +440,42 @@ main {
     display: flex;
     align-items: center;
     border: 2px solid var(--clr-purple);
-    /* borde del contenedor Púrpura */
     border-radius: 5px;
-    /* esquinas redondeadas */
     padding: 0.5rem 0.6rem;
     background-color: var(--clr-main);
-    /* fondo del contenedor Morado Oscuro */
     width: 250px;
     margin-top: 2rem;
 }
 
 .titulo-ofertas {
     text-align: center;
-    /* centra el texto horizontalmente */
     font-size: 1.8rem;
-    /* opcional: tamaño */
     margin: 1rem 0;
-    /* espacio arriba y abajo */
 }
 
 .contenedor-buscar input {
     flex: 1;
-    /* ocupa el espacio disponible */
     border: none;
     outline: none;
     background: transparent;
     color: #fff;
-    /* color del texto */
     font-size: 1rem;
 }
 
 .bi-trash-fill {
-    /* Usar el color blanco directamente */
     color: white !important; 
-    /* O usar tu variable de blanco */
-    /* color: var(--clr-white) !important; */
-}
-/* También debes revisar la clase específica del botón de eliminar en el carrito */
-.carrito-producto-eliminar {
-    /* Asegúrate de anular la regla anterior que lo hacía rojo */
-    color: var(--clr-white) !important; 
 }
 
 .contenedor-buscar button {
     border: 2px solid var(--clr-main-light);
-    /* borde del botón */
     background-color: var(--clr-main-light);
-    /* color del botón */
     color: var(--clr-main);
-    /* color del texto del botón */
     padding: 0.3rem 0.6rem;
     cursor: pointer;
     margin-left: 0.5rem;
 }
 
-.contenedor-ofertas{
+.contenedor-ofertas {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
@@ -520,48 +483,6 @@ main {
     padding: 0;
 }
 
-.text{
+.text {
     padding-left: 15px;
-}
-
-.carrito-acciones-total{
-    background-color: var(--clr-main)
-}
-
-.total-pagar{
-    color: #ff66c4;
-
-}
-
-.carrito-acciones-comprar {
-    border: 0; /* Sin borde */
-    /* Color de fondo: El fucsia/magenta vibrante de tu app */
-    background-color: #e6007e; 
-    
-    padding: 1rem 2rem; /* Aumenta el padding para que sea más grande */
-    color: var(--clr-white); /* Texto en blanco */
-    text-transform: uppercase; /* Texto en mayúsculas */
-    font-weight: 700; /* Texto en negrita para que resalte */
-    font-size: 1.1rem; /* Un poco más grande el texto */
-    cursor: pointer;
-    border-radius: 0.5rem; /* Esquinas ligeramente redondeadas */
-    width: 100%; /* Para que ocupe todo el ancho disponible */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sutil sombra para darle profundidad */
-    transition: background-color 0.3s ease; /* Transición suave al pasar el ratón */
-    text-align: center;
-}
-
-.carrito-acciones-comprar:hover {
-    background-color: #c9006b; /* Un tono ligeramente más oscuro en hover */
-}
-
-.carrito-producto-titulo{
-    margin-left: 200px;
-}
-
-.carrito-producto-subtotal{
-    margin-left:800px;
-}
-.titulo-cantidad{
-    margin-right:700px;
 }

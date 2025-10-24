@@ -1,5 +1,5 @@
 function ProductoHome({ producto, onAgregarClick }) {
-    // 'producto' es la Prop que contiene { titulo, imagen, oferta, ... }
+    
     const { id, titulo, imagen, precioAntiguo, oferta } = producto;
 
     return (

@@ -73,7 +73,7 @@ const productos = [
 ];
 
 
-// 💻 Componente hijo: producto individual
+// Componente hijo: producto individual
 function ProductoHome({ producto, onAgregarClick }) {
   return (
     <div className="producto-home">
@@ -96,15 +96,14 @@ function ProductoHome({ producto, onAgregarClick }) {
   );
 }
 
-// 💥 Componente principal
+
 function Productos() {
   const location = useLocation();
   const { id } = useParams();
 
-  // 🛒 Función del contexto
+
   const { agregarAlCarrito } = useCarrito();
 
-  // ⚙️ Manejador del botón "Agregar"
   function handleAgregar(producto) {
     agregarAlCarrito(producto);
     toast.success(`🛒 ¡${producto.titulo} agregado al carrito!`, {

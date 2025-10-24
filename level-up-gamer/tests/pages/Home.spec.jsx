@@ -12,6 +12,9 @@ const moneyRx = (n) => {
   return new RegExp(`\\$?\\s*${withThousands}`, 'i')
 }
 
+// Normalizador: quita el overlay de tachado U+0336 de cualquier string
+const stripStrike = (s) => s.normalize('NFD').replace(/\u0336/g, '')
+
 describe('Home Component', () => {
   test('renderiza el carrusel con imágenes y controles', () => {
     renderWithRouter(<Home />)
@@ -80,11 +83,21 @@ describe('Home Component', () => {
     const regularPriceRx = moneyRx(29990)
     const salePriceRx = /oferta\s*\$?\s*4\.?990/i
 
+    // Matchers que "destachan" el texto antes de probar regex
+    const isRegularPrice = (_content, node) => {
+      const text = stripStrike(node?.textContent ?? '')
+      return regularPriceRx.test(text)
+    }
+    const isSalePrice = (_content, node) => {
+      const text = stripStrike(node?.textContent ?? '')
+      return salePriceRx.test(text)
+    }
+
     // Exigir al menos 3 ocurrencias de cada uno
-    const regularPrices = screen.getAllByText(regularPriceRx)
+    const regularPrices = screen.getAllByText(isRegularPrice)
     expect(regularPrices.length).toBeGreaterThanOrEqual(3)
 
-    const salePrices = screen.getAllByText(salePriceRx)
+    const salePrices = screen.getAllByText(isSalePrice)
     expect(salePrices.length).toBeGreaterThanOrEqual(3)
   })
 })

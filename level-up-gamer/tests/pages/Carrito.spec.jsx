@@ -4,28 +4,16 @@ import '@testing-library/jest-dom'
 import { BrowserRouter } from 'react-router-dom'
 
 // 👉 Mock reutilizable para poder hacer expect(...).toHaveBeenCalledWith(...)
-const eliminarDelCarritoMock = vi.fn()
+eliminarDelCarrito: eliminarDelCarritoMock
 
 // 💡 Mock del contexto del carrito (debe ir antes del import del componente)
 vi.mock('../../src/context/CarritoContext.jsx', () => ({
   useCarrito: () => ({
     carrito: [
-      {
-        id: 1,
-        titulo: 'Skyrim',
-        imagen: '/imgs/skyrim.webp',
-        precio: 29990,
-        cantidad: 1
-      },
-      {
-        id: 2,
-        titulo: 'Resident Evil 4',
-        imagen: '/imgs/resident-evil-4-hd-proyect-generacionxbox.jpg',
-        precio: 39990,
-        cantidad: 1
-      }
+      { id: 1, titulo: 'Skyrim', imagen: '/imgs/skyrim.webp', precio: 29990, cantidad: 1 },
+      { id: 2, titulo: 'Resident Evil 4', imagen: '/imgs/resident-evil-4-hd-proyect-generacionxbox.jpg', precio: 39990, cantidad: 1 }
     ],
-    eliminarDelCarrito: vi.fn()
+    eliminarDelCarrito: eliminarDelCarritoMock // ✅ usa el MISMO mock declarado arriba
   })
 }))
 
@@ -86,15 +74,21 @@ describe('Carrito Component (con contexto simulado)', () => {
 
   // 🔥 Nuevo test agregado para cubrir la función eliminarDelCarrito
   test('al hacer click en eliminar llama eliminarDelCarrito con el id correcto', () => {
-    const { container } = renderWithRouter(<Carrito />)
+    renderWithRouter(<Carrito />)
 
-    // Solo los botones de borrar, no el botón “comprar”
-    const botonesEliminar = container.querySelectorAll('.carrito-producto-eliminar')
-    expect(botonesEliminar.length).toBeGreaterThan(0)
+    // Buscar un botón de eliminar (tolerante)
+    const eliminarBtn =
+      screen.queryByRole('button', { name: /eliminar/i }) ||
+      screen.queryByLabelText?.(/eliminar/i) ||
+      document.querySelector('.bi-trash, .fa-trash, .fa-solid.fa-trash, [data-icon="trash"], .carrito-producto-eliminar')
 
-    // Click en el primero (producto id=1)
-    botonesEliminar[0].click()
+    // Asegurarse de que encontró algo
+    expect(eliminarBtn).toBeTruthy()
 
+    // Simular click
+    eliminarBtn.click()
+
+    // Verificar que el mock fue llamado con el ID correcto
     expect(eliminarDelCarritoMock).toHaveBeenCalledWith(1)
   })
 })

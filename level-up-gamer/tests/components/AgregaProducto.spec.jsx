@@ -1,26 +1,25 @@
-// tests/components/ProductoAgregar.spec.jsx
+// tests/components/AgregaProducto.spec.jsx
 import { describe, test, expect, vi } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import ProductoAgregar from '../../src/ProductoAgregar'
+import AgregaProducto from '../../src/AgregaProducto'
 
-// 💡 Mock del contexto del carrito (antes del import del componente si usas otro path)
+// 💡 Mock del contexto del carrito
 vi.mock('../../src/context/CarritoContext.jsx', () => ({
   useCarrito: () => ({
     agregarAlCarrito: vi.fn()
   })
 }))
 
-describe('ProductoAgregar Component', () => {
+describe('AgregaProducto Component', () => {
   test('renderiza el botón correctamente', () => {
-    render(<ProductoAgregar producto={{ id: 1, titulo: 'Elden Ring' }} />)
+    render(<AgregaProducto producto={{ id: 1, titulo: 'Elden Ring' }} />)
     const button = screen.getByRole('button', { name: /agregar/i })
     expect(button).toBeInTheDocument()
     expect(button).toHaveClass('producto-agregar-home')
   })
 
   test('llama a agregarAlCarrito y muestra alert al hacer click', () => {
-    // Mock manual para alert y el hook
     const mockAgregar = vi.fn()
     window.alert = vi.fn()
 
@@ -28,7 +27,7 @@ describe('ProductoAgregar Component', () => {
       agregarAlCarrito: mockAgregar
     })
 
-    render(<ProductoAgregar producto={{ id: 10, titulo: 'Silent Hill F' }} />)
+    render(<AgregaProducto producto={{ id: 10, titulo: 'Silent Hill F' }} />)
 
     const button = screen.getByRole('button', { name: /agregar/i })
     fireEvent.click(button)

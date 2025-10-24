@@ -51,7 +51,7 @@ function Header() {
                         <NavLink className="boton-menu boton-carrito" to="/carrito">
                             <i className="bi bi-cart-fill"></i>Carrito
                             
-                            {/* 💥 4. Mostrar el total de ítems si es mayor que 0 */}
+                            {/* Mostrar el total de ítems si es mayor que 0 */}
                             {totalItems > 0 && (
                                 <span id="numerito" className="numerito">
                                     {totalItems}

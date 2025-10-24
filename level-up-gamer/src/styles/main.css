@@ -169,9 +169,11 @@ main {
     margin-bottom: 2rem;
 }
 
+/* Catálogo de Productos (Página /productos) */
 .contenedor-producto {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    /* Esto crea 4 columnas iguales */
+    grid-template-columns: repeat(4, 1fr); 
     gap: 15px;
     margin: 2rem 0;
 }
@@ -187,7 +189,7 @@ main {
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    height: 120px;
+    height: 170px;
 }
 
 .producto-agregar {
@@ -219,11 +221,19 @@ main {
     margin: 2rem auto;
 }
 
-.producto-home {
-    background-color: var(--clr-main);
+.producto {
+    display: flex;
+    flex-direction: column;
+    /* Asegura que ocupe todo el ancho de su columna en el Grid */
+    width: 100%; 
+    height: 100%;
+    box-sizing: border-box;
+    margin: 5px;
+    
+    /* Le damos un fondo oscuro para que el .producto-detalles-home no se vea flotando */
+    background-color: var(--clr-main); 
     border-radius: 1rem;
     overflow: hidden;
-    text-align: center;
 }
 
 .producto-home-imagen {
@@ -254,6 +264,12 @@ main {
     color: var(--clr-purple);
     border: 2px solid var(--clr-purple);
 }
+
+.producto-precio-home-oferta{
+    color: red;
+}
+
+
 
 /* ============================= */
 /* CARRITO (ESTILOS CORREGIDOS)  */

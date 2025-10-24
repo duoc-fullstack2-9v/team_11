@@ -93,7 +93,7 @@ function Home() {
             />
             <div className="producto-detalles-home">
               <h3 className="producto-titulo-home">Street Fighter vs Tekken</h3>
-              <p className="producto-precio-home">$29.990</p>
+              <p className="producto-precio-home"> ̶$̶2̶9̶.̶9̶9̶0̶</p>
               <p className="producto-precio-home-oferta">Oferta $4.990</p>
               <button className="producto-agregar-home">Agregar</button>
             </div>
@@ -107,7 +107,7 @@ function Home() {
             />
             <div className="producto-detalles-home">
               <h3 className="producto-titulo-home">Bayonetta</h3>
-              <p className="producto-precio-home">$29.990</p>
+              <p className="producto-precio-home"> ̶$̶2̶9̶.̶9̶9̶0̶</p>
               <p className="producto-precio-home-oferta">Oferta $4.990</p>
               <button className="producto-agregar-home">Agregar</button>
             </div>
@@ -121,7 +121,7 @@ function Home() {
             />
             <div className="producto-detalles-home">
               <h3 className="producto-titulo-home">Devil my cry 5</h3>
-              <p className="producto-precio-home">$29.990</p>
+              <p className="producto-precio-home"> ̶$̶2̶9̶.̶9̶9̶0̶</p>
               <p className="producto-precio-home-oferta">Oferta $4.990</p>
               <button className="producto-agregar-home">Agregar</button>
             </div>

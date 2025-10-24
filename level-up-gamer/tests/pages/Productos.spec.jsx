@@ -86,7 +86,7 @@ describe('Productos page', () => {
     const mockToast = vi.fn()
 
     // Forzamos los mocks a ser activos para esta ejecución
-    vi.mocked(require('../../src/context/CarritoContext')).useCarrito.mockReturnValue({
+    vi.mocked(require('../../src/context/CarritoContext.jsx')).useCarrito.mockReturnValue({
       agregarAlCarrito: mockAgregar,
       carrito: []
     })

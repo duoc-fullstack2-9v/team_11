@@ -1,5 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 
+//  Importar el Proveedor del Contexto del Carrito
+import { CarritoProvider } from './context/CarritoContext.jsx'; 
+
 import Header from './components/Header.jsx';
 import Footer from './components/Footer.jsx';
 
@@ -13,7 +16,8 @@ import "./styles/main.css";
 
 function App() {
   return (
-    <>
+    //  Envolver toda la aplicación con el CarritoProvider
+    <CarritoProvider> 
       <div className="wrapper">
         <Header />
         <main>
@@ -27,7 +31,7 @@ function App() {
         </main>
         <Footer />
       </div>
-    </>
+    </CarritoProvider>
   );
 }
 

@@ -1,7 +1,8 @@
 import { useLocation, useParams } from "react-router-dom";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
+import { toast } from "react-toastify"; // ✅ Importa react-toastify
+import { useCarrito } from "../context/CarritoContext.jsx"; // ✅ Contexto del carrito
 
+// 🧩 Lista de productos (ejemplo)
 const productos = [
   {
     id: "1",
@@ -71,6 +72,8 @@ const productos = [
   },
 ];
 
+
+// 💻 Componente hijo: producto individual
 function ProductoHome({ producto, onAgregarClick }) {
   return (
     <div className="producto-home">
@@ -93,12 +96,27 @@ function ProductoHome({ producto, onAgregarClick }) {
   );
 }
 
+// 💥 Componente principal
 function Productos() {
   const location = useLocation();
   const { id } = useParams();
 
+  // 🛒 Función del contexto
+  const { agregarAlCarrito } = useCarrito();
+
+  // ⚙️ Manejador del botón "Agregar"
   function handleAgregar(producto) {
-    console.log("Agregado:", producto.titulo);
+    agregarAlCarrito(producto);
+    toast.success(`🛒 ¡${producto.titulo} agregado al carrito!`, {
+      position: "bottom-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored"
+    });
   }
 
   return (
@@ -107,10 +125,19 @@ function Productos() {
         <h2 className="titulo-principal">
           Compra los mejores productos al mejor precio!
         </h2>
+
         <div className="contenedor-producto">
-          {productos.map((p, idx) => (
-            <ProductoHome key={`${p.id}-${idx}`} producto={p} onAgregarClick={handleAgregar} />
-          ))}
+          {productos.length === 0 ? (
+            <p>No hay productos disponibles</p>
+          ) : (
+            productos.map((p) => (
+              <ProductoHome
+                key={p.id}
+                producto={p}
+                onAgregarClick={handleAgregar}
+              />
+            ))
+          )}
         </div>
       </main>
     </>

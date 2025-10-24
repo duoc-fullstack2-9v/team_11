@@ -2,7 +2,7 @@
 import { describe, test, expect, vi } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import AgregaProducto from '../../src/AgregaProducto'
+import AgregaProducto from '../../src/components/AgregaProducto.jsx'
 
 // 💡 Mock del contexto del carrito
 vi.mock('../../src/context/CarritoContext.jsx', () => ({

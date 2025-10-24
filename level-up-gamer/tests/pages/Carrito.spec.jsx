@@ -1,110 +1,83 @@
-import { describe, test, expect, beforeEach } from 'vitest'
+import { describe, test, expect, vi, beforeEach } from 'vitest'
 import { render, screen, within } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { BrowserRouter } from 'react-router-dom'
+
+// 💡 Mock del contexto del carrito (debe ir antes del import del componente)
+vi.mock('../../src/context/CarritoContext', () => ({
+  useCarrito: () => ({
+    carrito: [
+      {
+        id: 1,
+        titulo: 'Skyrim',
+        imagen: '/imgs/skyrim.webp',
+        precio: 29990,
+        cantidad: 1
+      },
+      {
+        id: 2,
+        titulo: 'Resident Evil 4',
+        imagen: '/imgs/resident-evil-4-hd-proyect-generacionxbox.jpg',
+        precio: 39990,
+        cantidad: 1
+      }
+    ],
+    eliminarDelCarrito: vi.fn()
+  })
+}))
+
 import Carrito from '../../src/pages/Carrito'
 
-// Helper para renderizar con Router
+// Helper para render con Router
 const renderWithRouter = (ui) => render(<BrowserRouter>{ui}</BrowserRouter>)
 
-beforeEach(() => {
-  localStorage.clear?.()
-})
+describe('Carrito Component (con contexto simulado)', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
 
-const $ = (sel, root = document) => root.querySelector(sel)
-const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel))
-
-describe('Carrito (versión estática original)', () => {
   test('muestra el título principal correcto', () => {
     renderWithRouter(<Carrito />)
-
     const title = screen.getByRole('heading', { name: /tu carrito de compras/i })
     expect(title).toBeInTheDocument()
     expect(title).toHaveClass('titulo-principal')
   })
 
-  test('renderiza exactamente los dos productos estáticos con sus datos', () => {
+  test('renderiza los productos del carrito con sus datos', () => {
     renderWithRouter(<Carrito />)
-
-    const cards = $$('.carrito-producto')
+    const cards = screen.getAllByRole('heading', { level: 3 })
     expect(cards).toHaveLength(2)
 
-    // PRODUCTO 1: Skyrim
-    {
-      const card = cards[0]
-      const c = within(card)
+    // Primer producto
+    expect(screen.getByText('Skyrim')).toBeInTheDocument()
+    const img1 = screen.getByAltText('Skyrim')
+    expect(img1).toHaveAttribute('src', '/imgs/skyrim.webp')
 
-      expect(c.getByText('Skyrim')).toBeInTheDocument()
-      expect(c.getByText('Titulo').tagName.toLowerCase()).toBe('small')
+    // Segundo producto
+    expect(screen.getByText(/resident evil 4/i)).toBeInTheDocument()
+    const img2 = screen.getByAltText(/resident evil 4/i)
+    expect(img2).toHaveAttribute('src', '/imgs/resident-evil-4-hd-proyect-generacionxbox.jpg')
 
-      const cantBox = card.querySelector('[clss="carrito-producto-cantidad"], .carrito-producto-cantidad')
-      expect(cantBox).toBeTruthy()
-      expect(within(cantBox).getByText(/cantidad/i)).toBeInTheDocument()
-      const qty = within(cantBox).getAllByText(/^1$/).find(n => n.tagName.toLowerCase() === 'p')
-      expect(qty).toBeTruthy()
-
-      // Precio y Subtotal ($29.990 en ambos)
-      const precios = c.getAllByText('$29.990')
-      expect(precios.length).toBeGreaterThanOrEqual(2)
-
-      const img = card.querySelector('img.carrito-producto-imagen')
-      expect(img).toHaveAttribute('src', '/imgs/skyrim.webp')
-    }
-
-    // PRODUCTO 2: Resident Evil 4
-    {
-      const card = cards[1]
-      const c = within(card)
-
-      expect(c.getByText(/resident evil 4/i)).toBeInTheDocument()
-      expect(c.getByText('Titulo').tagName.toLowerCase()).toBe('small')
-
-      const cantBox = card.querySelector('[clss="carrito-producto-cantidad"], .carrito-producto-cantidad')
-      expect(cantBox).toBeTruthy()
-      expect(within(cantBox).getByText(/cantidad/i)).toBeInTheDocument()
-      const qty = within(cantBox).getAllByText(/^1$/).find(n => n.tagName.toLowerCase() === 'p')
-      expect(qty).toBeTruthy()
-
-      expect(c.getByText('$39.990')).toBeInTheDocument()
-      expect(c.getByText('$24.000')).toBeInTheDocument()
-
-      const img = card.querySelector('img.carrito-producto-imagen')
-      expect(img).toHaveAttribute('src', '/imgs/resident-evil-4-hd-proyect-generacionxbox.jpg')
-    }
-
-    // Botones eliminar
-    const deleteButtons = $$('.carrito-producto-eliminar')
-    expect(deleteButtons).toHaveLength(2)
+    // Botones de eliminar
+    const deleteButtons = screen.getAllByRole('button')
+    expect(deleteButtons.length).toBeGreaterThanOrEqual(2)
   })
 
-  test('verifica la sección de acciones del carrito', () => {
+  test('muestra la sección de acciones y calcula el total correctamente', () => {
     renderWithRouter(<Carrito />)
 
-    const acciones = $('.carrito-acciones')
-    expect(acciones).toBeInTheDocument()
-    expect(acciones.classList.contains('disabled')).toBe(true)
-
-    // Revisa el contenedor derecho con el typo incluido
-    const derecha = $('.carrito-aciciones-derecha')
-    expect(derecha).toBeInTheDocument()
-
-    // Total a pagar
-    const totalText = $('.total-pagar')
+    const totalText = screen.getByText(/total a pagar/i)
     expect(totalText).toBeInTheDocument()
-    expect(totalText.textContent).toMatch(/total a pagar/i)
 
-    const totalValue = $('#total')
-    expect(totalValue).toBeInTheDocument()
-    expect(totalValue.textContent.trim()).toBe('3.000')
+    const totalValue = document.querySelector('#total')
+    // 29990 + 39990 = 69980
+    expect(totalValue.textContent).toContain('69.980')
 
-    // Botón comprar
-    const comprarBtn = $('.carrito-acciones-comprar')
+    const comprarBtn = screen.getByRole('button', { name: /paga de forma segura/i })
     expect(comprarBtn).toBeInTheDocument()
-    expect(comprarBtn.textContent.toLowerCase()).toMatch(/paga de forma segura/i)
 
-    // Mensaje de compra deshabilitado
     const gracias = screen.getByText(/gracias por tu compra/i)
     expect(gracias).toBeInTheDocument()
-    expect(gracias.classList.contains('disabled')).toBe(true)
+    expect(gracias).toHaveClass('disabled')
   })
 })

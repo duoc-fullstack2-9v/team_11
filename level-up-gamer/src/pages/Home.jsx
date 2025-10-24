@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "../styles/main.css";
@@ -75,8 +77,8 @@ function Home() {
 
         {/* Buscador */}
         <div className="contenedor-buscar">
-          <i className="bi bi-search"></i>
-          <input type="text" placeholder="Buscar en la tienda" />
+         <i class="bi bi-search"></i>
+          <input className="text" type="text" placeholder="Buscar en la tienda" />
         </div>
 
         <h2 className="titulo-ofertas">Ofertas semanales</h2>

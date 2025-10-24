@@ -4,19 +4,15 @@ function Carrito() {
     return (
         <>
             <main>
-                <h2 className="titulo-principal">Todos los productos</h2>
+                <h2 className="titulo-principal">Tu carrito de compras</h2>
                 <ul className="acciones-carrito-local">
-                    <li>
-                        <Link className="boton-volver" to="/productos">
-                            <i className="bi bi-arrow-left-circle-fill"></i> Seguir comprando
-                        </Link>
-                    </li>
+                   
 
                    
                 </ul>
 
                 <div className="contenedor-carrito">
-                    <p className="carrito-vacio">Tu carrito esta vacio. <i className="bi bi-emoji-frown"></i></p>
+                    
                     <div className="carrito-productos disabled">
                         <div className="carrito-producto">
                             <img className="carrito-producto-imagen" src="/imgs/skyrim.webp" alt="" />
@@ -56,20 +52,17 @@ function Carrito() {
                                 <small>Subtotal</small>
                                 <p>$24.000</p>
                             </div>
-                            <button className="carrito-producto-eliminar">Eliminar<i className="bi bi-trash-fill"></i></button>
+                            <button className="carrito-producto-eliminar"><i className="bi bi-trash-fill"></i></button>
                         </div>
                     </div>
                     <div className="carrito-acciones disabled">
-                        <div className="carrito-acciones-izquierda">
-                            <button className="carrito-acciones-vaciar">Vaciar carrito</button>
-
-                        </div>
+                       
                         <div className="carrito-aciciones-derecha">
                             <div className="carrito-acciones-total">
-                                <p>Total a pagar:</p>
+                                <p className="total-pagar">Total a pagar:</p>
                                 <p id="total">3.000</p>
                             </div>
-                            <button className="carrito-acciones-comprar">Comprar </button>
+                            <button className="carrito-acciones-comprar">Paga de forma segura </button>
                             <p className="carrito-comprado disabled">¡Gracias por tu compra!<i className="bi bi-emoji-laughing-fill"></i></p>
 
                         </div>

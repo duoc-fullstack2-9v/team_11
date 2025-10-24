@@ -1,16 +1,24 @@
 :root {
-    --clr-main: #05040b;
-    --clr-main-light: #a8a7ae;
-    --clr-green: #56dd35;
-    --clr-purple: #ad089d;
-    --clr-red: #6c1616;
+    /* Fondo principal y sidebar (Morado Oscuro/Púrpura de la App) */
+    --clr-main: #330033; 
+    /* Blanco Suave para texto de menú y detalles */
+    --clr-main-light: #f0f0f0; 
+    /* Fondo del área principal (Cambiado de verde a Morado Oscuro) */
+    --clr-green: #330033; 
+    /* Color de botones "Agregar" (Púrpura vibrante/Magenta) */
+    --clr-purple: #ad089d; 
+    /* Rojo para eliminar/ofertas */
+    --clr-red: #cc0000; 
+    /* Color de texto principal */
     --clr-white: #fff;
 }
 
 html, body{
     height: 100%;
-    background: var(--clr-main);
-    color: var(--clr-white);
+    /* Fondo Morado Oscuro */
+    background: var(--clr-main); 
+    /* Texto principal Blanco */
+    color: var(--clr-white); 
 }
 
 * {
@@ -38,7 +46,8 @@ a {
     /* ancho fijo del sidebar */
     min-height: 100vh;
     /* que ocupe todo el alto */
-    background: var(--clr-main);
+    /* Fondo Morado Oscuro */
+    background: #791266; 
 }
 
 aside {
@@ -46,9 +55,10 @@ aside {
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    background: var(--clr-main);
-    /* mismo color que wrapper */
-    color: var(--clr-green);
+    /* Fondo Morado Oscuro */
+    background: #791266; 
+    /* Texto Blanco suave */
+    color: var(--clr-main-light); 
     height: 100vh;
     overflow-y: auto;
 }
@@ -75,7 +85,8 @@ aside {
 .boton-menu {
     background-color: transparent;
     border: 0;
-    color: var(--clr-green);
+    /* Texto Blanco suave */
+    color: var(--clr-main-light); 
     font-size: 1rem;
     cursor: pointer;
     display: flex;
@@ -85,8 +96,16 @@ aside {
     font-size: .85rem;
 }
 
-.boton-menu.active::before {
+/* Estado activo del botón */
+.boton-menu.active {
+    /* Resaltar con el color de los botones */
+    background-color: var(--clr-purple); 
+    color: var(--clr-white);
+    border-radius: .5rem;
+}
 
+.boton-menu.active::before {
+    content: ''; /* Asegurar que se renderice el pseudo-elemento */
     position: absolute;
     width: 1rem;
     height: 2rem;
@@ -94,11 +113,12 @@ aside {
     right: 0;
     background-color: transparent;
     border-bottom-right-radius: .5rem;
-    box-shadow: 0 1rem 0 var(--clr-green);
+    /* Morado Oscuro para la esquina */
+    box-shadow: 0 1rem 0 var(--clr-main); 
 }
 
 .boton-menu.active::after {
-
+    content: ''; /* Asegurar que se renderice el pseudo-elemento */
     position: absolute;
     width: 1rem;
     height: 2rem;
@@ -106,7 +126,8 @@ aside {
     right: 0;
     background-color: transparent;
     border-top-right-radius: .5rem;
-    box-shadow: 0 -1rem 0 var(--clr-green);
+    /* Morado Oscuro para la esquina */
+    box-shadow: 0 -1rem 0 var(--clr-main); 
 }
 
 .boton-menu>i.bi-hand-index-thumb-fill {
@@ -131,7 +152,8 @@ aside {
 }
 
 main {
-    background-color: var(--clr-green);
+    /* Fondo del área principal Morado Oscuro */
+    background-color: var(--clr-main); 
     margin: 1rem 1rem 1rem 0;
     border-radius: 2rem;
     padding: 2rem;
@@ -140,7 +162,8 @@ main {
 }
 
 .titulo-principal {
-    color: var(--clr-main);
+    /* Título principal a Blanco */
+    color: var(--clr-white); 
     margin-bottom: 2rem;
 
 }
@@ -158,8 +181,8 @@ main {
     flex-direction: column;
     /* aquí los hijos deberían estar apilados verticalmente, por qué no funcionaaaaaa */
     width: 200px;
-    /* ancho fijo para cada producto  */
-    /*  width: 100%; /* ocupa toda la columna */
+    /* ancho fijo para cada producto  */
+    /*  width: 100%; /* ocupa toda la columna */
     height: 100%;
     /* el alto se ajusta al contenido */
     box-sizing: border-box;
@@ -174,22 +197,26 @@ main {
     /* se supone que con esto se evita deformar la imagen */
 }
 
-.producto-detalles {
-    background-color: var(--clr-main);
+.producto-detalles-home{
+    /* Fondo completamente negro (¡FORZADO!) */
+    background-color: #000000 !important; 
+    
     color: var(--clr-white);
     padding: 0.5rem;
-    border: 2px solid var(--clr-green);
+    /* Borde de acento Púrpura */
+    border: 2px solid var(--clr-purple); 
     border-radius: 0.5rem;
     margin: 0.5rem;
     display: flex;
     justify-content: space-between;
     flex-direction: column;
 
-    height: 100px;
+    height: 120px;
 }
 
+
 .producto-precio {
-    color: aliceblue
+    color: var(--clr-main-light);
 }
 
 .producto-titulo {
@@ -200,20 +227,20 @@ main {
 .producto-agregar {
     border: 0;
     background-color: var(--clr-purple);
-    color: var(--clr-main);
+    color: var(--clr-main-light); /* Texto blanco suave */
     padding: .25rem;
     text-transform: uppercase;
     border-radius: 0.5rem;
     text-align: center;
     cursor: pointer;
-    border: 2px solid var(--clr-green);
+    border: 2px solid var(--clr-purple); /* Borde Púrpura */
     transition: background-color .2s, color .2s;
 }
 
 .producto-agregar:hover {
     background-color: var(--clr-main);
-    color: var(--clr-green);
-
+    color: var(--clr-purple); /* Texto a púrpura en hover */
+    border: 2px solid var(--clr-purple);
 }
 
 /*Home*/
@@ -226,10 +253,12 @@ main {
     margin: 2rem auto;
 }
 .titulo-ofertas{
-    color: var(--clr-main);
+    /* Título a blanco */
+    color: var(--clr-white); 
 }
 
 .producto-home {
+    /* Fondo Morado Oscuro */
     background-color: var(--clr-main);
     border-radius: 1rem;
     overflow: hidden;
@@ -261,50 +290,45 @@ main {
     margin-bottom: 1rem;
     border: 0;
     background-color: var(--clr-purple);
-    color: var(--clr-main);
+    color: var(--clr-main-light); /* Texto blanco suave */
     padding: .25rem;
     text-transform: uppercase;
     border-radius: 0.5rem;
     text-align: center;
     cursor: pointer;
-    border: 2px solid var(--clr-green);
+    border: 2px solid var(--clr-purple); /* Borde Púrpura */
     transition: background-color .2s, color .2s;
 }
 
 .producto-agregar-home:hover {
     background-color: var(--clr-main);
-    color: var(--clr-green);
+    color: var(--clr-purple); /* Texto a púrpura en hover */
+    border: 2px solid var(--clr-purple);
 }
 
 .producto-precio-home-oferta {
-    color: red
+    color: var(--clr-red);
 }
 
 /**carritovacio**/
 .carrito-vacio,
 .carrito-comprado {
-    color: var(--clr-main);
+    color: var(--clr-white); /* Texto a blanco */
 }
 
 .carrito-producto {
-    display: flex;
-    /*para que los elementos esten alado del producto */
-    justify-content: space-between;
+    display: grid;
+    /* Usamos Grid para organizar: Imagen | Título/Precio | Eliminar */
+    grid-template-columns: 4rem 1fr auto; 
     align-items: center;
-    background-color: var(--clr-purple);
-    background-color: color rgb(163, 60, 163);
-    padding: .7rem;
-    padding-right: 1.5rem;
-    ;
-    border-radius: 1rem;
-    margin: 2rem;
-
-    width: 90%;
-    /* ocupa todo el ancho del contenedor padre */
-    height: 100px;
-    /* mismo alto para todos (ajusta a gusto) */
-    box-sizing: border-box;
-    /* el padding no aumenta el ancho total */
+    
+    background-color: transparent; 
+    padding: 1rem 0; 
+    margin: 0; /* Eliminamos el margen lateral de 2rem */
+    
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+    width: 100%; /* Ocupa el 100% del max-width de .contenedor-carrito */
+    height: auto; 
 }
 
 .carrito-producto-imagen {
@@ -323,12 +347,17 @@ main {
     color: var(--clr-red);
 
 }
+.carrito-producto:last-child {
+    border-bottom: none; /* Eliminar el separador del último elemento */
+}
 
 .contenedor-carrito {
     display: flex;
-    color: var(--clr-main);
+    color: var(--clr-white); /* Texto a blanco */
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 0.5rem;
+    max-width: 500px; 
+    margin: 0 auto;
 }
 
 .carrito-acciones {
@@ -340,12 +369,21 @@ main {
     display: flex;
 
 }
+.carrito-producto-precio {
+    /* Aquí se ve un pequeño rectángulo en la app. */
+    background-color: rgba(255, 254, 254, 0.304);
+    padding: 0.2rem 0.6rem;
+    border-radius: 0.3rem;
+    color: var(--clr-white);
+    font-weight: 600;
+}
 
 .carrito-acciones-total {
     display: flex;
-    background-color: var(--clr-purple);
+    /* Fondo Púrpura */
+    background-color: var(--clr-purple); 
     padding: 1rem;
-    color: var(--clr-main);
+    color: var(--clr-main-light); /* Texto blanco suave */
     text-transform: uppercase;
     border-top-left-radius: 1rem;
     border-top-right-radius: 1rem;
@@ -364,19 +402,20 @@ main {
 
 .carrito-acciones-vaciar {
     border: 0;
-    background-color: var(--clr-purple);
+    /* Fondo Púrpura */
+    background-color: var(--clr-purple); 
     padding: 1rem;
-    border-radius: 1rem;
-    color: var(--clr-main);
+    color: var(--clr-main-light); /* Texto blanco suave */
     text-transform: uppercase;
     cursor: pointer;
 }
 
 .carrito-acciones-comprar {
     border: 0;
-    background-color: var(--clr-main);
+    /* Fondo Morado Oscuro */
+    background-color: var(--clr-main); 
     padding: 1rem;
-    color: var(--clr-green);
+    color: var(--clr-purple); /* Texto a Púrpura */
     text-transform: uppercase;
     cursor: pointer;
     border-top-right-radius: 1rem;
@@ -387,13 +426,13 @@ main {
 
 /* Estilos para el carrusel */
 .borde-carrusel {
-    border: 4px solid #333;
+    border: 4px solid var(--clr-main-light); /* Borde blanco */
     border-radius: 8px;
     box-sizing: border-box;
 }
 
 .carousel-item img {
-    border: 4px solid #333;
+    border: 4px solid var(--clr-main-light); /* Borde blanco */
     border-radius: 8px;
 }
 
@@ -417,13 +456,13 @@ main {
 .contenedor-buscar {
     display: flex;
     align-items: center;
-    border: 2px var(--clr-purple);
-    /* borde del contenedor */
+    border: 2px solid var(--clr-purple);
+    /* borde del contenedor Púrpura */
     border-radius: 5px;
     /* esquinas redondeadas */
     padding: 0.5rem 0.6rem;
-    background-color: #05040b;
-    /* fondo del contenedor */
+    background-color: var(--clr-main);
+    /* fondo del contenedor Morado Oscuro */
     width: 250px;
     margin-top: 2rem;
 }
@@ -448,13 +487,24 @@ main {
     font-size: 1rem;
 }
 
+.bi-trash-fill {
+    /* Usar el color blanco directamente */
+    color: white !important; 
+    /* O usar tu variable de blanco */
+    /* color: var(--clr-white) !important; */
+}
+/* También debes revisar la clase específica del botón de eliminar en el carrito */
+.carrito-producto-eliminar {
+    /* Asegúrate de anular la regla anterior que lo hacía rojo */
+    color: var(--clr-white) !important; 
+}
+
 .contenedor-buscar button {
-    border: 2px solid #fff;
+    border: 2px solid var(--clr-main-light);
     /* borde del botón */
-    border-radius: 5px;
-    background-color: #a8a7ae;
+    background-color: var(--clr-main-light);
     /* color del botón */
-    color: #05040b;
+    color: var(--clr-main);
     /* color del texto del botón */
     padding: 0.3rem 0.6rem;
     cursor: pointer;
@@ -469,3 +519,36 @@ main {
     padding: 0;
 }
 
+.text{
+    padding-left: 15px;
+}
+
+.carrito-acciones-total{
+    background-color: var(--clr-main)
+}
+
+.total-pagar{
+    color: #ff66c4;
+
+}
+
+.carrito-acciones-comprar {
+    border: 0; /* Sin borde */
+    /* Color de fondo: El fucsia/magenta vibrante de tu app */
+    background-color: #e6007e; 
+    
+    padding: 1rem 2rem; /* Aumenta el padding para que sea más grande */
+    color: var(--clr-white); /* Texto en blanco */
+    text-transform: uppercase; /* Texto en mayúsculas */
+    font-weight: 700; /* Texto en negrita para que resalte */
+    font-size: 1.1rem; /* Un poco más grande el texto */
+    cursor: pointer;
+    border-radius: 0.5rem; /* Esquinas ligeramente redondeadas */
+    width: 100%; /* Para que ocupe todo el ancho disponible */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sutil sombra para darle profundidad */
+    transition: background-color 0.3s ease; /* Transición suave al pasar el ratón */
+}
+
+.carrito-acciones-comprar:hover {
+    background-color: #c9006b; /* Un tono ligeramente más oscuro en hover */
+}

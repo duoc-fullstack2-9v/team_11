@@ -14,7 +14,7 @@ function Header({ cantidadCarrito = 0 }) {
                 <ul className="menu">
                     {/* Iniciar sesión */}
                     <li>
-                        <NavLink className="boton-menu boton login active" to="/login">
+                        <NavLink className="boton-menu boton login " to="/login">
                             <i className="bi bi-person-raised-hand"></i>Iniciar sesion
                         </NavLink>
                     </li>

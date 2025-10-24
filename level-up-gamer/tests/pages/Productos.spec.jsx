@@ -13,7 +13,7 @@ vi.mock('react-toastify', () => ({
   }
 }))
 
-vi.mock('../../src/context/CarritoContext', () => ({
+vi.mock('../../src/context/CarritoContext.jsx', () => ({
   useCarrito: () => ({
     agregarAlCarrito: vi.fn(),
     eliminarDelCarrito: vi.fn(),

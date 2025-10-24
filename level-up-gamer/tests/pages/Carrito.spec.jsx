@@ -4,7 +4,7 @@ import '@testing-library/jest-dom'
 import { BrowserRouter } from 'react-router-dom'
 
 // 💡 Mock del contexto del carrito (debe ir antes del import del componente)
-vi.mock('../../src/context/CarritoContext.jsx', () => ({
+vi.mock('../../src/context/CarritoContext', () => ({
   useCarrito: () => ({
     carrito: [
       {

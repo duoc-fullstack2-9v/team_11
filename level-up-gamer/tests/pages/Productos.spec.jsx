@@ -3,6 +3,9 @@ import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { BrowserRouter } from 'react-router-dom'
 
+import * as CarritoContext from '../../src/context/CarritoContext.jsx'
+import { toast } from 'react-toastify'
+
 // 💡 MOCKS (van antes de importar el componente)
 vi.mock('react-toastify', () => ({
   toast: {
@@ -85,20 +88,17 @@ describe('Productos page', () => {
     const mockAgregar = vi.fn()
     const mockToast = vi.fn()
 
-    // Forzamos los mocks a ser activos para esta ejecución
-    vi.mocked(require('../../src/context/CarritoContext.jsx')).useCarrito.mockReturnValue({
+    vi.spyOn(CarritoContext, 'useCarrito').mockReturnValue({
       agregarAlCarrito: mockAgregar,
       carrito: []
     })
-    vi.mocked(require('react-toastify').toast).success = mockToast
+    vi.spyOn(toast, 'success').mockImplementation(mockToast)
 
     const { container } = renderWithRouter(<Productos />)
     const addButtons = container.querySelectorAll('button.producto-agregar-home')
     expect(addButtons.length).toBe(11)
 
-    // Simulamos clic
     addButtons[0].click()
-
     expect(mockAgregar).toHaveBeenCalled()
     expect(mockToast).toHaveBeenCalled()
   })

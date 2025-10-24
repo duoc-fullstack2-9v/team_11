@@ -2,7 +2,7 @@
 
 import React from 'react';
 //  Importa el hook real desde tu archivo de Contexto
-import { useCarrito } from './context/CarritoContext'; // <-- AJUSTA ESTA RUTA si es necesario
+import { useCarrito } from '../context/CarritoContext'; // <-- AJUSTA ESTA RUTA si es necesario
 
 function ProductoAgregar({ producto }) {
   // Usa el hook real para obtener la función

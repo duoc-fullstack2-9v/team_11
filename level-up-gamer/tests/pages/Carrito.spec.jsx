@@ -80,4 +80,20 @@ describe('Carrito Component (con contexto simulado)', () => {
     expect(gracias).toBeInTheDocument()
     expect(gracias).toHaveClass('disabled')
   })
+
+  // 🔥 Nuevo test agregado para cubrir la función eliminarDelCarrito
+  test('al hacer click en eliminar llama eliminarDelCarrito con el id correcto', () => {
+    const { getAllByRole } = renderWithRouter(<Carrito />)
+
+    // Tomamos todos los botones (los de eliminar son los iconitos vacíos)
+    const botonesEliminar = getAllByRole('button')
+    expect(botonesEliminar.length).toBeGreaterThan(0)
+
+    // Hacemos click en el primero
+    botonesEliminar[0].click()
+
+    // Verificamos que la función del mock fue llamada correctamente
+    const { useCarrito } = require('../../src/context/CarritoContext.jsx')
+    expect(useCarrito().eliminarDelCarrito).toHaveBeenCalledWith(1)
+  })
 })

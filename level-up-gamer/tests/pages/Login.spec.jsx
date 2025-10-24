@@ -124,11 +124,13 @@ describe('Componente InicioSesion (autenticación local)', () => {
     auth.findUser.mockReturnValue(null)
     renderWithRouter(<InicioSesion />)
 
-    // Forzamos el error de login
+    // Provocamos error de forma más realista
+    fireEvent.change(screen.getByLabelText('Usuario'), { target: { value: 'fake' } })
+    fireEvent.change(screen.getByLabelText('Contraseña'), { target: { value: 'wrong' } })
     fireEvent.click(screen.getByRole('button', { name: 'Ingresar' }))
+
     expect(screen.getByText('Usuario o contraseña incorrectos')).toBeInTheDocument()
 
-    // Cambiamos a registro (esto limpia setError(""))
     fireEvent.click(screen.getByRole('button', { name: 'Registrarse' }))
     expect(screen.queryByText('Usuario o contraseña incorrectos')).toBeNull()
   })

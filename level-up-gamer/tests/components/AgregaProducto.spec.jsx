@@ -2,14 +2,18 @@
 import { describe, test, expect, vi } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import AgregaProducto from '../../src/components/AgregaProducto.jsx'
 
-// 💡 Mock del contexto
+// 💡 Primero definimos el mock del contexto ANTES de importar el componente
+const mockAgregar = vi.fn()
+
 vi.mock('../../src/context/CarritoContext.jsx', () => ({
   useCarrito: () => ({
-    agregarAlCarrito: vi.fn()
+    agregarAlCarrito: mockAgregar
   })
 }))
+
+// 💡 Ahora sí importamos el componente (después del mock)
+import AgregaProducto from '../../src/components/AgregaProducto.jsx'
 
 describe('AgregaProducto Component', () => {
   test('renderiza el botón correctamente', () => {
@@ -20,19 +24,10 @@ describe('AgregaProducto Component', () => {
   })
 
   test('llama a agregarAlCarrito y muestra alert al hacer click', () => {
-    const mockAgregar = vi.fn()
-    window.alert = vi.fn()
-
-    // Forzamos el mock del hook con el mock actualizado
-    vi.doMock('../../src/context/CarritoContext.jsx', () => ({
-      useCarrito: () => ({
-        agregarAlCarrito: mockAgregar
-      })
-    }))
-
+    window.alert = vi.fn() // mockeamos alert
     render(<AgregaProducto producto={{ id: 10, titulo: 'Silent Hill F' }} />)
-    const button = screen.getByRole('button', { name: /agregar/i })
 
+    const button = screen.getByRole('button', { name: /agregar/i })
     fireEvent.click(button)
 
     expect(mockAgregar).toHaveBeenCalledWith({ id: 10, titulo: 'Silent Hill F' })

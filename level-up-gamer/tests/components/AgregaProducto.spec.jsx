@@ -1,11 +1,10 @@
-// tests/components/AgregaProducto.spec.jsx
+/// <reference types="vitest/globals" />
 import { describe, test, expect, vi } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import AgregaProducto from '../../src/components/AgregaProducto.jsx'
-/// <reference types="vitest/globals" />
 
-// 💡 Mock del contexto del carrito
+// 💡 Mock del contexto
 vi.mock('../../src/context/CarritoContext.jsx', () => ({
   useCarrito: () => ({
     agregarAlCarrito: vi.fn()
@@ -24,13 +23,16 @@ describe('AgregaProducto Component', () => {
     const mockAgregar = vi.fn()
     window.alert = vi.fn()
 
-    vi.mocked(require('../../src/context/CarritoContext.jsx')).useCarrito.mockReturnValue({
-      agregarAlCarrito: mockAgregar
-    })
+    // Forzamos el mock del hook con el mock actualizado
+    vi.doMock('../../src/context/CarritoContext.jsx', () => ({
+      useCarrito: () => ({
+        agregarAlCarrito: mockAgregar
+      })
+    }))
 
     render(<AgregaProducto producto={{ id: 10, titulo: 'Silent Hill F' }} />)
-
     const button = screen.getByRole('button', { name: /agregar/i })
+
     fireEvent.click(button)
 
     expect(mockAgregar).toHaveBeenCalledWith({ id: 10, titulo: 'Silent Hill F' })

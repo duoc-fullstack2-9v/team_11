@@ -2,13 +2,30 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { BrowserRouter } from 'react-router-dom'
+
+// 💡 MOCKS (van antes de importar el componente)
+vi.mock('react-toastify', () => ({
+  toast: {
+    success: vi.fn(),
+    error: vi.fn(),
+    warn: vi.fn(),
+    info: vi.fn()
+  }
+}))
+
+vi.mock('../../src/context/CarritoContext', () => ({
+  useCarrito: () => ({
+    agregarAlCarrito: vi.fn(),
+    eliminarDelCarrito: vi.fn(),
+    vaciarCarrito: vi.fn(),
+    carrito: []
+  })
+}))
+
 import Productos from '../../src/pages/Productos'
 
 // Helper para Router
 const renderWithRouter = (ui) => render(<BrowserRouter>{ui}</BrowserRouter>)
-
-// Espía del console.log
-const mockConsoleLog = vi.spyOn(console, 'log').mockImplementation(() => {})
 
 describe('Productos page', () => {
   beforeEach(() => {
@@ -43,7 +60,6 @@ describe('Productos page', () => {
   it('muestra las imágenes con alt y src', () => {
     renderWithRouter(<Productos />)
 
-    // Acota al main para no contar logos futuros
     const main = screen.getByRole('main')
     const images = main.querySelectorAll('img.producto-home-imagen')
     expect(images.length).toBe(11)
@@ -65,15 +81,25 @@ describe('Productos page', () => {
     expect(screen.getByText('$39990')).toBeInTheDocument()
   })
 
-  it('hace console.log al agregar un producto', () => {
-    renderWithRouter(<Productos />)
+  it('dispara toast y agrega al carrito al hacer click', () => {
+    const mockAgregar = vi.fn()
+    const mockToast = vi.fn()
 
-    const main = screen.getByRole('main')
-    const addButtons = main.querySelectorAll('button.producto-agregar-home')
+    // Re-mock dentro de la prueba para capturar llamadas
+    vi.doMock('../../src/context/CarritoContext', () => ({
+      useCarrito: () => ({ agregarAlCarrito: mockAgregar, carrito: [] })
+    }))
+    vi.doMock('react-toastify', () => ({
+      toast: { success: mockToast }
+    }))
+
+    const { container } = renderWithRouter(<Productos />)
+    const addButtons = container.querySelectorAll('button.producto-agregar-home')
     expect(addButtons.length).toBe(11)
 
     addButtons[0].click()
-    expect(mockConsoleLog).toHaveBeenCalledWith('Agregado:', 'Street Fighter vs Tekken')
+    expect(mockAgregar).toHaveBeenCalledTimes(1)
+    expect(mockToast).toHaveBeenCalledTimes(1)
   })
 
   it('el contenedor de productos existe y cuelga de <main>', () => {

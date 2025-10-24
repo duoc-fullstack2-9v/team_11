@@ -77,7 +77,7 @@ function Home() {
 
         {/* Buscador */}
         <div className="contenedor-buscar">
-         <i class="bi bi-search"></i>
+         <i className="bi bi-search"></i>
           <input className="text" type="text" placeholder="Buscar en la tienda" />
         </div>
 

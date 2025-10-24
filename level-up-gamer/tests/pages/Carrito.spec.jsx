@@ -3,6 +3,9 @@ import { render, screen, within } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { BrowserRouter } from 'react-router-dom'
 
+// 👉 Mock reutilizable para poder hacer expect(...).toHaveBeenCalledWith(...)
+const eliminarDelCarritoMock = vi.fn()
+
 // 💡 Mock del contexto del carrito (debe ir antes del import del componente)
 vi.mock('../../src/context/CarritoContext.jsx', () => ({
   useCarrito: () => ({
@@ -83,17 +86,15 @@ describe('Carrito Component (con contexto simulado)', () => {
 
   // 🔥 Nuevo test agregado para cubrir la función eliminarDelCarrito
   test('al hacer click en eliminar llama eliminarDelCarrito con el id correcto', () => {
-    const { getAllByRole } = renderWithRouter(<Carrito />)
+    const { container } = renderWithRouter(<Carrito />)
 
-    // Tomamos todos los botones (los de eliminar son los iconitos vacíos)
-    const botonesEliminar = getAllByRole('button')
+    // Solo los botones de borrar, no el botón “comprar”
+    const botonesEliminar = container.querySelectorAll('.carrito-producto-eliminar')
     expect(botonesEliminar.length).toBeGreaterThan(0)
 
-    // Hacemos click en el primero
+    // Click en el primero (producto id=1)
     botonesEliminar[0].click()
 
-    // Verificamos que la función del mock fue llamada correctamente
-    const { useCarrito } = require('../../src/context/CarritoContext.jsx')
-    expect(useCarrito().eliminarDelCarrito).toHaveBeenCalledWith(1)
+    expect(eliminarDelCarritoMock).toHaveBeenCalledWith(1)
   })
 })

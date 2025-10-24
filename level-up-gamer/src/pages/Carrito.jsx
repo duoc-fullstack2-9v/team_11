@@ -20,9 +20,9 @@ function Carrito() {
                                 <small>Titulo</small>
                                 <h3>Skyrim</h3>
                             </div>
-                            <div clss="carrito-producto-cantidad">
-                                <small>Cantidad</small>
-                                <p>1</p>
+                            <div className="carrito-producto-cantidad">
+                                <small ClassName="titulo-cantidad">Cantidad</small>
+                                <p ClassName="cantidad-producto">1</p>
                             </div>
                             <div className="carrito-producto-precio">
                                 <small>Precio</small>
@@ -32,7 +32,7 @@ function Carrito() {
                                 <small>Subtotal</small>
                                 <p>$29.990</p>
                             </div>
-                            <button className="carrito-producto-eliminar">Eliminar <i className="bi bi-trash-fill"></i></button>
+                            <button className="carrito-producto-eliminar"> <i className="bi bi-trash-fill"></i></button>
                         </div>
                         <div className="carrito-producto">
                             <img className="carrito-producto-imagen" src="/imgs/resident-evil-4-hd-proyect-generacionxbox.jpg" alt="" />
@@ -41,7 +41,7 @@ function Carrito() {
                                 <h3>Resident evil 4</h3>
                             </div>
                             <div clss="carrito-producto-cantidad">
-                                <small>Cantidad 1</small>
+                                <small>Cantidad </small>
                                 <p>1</p>
                             </div>
                             <div className="carrito-producto-precio">

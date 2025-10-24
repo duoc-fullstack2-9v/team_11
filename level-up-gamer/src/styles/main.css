@@ -332,7 +332,7 @@ main {
 }
 
 .carrito-producto-imagen {
-    width: 4rem;
+    width: 15em;
     border-radius: 1rem;
 }
 
@@ -356,8 +356,8 @@ main {
     color: var(--clr-white); /* Texto a blanco */
     flex-direction: column;
     gap: 0.5rem;
-    max-width: 500px; 
-    margin: 0 auto;
+    max-width:px; 
+    margin: 1auto;
 }
 
 .carrito-acciones {
@@ -370,12 +370,23 @@ main {
 
 }
 .carrito-producto-precio {
-    /* Aquí se ve un pequeño rectángulo en la app. */
+    /* Fondo semi-transparente para imitar el rectángulo en la app */
     background-color: rgba(255, 254, 254, 0.304);
-    padding: 0.2rem 0.6rem;
-    border-radius: 0.3rem;
+    
+    /* Padding para que el contenido tenga espacio alrededor */
+    padding: 0.5rem 0.8rem; /* Aumentamos el padding para que se vea mejor */
+    
+    border-radius: 0.4rem;
     color: var(--clr-white);
-    font-weight: 600;
+    
+    /* 💥 ELIMINAR O CORREGIR: Quitamos el margin-left que causaba que se cortara */
+    margin-left: 0; 
+    
+    /* Opcional: Si este contenedor debe ser de ancho fijo */
+     width:240px; 
+    
+    /* Asegurar que el contenido interno se muestre bien (ej. si Precio y Subtotal están aquí) */
+    display: inline-block; /* Asegura que el contenedor se ajuste solo al contenido */
 }
 
 .carrito-acciones-total {
@@ -410,30 +421,20 @@ main {
     cursor: pointer;
 }
 
-.carrito-acciones-comprar {
-    border: 0;
-    /* Fondo Morado Oscuro */
-    background-color: var(--clr-main); 
-    padding: 1rem;
-    color: var(--clr-purple); /* Texto a Púrpura */
-    text-transform: uppercase;
-    cursor: pointer;
-    border-top-right-radius: 1rem;
-    border-top-left-radius: 1rem;
-    border-bottom-left-radius: 1rem;
-    border-bottom-right-radius: 1rem;
-}
 
 /* Estilos para el carrusel */
 .borde-carrusel {
-    border: 4px solid var(--clr-main-light); /* Borde blanco */
+    
+    border:#ad089d 2px solid; /* Borde púrpura */
     border-radius: 8px;
     box-sizing: border-box;
+
 }
 
 .carousel-item img {
     border: 4px solid var(--clr-main-light); /* Borde blanco */
     border-radius: 8px;
+    border:#ad089d 2px solid; 
 }
 
 .carousel-inner {
@@ -547,8 +548,20 @@ main {
     width: 100%; /* Para que ocupe todo el ancho disponible */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sutil sombra para darle profundidad */
     transition: background-color 0.3s ease; /* Transición suave al pasar el ratón */
+    text-align: center;
 }
 
 .carrito-acciones-comprar:hover {
     background-color: #c9006b; /* Un tono ligeramente más oscuro en hover */
+}
+
+.carrito-producto-titulo{
+    margin-left: 200px;
+}
+
+.carrito-producto-subtotal{
+    margin-left:800px;
+}
+.titulo-cantidad{
+    margin-right:700px;
 }

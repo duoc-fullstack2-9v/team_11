@@ -1,94 +1,43 @@
 import { useLocation, useParams } from "react-router-dom";
-import { toast } from "react-toastify"; // ✅ Importa react-toastify
-import { useCarrito } from "../context/CarritoContext.jsx"; // ✅ Contexto del carrito
+import { toast } from "react-toastify";
+import { useCarrito } from "../context/CarritoContext.jsx";
 
-// 🧩 Lista de productos (ejemplo)
+
+import imgStreet from "../assets/imgs/street x tekken.webp";
+import imgResident4 from "../assets/imgs/resident-evil-4-hd-proyect-generacionxbox.jpg";
+import imgElden from "../assets/imgs/elden-ring-portada.jpg";
+import imgSkyrim from "../assets/imgs/skyrim.webp";
+import imgRedDead from "../assets/imgs/redDead.avif";
+import imgSilent from "../assets/imgs/silenciogill.png";
+import imgResident7 from "../assets/imgs/resident7.avif";
+import imgBioShock from "../assets/imgs/BioShock_cover.jpg";
+import imgDevil from "../assets/imgs/devilmycry.jpg";
+import imgBayonetta from "../assets/imgs/lamamu.jpg";
+
+// Lista de productos
 const productos = [
-  {
-    id: "1",
-    titulo: "Street Fighter vs Tekken",
-    imagen: "/imgs/street x tekken.webp",
-    precio: 29990,
-  },
-  {
-    id: "2",
-    titulo: "Resident Evil 4 Remake",
-    imagen: "/imgs/resident-evil-4-hd-proyect-generacionxbox.jpg",
-    precio: 39990,
-  },
-  {
-    id: "3",
-    titulo: "Elden Ring",
-    imagen: "/imgs/elden-ring-portada.jpg",
-    precio: 29990,
-  },
-  {
-    id: "4",
-    titulo: "Skyrim",
-    imagen: "/imgs/skyrim.webp",
-    precio: 29990,
-  },
-  {
-    id: "5",
-    titulo: "Red Dead Redemption II",
-    imagen: "/imgs/redDead.avif",
-    precio: 29990,
-  },
-  {
-    id: "6",
-    titulo: "Silent Hill F",
-    imagen: "/imgs/silenciogill.png",
-    precio: 29990,
-  },
-  {
-    id: "7",
-    titulo: "Resident Evil 4",
-    imagen: "/imgs/resident-evil-4-hd-proyect-generacionxbox.jpg",
-    precio: 29990,
-  },
-  {
-    id: "8",
-    titulo: "Resident Evil 7",
-    imagen: "/imgs/resident7.avif",
-    precio: 29990,
-  },
-  {
-    id: "9",
-    titulo: "Bioshock",
-    imagen: "/imgs/BioShock_cover.jpg",
-    precio: 29990,
-  },
-  {
-    id: "10",
-    titulo: "Devil May Cry 5",
-    imagen: "/imgs/devilmycry.jpg",
-    precio: 29990,
-  },
-  {
-    id: "11",
-    titulo: "Bayonetta",
-    imagen: "/imgs/lamamu.jpg",
-    precio: 29990,
-  },
+  { id: "1", titulo: "Street Fighter vs Tekken", imagen: imgStreet, precio: 29990 },
+  { id: "2", titulo: "Resident Evil 4 Remake", imagen: imgResident4, precio: 39990 },
+  { id: "3", titulo: "Elden Ring", imagen: imgElden, precio: 29990 },
+  { id: "4", titulo: "Skyrim", imagen: imgSkyrim, precio: 29990 },
+  { id: "5", titulo: "Red Dead Redemption II", imagen: imgRedDead, precio: 29990 },
+  { id: "6", titulo: "Silent Hill F", imagen: imgSilent, precio: 29990 },
+  { id: "7", titulo: "Resident Evil 4", imagen: imgResident4, precio: 29990 },
+  { id: "8", titulo: "Resident Evil 7", imagen: imgResident7, precio: 29990 },
+  { id: "9", titulo: "Bioshock", imagen: imgBioShock, precio: 29990 },
+  { id: "10", titulo: "Devil May Cry 5", imagen: imgDevil, precio: 29990 },
+  { id: "11", titulo: "Bayonetta", imagen: imgBayonetta, precio: 29990 },
 ];
-
 
 // Componente hijo: producto individual
 function ProductoHome({ producto, onAgregarClick }) {
   return (
     <div className="producto-home">
-      <img
-        className="producto-home-imagen"
-        src={producto.imagen}
-        alt={producto.titulo}
-      />
+      <img className="producto-home-imagen" src={producto.imagen} alt={producto.titulo} />
       <div className="producto-detalles-home">
         <h3 className="producto-titulo-home">{producto.titulo}</h3>
         <p className="producto-precio-home">${producto.precio}</p>
-        <button
-          className="producto-agregar-home"
-          onClick={() => onAgregarClick(producto)}
-        >
+        <button className="producto-agregar-home" onClick={() => onAgregarClick(producto)}>
           Agregar
         </button>
       </div>
@@ -96,12 +45,9 @@ function ProductoHome({ producto, onAgregarClick }) {
   );
 }
 
-
 function Productos() {
   const location = useLocation();
   const { id } = useParams();
-
-
   const { agregarAlCarrito } = useCarrito();
 
   function handleAgregar(producto) {
@@ -114,32 +60,30 @@ function Productos() {
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
-      theme: "colored"
+      theme: "colored",
     });
   }
 
   return (
-    <>
-      <main>
-        <h2 className="titulo-principal">
-          Compra los mejores productos al mejor precio!
-        </h2>
+    <main>
+      <h2 className="titulo-principal">
+        ¡Compra los mejores productos al mejor precio!
+      </h2>
 
-        <div className="contenedor-producto">
-          {productos.length === 0 ? (
-            <p>No hay productos disponibles</p>
-          ) : (
-            productos.map((p) => (
-              <ProductoHome
-                key={p.id}
-                producto={p}
-                onAgregarClick={handleAgregar}
-              />
-            ))
-          )}
-        </div>
-      </main>
-    </>
+      <div className="contenedor-producto">
+        {productos.length === 0 ? (
+          <p>No hay productos disponibles</p>
+        ) : (
+          productos.map((p) => (
+            <ProductoHome
+              key={p.id}
+              producto={p}
+              onAgregarClick={handleAgregar}
+            />
+          ))
+        )}
+      </div>
+    </main>
   );
 }
 

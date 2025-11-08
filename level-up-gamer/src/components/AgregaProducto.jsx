@@ -1,16 +1,23 @@
-// ProductoAgregar.jsx
-
 import React from 'react';
-//  Importa el hook real desde tu archivo de Contexto
-import { useCarrito } from '../context/CarritoContext.jsx'; // <-- AJUSTA ESTA RUTA si es necesario
+import { toast } from 'react-toastify'; 
+import { useCarrito } from '../context/CarritoContext.jsx'; // 
 
 function ProductoAgregar({ producto }) {
-  // Usa el hook real para obtener la función
   const { agregarAlCarrito } = useCarrito();
 
   const handleClick = () => {
+    if (!producto) {
+      console.error("No se encontró el producto a agregar");
+      return;
+    }
+
     agregarAlCarrito(producto);
-    alert(`¡${producto.titulo} agregado al carrito!`);
+
+    toast.success(`¡${producto.titulo} agregado al carrito!`, {
+      position: "bottom-right",
+      autoClose: 2000,
+      theme: "colored",
+    });
   };
 
   return (

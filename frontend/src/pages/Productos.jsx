@@ -13,9 +13,11 @@ import imgResident7 from "../assets/imgs/resident7.avif";
 import imgBioShock from "../assets/imgs/BioShock_cover.jpg";
 import imgDevil from "../assets/imgs/devilmycry.jpg";
 import imgBayonetta from "../assets/imgs/lamamu.jpg";
+import { useEffect, useState } from "react";
+import { listarProductos } from "../services/productoService.jsx";
 
 // Lista de productos
-const productos = [
+/*const productos = [
   { id: "1", titulo: "Street Fighter vs Tekken", imagen: imgStreet, precio: 29990 },
   { id: "2", titulo: "Resident Evil 4 Remake", imagen: imgResident4, precio: 39990 },
   { id: "3", titulo: "Elden Ring", imagen: imgElden, precio: 29990 },
@@ -27,7 +29,7 @@ const productos = [
   { id: "9", titulo: "Bioshock", imagen: imgBioShock, precio: 29990 },
   { id: "10", titulo: "Devil May Cry 5", imagen: imgDevil, precio: 29990 },
   { id: "11", titulo: "Bayonetta", imagen: imgBayonetta, precio: 29990 },
-];
+];*/
 
 // Componente hijo: producto individual
 function ProductoHome({ producto, onAgregarClick }) {
@@ -50,6 +52,8 @@ function Productos() {
   const { id } = useParams();
   const { agregarAlCarrito } = useCarrito();
 
+  const [productos, setProductos] = useState([]);
+
   function handleAgregar(producto) {
     agregarAlCarrito(producto);
     toast.success(`🛒 ¡${producto.titulo} agregado al carrito!`, {
@@ -64,6 +68,17 @@ function Productos() {
     });
   }
 
+  useEffect(() => {
+    const fetchData = async () => {
+
+      console.log("Fetching products from API...");
+      const data = await listarProductos();
+      console.log("Products fetched: ", data);
+      setProductos(data);
+    };
+    fetchData();
+  }, []);
+
   return (
     <main>
       <h2 className="titulo-principal">
@@ -71,9 +86,9 @@ function Productos() {
       </h2>
 
       <div className="contenedor-producto">
-        {productos.length === 0 ? (
-          <p>No hay productos disponibles</p>
-        ) : (
+        {productos.length === 0 && <p>No hay productos disponibles</p>}
+
+        {productos.length > 0 &&
           productos.map((p) => (
             <ProductoHome
               key={p.id}
@@ -81,7 +96,8 @@ function Productos() {
               onAgregarClick={handleAgregar}
             />
           ))
-        )}
+        }
+
       </div>
     </main>
   );

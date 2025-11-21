@@ -13,6 +13,7 @@ import Carrito from './pages/Carrito.jsx';
 import Perfil from './pages/Perfil.jsx';
 
 import "./styles/main.css";
+import { Administracion } from "./pages/Administracion.jsx";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="/productos" element={<Productos />} />
             <Route path="/carrito" element={<Carrito />} />
             <Route path="/perfil" element={<Perfil />} />
+            <Route path="/administracion" element={<Administracion />} />
           </Routes>
         </main>
         <Footer />

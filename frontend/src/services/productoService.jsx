@@ -19,7 +19,7 @@ export const obtenerProductoPorId = async (id) => {
         const response = await axios.get(API_URL + id);
         return response.data;        
     } catch (e) {
-        console.error("Erros al obtener producto por id: ", e);
+        console.error("Erros al obtener producto por id: " + id, ": ", e);
         throw e;
     }
 };

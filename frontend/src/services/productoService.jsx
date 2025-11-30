@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://demo6483394.mockable.io/productos"; // REEMPLAZAR CON LA URL DE NUESTRA API
+const API_URL = "http://demo7371273.mockable.io/productos"; // REEMPLAZAR CON LA URL DE NUESTRA API
 
 // Listar todos los productos
 export const listarProductos = async () => {

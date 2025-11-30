@@ -1,15 +1,12 @@
-package com.level-up-gamer.backend.service;
+package com.levelupgamer.backend.service;
 
-
-
-import com.level-up-gamer.backend.model.Producto;
-import com.level-up-gamer.backend.repository.ProductoRepository;
+import com.levelupgamer.backend.model.Producto;
+import com.levelupgamer.backend.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
- */
 @Service
 public class ProductoService {
 
@@ -37,4 +34,3 @@ public class ProductoService {
         productoRepository.deleteById(id);
     }
 }
-

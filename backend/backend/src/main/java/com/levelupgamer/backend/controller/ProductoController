@@ -1,9 +1,7 @@
-package com.level-up-gamer.backend.controller;
+package com.levelupgamer.backend.controller;
 
-package com.level-up-gamer.backend.controller;
-
-import com.level-up-gamer.backend.model.Producto;
-import com.level-up-gamer.backend.service.ProductoService;
+import com.levelupgamer.backend.model.Producto;
+import com.levelupgamer.backend.service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

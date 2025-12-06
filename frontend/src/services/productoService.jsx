@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_URL = "http://demo7371273.mockable.io/productos"; // REEMPLAZAR CON LA URL DE NUESTRA API
+const API_URL = "https://EC2-AQUI/productos"; // REEMPLAZAR CON LA URL DE NUESTRA API
+const urlConId = (id) => `${API_URL}/${id}`;
 
 // Listar todos los productos
 export const listarProductos = async () => {
@@ -16,7 +17,7 @@ export const listarProductos = async () => {
 // Obtener un producto por Id
 export const obtenerProductoPorId = async (id) => {
     try {
-        const response = await axios.get(API_URL + id);
+        const response = await axios.get(urlConId(id));
         return response.data;        
     } catch (e) {
         console.error("Erros al obtener producto por id: " + id, ": ", e);
@@ -38,7 +39,7 @@ export const crearProducto = async (producto) => {
 // Axtualizar producto
 export const actualizarProducto = async (id, producto) => {
     try {
-        const response = await axios.put(API_URL + id, producto);
+        const response = await axios.put(urlConId(id), producto);
         return response.data;    
     } catch (e) {
         console.error("Error al actualizar el producto con id " + id, ": ", e);
@@ -49,7 +50,7 @@ export const actualizarProducto = async (id, producto) => {
 // Eliminar un producto
 export const eliminarProducto = async (id) => {
     try {
-        const response = await axios.delete(API_URL + id);
+        const response = await axios.delete(urlConId(id));
         return response.data;
     } catch (e) {
         console.error("Error al eliminar el producto con id " + id, ": ", e);

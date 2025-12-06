@@ -1,7 +1,27 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { listarProductos, crearProducto, actualizarProducto, eliminarProducto } from "../services/productoService";
+import { getSession } from "../utils/auth";
+
+
+const ADMIN_EMAILS = ["admin@levelupgamer.com"]; 
 
 export function Administracion() {
+
+    const navigate = useNavigate();
+
+    useEffect(() => {       // Aquí sólo permite acceder si es admin
+        const sesion = getSession();
+        if (!sesion) {
+            navigate("/login");
+            return;
+        }
+
+        const correo = sesion.correo || sesion.email;
+        if (!ADMIN_EMAILS.includes(correo)) {
+            navigate("/"); // Si tiene sesión pero no es admin, redirige a home o a perfil
+        }
+    }, [navigate]);
 
     const [datosProducto, setDatosProducto] = useState({
         nombre: '',
@@ -14,6 +34,9 @@ export function Administracion() {
 
     // Edición de un producto
     const [editandoId, setEditandoId] = useState(null);
+
+    const [errorForm, setErrorForm] = useState("");
+    const [mensajeOk, setMensajeOk] = useState("");
 
     // Handler para el cambio en el campo de nombre
     const handleNombreChange = (e) => {
@@ -55,9 +78,40 @@ export function Administracion() {
         cargarProductos();
     }, []);
 
+    const validarFormulario = () => {
+    if (!datosProducto.nombre.trim()) {
+        setErrorForm("El nombre del producto es obligatorio.");
+        return false;
+    }
+    if (!datosProducto.precio || Number(datosProducto.precio) <= 0) {
+        setErrorForm("El precio debe ser un número mayor a 0.");
+        return false;
+    }
+    if (!datosProducto.imagen.trim()) {
+        setErrorForm("La URL de la imagen es obligatoria.");
+        return false;
+    }
+    if (
+        !datosProducto.imagen.startsWith("http://") &&
+        !datosProducto.imagen.startsWith("https://")
+    ) {
+        setErrorForm("La URL de la imagen debe comenzar con http:// o https://");
+        return false;
+    }
+    
+    return true;
+    };
+
     // submit
     const handleSubmit = async (e) => {
+
         e.preventDefault();
+
+        setErrorForm("");
+        setMensajeOk("");
+        if (!validarFormulario()) {
+            return;
+        }
 
         // armado del producto
         const producto = {
@@ -71,9 +125,11 @@ export function Administracion() {
                 // Actualizar producto existente
                 await actualizarProducto(editandoId, producto);
                 setEditandoId(null);
+                setMensajeOk("Producto actualizado correctamente.");
             } else {
                 // Crear nuevo producto
                 await crearProducto(producto);
+                setMensajeOk("Producto creado correctamente.");
             }
 
             // Limpiar el formulario
@@ -122,6 +178,9 @@ export function Administracion() {
         <h1>Administración</h1>
 
         {/* FORMULARIO */}
+
+        {errorForm && <p className="mensaje-error">{errorForm}</p>}
+        {mensajeOk && <p className="mensaje-ok">{mensajeOk}</p>}
 
         <form onSubmit={handleSubmit}>
             <div>
@@ -179,7 +238,7 @@ export function Administracion() {
         {/* Listado de Productos */}
         <h2>Productos registrados</h2>
 
-        {productos.length === 0 && <p>No hay producots registrados.</p>}
+        {productos.length === 0 && <p>No hay productos registrados.</p>}
 
         <table>
             <thead>

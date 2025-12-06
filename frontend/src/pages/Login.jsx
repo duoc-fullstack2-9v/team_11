@@ -1,45 +1,103 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { findUser, saveUser, startSession } from "../utils/auth";
+import { startSession } from "../utils/auth";
+import { loginUsuario, registrarUsuario } from "../services/authService";
 import "../styles/Login.css";
+
 
 function InicioSesion() {
     const [view, setView] = useState("inicioSesion");
     const [error, setError] = useState("");
     const navigate = useNavigate(); //esto debería redirigir tras inicioSesion
 
-    const iniciarSesion = e => {
-        e.preventDefault();
-        const formulario = new FormData(e.target);
-        const usuario = formulario.get("usuario");
-        const contrasena = formulario.get("contrasena");
+    // const iniciarSesion = e => {
+    //     e.preventDefault();
+    //     const formulario = new FormData(e.target);
+    //     const usuario = formulario.get("usuario");
+    //     const contrasena = formulario.get("contrasena");
 
-        const user = findUser(usuario);
-        if (!user || user.contrasena !== contrasena){
-            setError("Usuario o contraseña incorrectos");
-            return;
-        }
-        startSession(user);
-        navigate("/perfil"); //redirige a perfil
+    //     const user = findUser(usuario);
+    //     if (!user || user.contrasena !== contrasena){
+    //         setError("Usuario o contraseña incorrectos");
+    //         return;
+    //     }
+    //     startSession(user);
+    //     navigate("/perfil"); //redirige a perfil
+    // }
+
+    const iniciarSesion = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    const formulario = new FormData(e.target);
+    const correo = formulario.get("correo");
+    const contrasena = formulario.get("contrasena");
+
+    if (!correo || !contrasena) {
+        setError("Todos los campos son obligatorios");
+        return;
     }
 
-    const registrarse = (e) => {
-        e.preventDefault();
-        const formulario_reg = new FormData(e.target);
-        const usuario = formulario_reg.get("usuario");
-        const correo = formulario_reg.get("correo");
-        const contrasena = formulario_reg.get("contrasena");
+    try {
+        await loginUsuario(correo, contrasena); // llama a post /auth/login
 
-        if (findUser(usuario)) {
-            setError("Ese usuario ya existe");
-            return;
-        }
+        const datosSesion = {
+        correo,
+        email: correo,
+        };
+        startSession(datosSesion);
 
-        const nuevoUsuario = {usuario, correo, contrasena}; 
-        saveUser(nuevoUsuario);
-        startSession(nuevoUsuario);
         navigate("/perfil");
-    }
+    } catch (err) {
+        console.error(err);
+        setError("Usuario o contraseña incorrectos");
+        }
+    };
+
+
+    // const registrarse = (e) => {
+    //     e.preventDefault();
+    //     const formulario_reg = new FormData(e.target);
+    //     const usuario = formulario_reg.get("usuario");
+    //     const correo = formulario_reg.get("correo");
+    //     const contrasena = formulario_reg.get("contrasena");
+
+    //     if (findUser(usuario)) {
+    //         setError("Ese usuario ya existe");
+    //         return;
+    //     }
+
+    //     const nuevoUsuario = {usuario, correo, contrasena}; 
+    //     saveUser(nuevoUsuario);
+    //     startSession(nuevoUsuario);
+    //     navigate("/perfil");
+    // }
+    const registrarse = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    const formulario_reg = new FormData(e.target);
+    const usuario = formulario_reg.get("usuario");  // solo lo guardaremos en la sesión
+    const correo = formulario_reg.get("correo");    // este va como email al backend
+    const contrasena = formulario_reg.get("contrasena");
+
+    try {
+        await registrarUsuario(correo, contrasena); //llama al post auth/registro 
+
+        const nuevoUsuarioSesion = { //Se guarda nombre de usuario a nivel de frontend
+            usuario,
+            correo,
+            email: correo
+        };
+
+        startSession(nuevoUsuarioSesion);
+        navigate("/perfil");
+
+    } catch (err) {
+        console.error(err);
+        setError("No se pudo registrar el usuario.");
+        }
+    };
 
     return (
         <>
@@ -64,10 +122,11 @@ function InicioSesion() {
                                 <h2>Iniciar sesión</h2>
                                 <form className="formulario" onSubmit={iniciarSesion}>
                                     <div className="formulario-grupo">
-                                        <label htmlFor="usuario">Usuario</label>
+                                        <label htmlFor="correo-login">Correo</label>
                                         <input
-                                            id="usuario"
-                                            name="usuario"
+                                            type="email"
+                                            id="correo-login"
+                                            name="correo"
                                             required className="formulario-control"
                                         />
                                     </div>

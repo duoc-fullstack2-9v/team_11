@@ -41,10 +41,14 @@ function Perfil() {
                                 onError={(e) => (e.currentTarget.style.display = "none")}
                             />
                             <p>
-                                <strong>Usuario:</strong> <span>{usuarioSesion.usuario}</span>
+                                <strong>Usuario:</strong>{" "}
+                                {/* <span>{usuarioSesion.usuario ?? "(sin nombre de usuario)"}</span> */}
+                                {/* <span>{usuarioSesion.usuario || usuarioSesion.email}</span> */}
+                                <span>{usuarioSesion.usuario || usuarioSesion.correo || usuarioSesion.email}</span>
                             </p>
                             <p>
-                                <strong>Correo:</strong> <span>{usuarioSesion.correo}</span>
+                                <strong>Correo:</strong>{" "}
+                                <span>{usuarioSesion.correo ?? usuarioSesion.email}</span>
                             </p>
                         </div>
 

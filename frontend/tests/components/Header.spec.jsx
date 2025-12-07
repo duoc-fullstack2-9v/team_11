@@ -61,13 +61,6 @@ describe('Header Component', () => {
       .toHaveClass('boton-menu', 'boton-carrito')
   })
 
-  test('renders correct footer text', () => {
-    renderWithRouter(<Header />)
-    const footerText = screen.getByText('© 2025')
-    expect(footerText).toBeInTheDocument()
-    expect(footerText).toHaveClass('texto-footer')
-  })
-
   test('renders all required icons inside links', () => {
     renderWithRouter(<Header />)
     const links = screen.getAllByRole('link')

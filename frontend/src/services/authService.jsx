@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const AUTH_BASE_URL = "https://EC2-AQUI/auth"; // REEMPLAZAR CON LA URL DE NUESTRA API
+//const AUTH_BASE_URL = "https://EC2-AQUI/auth"; // REEMPLAZAR CON LA URL DE NUESTRA API
+const AUTH_BASE_URL = "http://localhost:8080/auth"; // PARA PROBAR LOCALMENTE
 
 // POST /auth/login
 export const loginUsuario = async (email, password) => {

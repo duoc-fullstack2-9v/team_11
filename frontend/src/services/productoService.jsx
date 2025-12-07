@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const API_URL = "https://EC2-AQUI/productos"; // REEMPLAZAR CON LA URL DE NUESTRA API
+//const API_URL = "https://EC2-AQUI/productos"; // REEMPLAZAR CON LA URL DE NUESTRA API
+const API_URL = "http://localhost:8080/productos"; // PARA PROBAR LOCALMENTE
+
 const urlConId = (id) => `${API_URL}/${id}`;
 
 // Listar todos los productos

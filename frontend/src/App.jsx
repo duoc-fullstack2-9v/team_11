@@ -13,6 +13,7 @@ import Carrito from './pages/Carrito.jsx';
 import Perfil from './pages/Perfil.jsx';
 
 import "./styles/main.css";
+
 import { Administracion } from "./pages/Administracion.jsx";
 
 function App() {

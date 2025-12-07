@@ -505,13 +505,13 @@ main {
 
 /* Mensajes de error y éxito */
 .mensaje-error {
-  color: #ff4d4f;
-  margin-bottom: 0.5rem;
-  font-weight: bold;
+  color: crimson;          
+  margin-bottom: 0.5rem;   
+  font-weight: bold;       
 }
 
 .mensaje-ok {
-  color: #39ff14;
+  color: #39ff14;       
   margin-bottom: 0.5rem;
   font-weight: bold;
 }

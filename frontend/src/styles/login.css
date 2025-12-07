@@ -16,8 +16,8 @@
     justify-content: center;
     align-items: center;
     max-width: 800px;
-    width: 100%;a/* Importa tus variables de color si están en otro archivo global, 
-   si no, copia las variables de tu main.css aquí: */
+    width: 100%;
+
 :root {
     --clr-main: #330033; /* Morado Oscuro del fondo */
     --clr-purple: #ad089d; /* Púrpura vibrante */
@@ -77,13 +77,13 @@
 }
 
 /* Mensaje de error */
-.mensaje-error {
+/* .mensaje-error {
     color: var(--clr-red);
     margin-bottom: 1rem;
     padding: 0.5rem;
     border: 1px solid var(--clr-red);
     border-radius: 0.3rem;
-}
+} */
 
 /* Estilos del formulario */
 .formulario {
@@ -205,10 +205,10 @@
     text-decoration:crimson;
 }
 
-.mensaje-error{
+/* .mensaje-error{
     color: crimson;
     margin-top: .5rem;
-}
+} */
 
 /* Estilos para pERFIL */
 /* Estilos específicos para la página de Perfil */

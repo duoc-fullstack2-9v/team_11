@@ -2,13 +2,13 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { BrowserRouter } from 'react-router-dom'
-import Perfil from '../../src/pages/Perfil'
-import * as auth from '../../src/utils/auth'
+import Perfil from '././src/pages/Perfil'
+import * as auth from '././src/utils/auth'
 
 // Mock de las funciones de autenticación
-vi.mock('../../src/utils/auth', () => ({
+vi.mock('././src/utils/auth', () => ({
   getSession: vi.fn(),
-  endSession: vi.fn(),
+  endSession: vi.fn()
 }))
 
 // Mock del hook useNavigate
@@ -16,14 +16,13 @@ const mockNavigate = vi.fn()
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom')
   return {
-    ...actual,
-    useNavigate: () => mockNavigate,
+    ...actual,                        
+    useNavigate: () => mockNavigate
   }
 })
 
 // Helper para renderizar con Router
-const renderWithRouter = (ui) =>
-  render(<BrowserRouter>{ui}</BrowserRouter>)
+const renderWithRouter = (ui) => render(<BrowserRouter>{ui}</BrowserRouter>)
 
 describe('Perfil Component', () => {
   beforeEach(() => {
@@ -44,12 +43,7 @@ describe('Perfil Component', () => {
 
     renderWithRouter(<Perfil />)
 
-    // Título
-    expect(
-      screen.getByRole('heading', { name: /mi perfil/i })
-    ).toBeInTheDocument()
-
-    // Datos
+    expect(screen.getByRole('heading', { name: /mi perfil/i })).toBeInTheDocument()
     expect(screen.getByText('Usuario:')).toBeInTheDocument()
     expect(screen.getByText('testuser')).toBeInTheDocument()
     expect(screen.getByText('Correo:')).toBeInTheDocument()

@@ -75,8 +75,9 @@ describe('Página de Administración', () => {
     const tabla = screen.getByRole('table')
     expect(tabla).toBeInTheDocument()
 
-    const imagenTexts = screen.getAllByText(/imagen/i)
-    expect(imagenTexts.length).toBeGreaterThanOrEqual(1)
+    // Buscamos específicamente el encabezado de columna "Imagen"
+    const imagenHeader = screen.getByRole('columnheader', { name: /imagen/i })
+    expect(imagenHeader).toBeInTheDocument()
 
     expect(screen.getByText(/título/i)).toBeInTheDocument()
     expect(screen.getByText(/precio/i)).toBeInTheDocument()

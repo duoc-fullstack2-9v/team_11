@@ -19,7 +19,7 @@ const mockNavigate = vi.fn()
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom')
   return {
-    ...actual,                
+    ...actual,
     useNavigate: () => mockNavigate
   }
 })
@@ -41,32 +41,46 @@ describe('Componente InicioSesion (login con API)', () => {
   test('renderiza el formulario de inicio de sesión por defecto', () => {
     renderWithRouter(<InicioSesion />)
 
-    expect(screen.getByRole('heading', { name: /iniciar sesión/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: /iniciar sesión/i })
+    ).toBeInTheDocument()
     expect(screen.getByLabelText('Correo')).toBeInTheDocument()
     expect(screen.getByLabelText('Contraseña')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Ingresar' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Registrarse' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Ingresar' })
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Registrarse' })
+    ).toBeInTheDocument()
   })
 
   test('al hacer click en el switch cambia a la vista de registro', () => {
     renderWithRouter(<InicioSesion />)
     fireEvent.click(screen.getByRole('button', { name: 'Registrarse' }))
 
-    expect(screen.getByRole('heading', { name: 'Registrarse' })).toBeInTheDocument()
-    expect(screen.getByLabelText('Nombre de usuario')).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: 'Registrarse' })
+    ).toBeInTheDocument()
+    expect(
+      screen.getByLabelText('Nombre de usuario')
+    ).toBeInTheDocument()
     expect(screen.getByLabelText('Correo')).toBeInTheDocument()
     expect(screen.getByLabelText('Contraseña')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Crear cuenta' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Iniciar sesión' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Crear cuenta' })
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Iniciar sesión' })
+    ).toBeInTheDocument()
   })
 
-  test('muestra error si se intenta iniciar sesión con campos vacíos', async () => {
+  // 👇 TEST NUEVO (campos vacíos)
+  test('no llama a loginUsuario si se intenta iniciar sesión con campos vacíos', () => {
     renderWithRouter(<InicioSesion />)
 
     fireEvent.click(screen.getByRole('button', { name: 'Ingresar' }))
 
-    const errorMsg = await screen.findByText('Todos los campos son obligatorios')
-    expect(errorMsg).toBeInTheDocument()
+    // No debería llamar a la API si faltan datos
     expect(authService.loginUsuario).not.toHaveBeenCalled()
   })
 

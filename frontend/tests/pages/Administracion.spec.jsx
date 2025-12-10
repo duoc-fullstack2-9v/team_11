@@ -5,9 +5,7 @@ import { BrowserRouter } from 'react-router-dom'
 
 import { Administracion } from '../../src/pages/Administracion'
 
-// --- MOCKS NECESARIOS ---
-
-// 1. Mock de navigate para evitar redirecciones reales
+// Mock useNavigate
 const mockNavigate = vi.fn()
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom')
@@ -17,12 +15,12 @@ vi.mock('react-router-dom', async () => {
   }
 })
 
-// 2. Mock de getSession → simular usuario ADMIN autenticado
+// Mock sesión de admin
 vi.mock('../../src/utils/auth', () => ({
-  getSession: () => ({ correo: 'admin@levelupgamer.com' }) // ADMIN_EMAILS coincide
+  getSession: () => ({ correo: 'admin@levelupgamer.com' })
 }))
 
-// 3. Mock de servicios del CRUD
+// Mock servicios CRUD
 vi.mock('../../src/services/productoService', () => ({
   listarProductos: vi.fn().mockResolvedValue([]),
   crearProducto: vi.fn().mockResolvedValue({}),
@@ -52,16 +50,13 @@ describe('Página de Administración', () => {
   it('muestra el formulario con los campos correctos', () => {
     renderAdmin()
 
-    // Nombre del producto
-    expect(screen.getByLabelText(/Nombre del Producto/i)).toBeInTheDocument()
-
-    // Precio del producto
-    expect(screen.getByLabelText(/Precio del Producto/i)).toBeInTheDocument()
-
-    // URL de imagen
+    expect(
+      screen.getByLabelText(/Nombre del Producto/i)
+    ).toBeInTheDocument()
+    expect(
+      screen.getByLabelText(/Precio del Producto/i)
+    ).toBeInTheDocument()
     expect(screen.getByLabelText(/URL de Imagen/i)).toBeInTheDocument()
-
-    // Botón principal: Agregar Producto (cuando no hay edición)
     expect(
       screen.getByRole('button', { name: /agregar producto/i })
     ).toBeInTheDocument()
@@ -80,7 +75,9 @@ describe('Página de Administración', () => {
     const tabla = screen.getByRole('table')
     expect(tabla).toBeInTheDocument()
 
-    expect(screen.getByText(/imagen/i)).toBeInTheDocument()
+    const imagenTexts = screen.getAllByText(/imagen/i)
+    expect(imagenTexts.length).toBeGreaterThanOrEqual(1)
+
     expect(screen.getByText(/título/i)).toBeInTheDocument()
     expect(screen.getByText(/precio/i)).toBeInTheDocument()
     expect(screen.getByText(/acciones/i)).toBeInTheDocument()
@@ -88,6 +85,8 @@ describe('Página de Administración', () => {
 
   it('cuando no hay productos, muestra "No hay productos registrados."', () => {
     renderAdmin()
-    expect(screen.getByText(/no hay productos registrados/i)).toBeInTheDocument()
+    expect(
+      screen.getByText(/no hay productos registrados/i)
+    ).toBeInTheDocument()
   })
 })

@@ -6,13 +6,6 @@ import { BrowserRouter } from 'react-router-dom'
 import * as CarritoContext from '../../src/context/CarritoContext.jsx'
 import { toast } from 'react-toastify'
 
-// Mock de axios para que NO llame al backend real
-vi.mock('axios', () => ({
-  default: {
-    get: vi.fn()
-  }
-}))
-const mockedAxios = axios
 
 // 💡 MOCKS (van antes de importar el componente)
 vi.mock('react-toastify', () => ({

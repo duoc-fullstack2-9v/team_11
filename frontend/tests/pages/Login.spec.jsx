@@ -60,14 +60,13 @@ describe('Componente InicioSesion (login con API)', () => {
     expect(screen.getByRole('button', { name: 'Iniciar sesión' })).toBeInTheDocument()
   })
 
-  test('muestra error si se intenta iniciar sesión con campos vacíos', () => {
+  test('muestra error si se intenta iniciar sesión con campos vacíos', async () => {
     renderWithRouter(<InicioSesion />)
 
     fireEvent.click(screen.getByRole('button', { name: 'Ingresar' }))
 
-    expect(
-      screen.getByText('Todos los campos son obligatorios')
-    ).toBeInTheDocument()
+    const errorMsg = await screen.findByText('Todos los campos son obligatorios')
+    expect(errorMsg).toBeInTheDocument()
     expect(authService.loginUsuario).not.toHaveBeenCalled()
   })
 

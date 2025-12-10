@@ -1,24 +1,22 @@
 // 💡 Mock del contexto del carrito (debe ir antes del import del componente)
-import { vi } from 'vitest'
+import { vi, describe, test, expect } from 'vitest'
+import { render, screen } from '@testing-library/react'
+import { BrowserRouter } from 'react-router-dom'
 
-vi.mock('../../src/context/CarritoContext', () => ({
+vi.mock('././src/context/CarritoContext.jsx', () => ({
   useCarrito: () => ({
-    carrito: [{ id: 1, cantidad: 5 }], // valor simulado para que no sea undefined
+    carrito: [{ id: 1, cantidad: 5 }],
     agregarAlCarrito: vi.fn(),
     eliminarDelCarrito: vi.fn(),
     vaciarCarrito: vi.fn()
   })
 }))
 
-import { describe, test, expect } from 'vitest'
-import { render, screen } from '@testing-library/react'
-import { BrowserRouter } from 'react-router-dom'
-import Header from '../../src/components/Header'
+import Header from '././src/components/Header'
 
-// Función auxiliar para envolver el componente en BrowserRouter
+// Helper
 const renderWithRouter = (ui) => render(<BrowserRouter>{ui}</BrowserRouter>)
 
-// 🔧 puedes ajustar el mock dentro de un beforeEach si quieres cambiar cantidades
 describe('Header Component', () => {
   test('renders logo and title', () => {
     renderWithRouter(<Header />)
@@ -33,31 +31,34 @@ describe('Header Component', () => {
 
   test('renders all navigation links text', () => {
     renderWithRouter(<Header />)
-    const navigationLinks = ['Iniciar sesion', 'Home', 'Catalogo', 'Carrito', 'Soporte']
-    navigationLinks.forEach(text => {
-      expect(screen.getByText(text)).toBeInTheDocument()
-    })
+    // Usamos regex para ignorar tildes/sensibilidad exacta
+    expect(screen.getByText(/iniciar sesión/i)).toBeInTheDocument()
+    expect(screen.getByText(/home/i)).toBeInTheDocument()
+    expect(screen.getByText(/catálogo/i)).toBeInTheDocument()
+    expect(screen.getByText(/carrito/i)).toBeInTheDocument()
+    expect(screen.getByText(/soporte/i)).toBeInTheDocument()
   })
 
   test('displays correct cart quantity', () => {
     renderWithRouter(<Header />)
-    const cartNumber = screen.getByText('5') // usa el 5 del mock
+    const cartNumber = screen.getByText('5')
     expect(cartNumber).toBeInTheDocument()
     expect(cartNumber).toHaveClass('numerito')
   })
 
   test('navigation links have correct classes', () => {
     renderWithRouter(<Header />)
-    expect(screen.getByText('Iniciar sesion').closest('a'))
+
+    expect(screen.getByText(/iniciar sesión/i).closest('a'))
       .toHaveClass('boton-menu', 'boton', 'login')
 
-    expect(screen.getByText('Home').closest('a'))
+    expect(screen.getByText(/home/i).closest('a'))
       .toHaveClass('boton-menu', 'boton', 'home')
 
-    expect(screen.getByText('Catalogo').closest('a'))
+    expect(screen.getByText(/catálogo/i).closest('a'))
       .toHaveClass('boton-menu', 'boton', 'categoria')
 
-    expect(screen.getByText('Carrito').closest('a'))
+    expect(screen.getByText(/carrito/i).closest('a'))
       .toHaveClass('boton-menu', 'boton-carrito')
   })
 

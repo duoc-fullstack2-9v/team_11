@@ -3,7 +3,7 @@ import { vi, describe, test, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 
-vi.mock('././src/context/CarritoContext.jsx', () => ({
+vi.mock('../../src/context/CarritoContext.jsx', () => ({
   useCarrito: () => ({
     carrito: [{ id: 1, cantidad: 5 }],
     agregarAlCarrito: vi.fn(),
@@ -12,7 +12,7 @@ vi.mock('././src/context/CarritoContext.jsx', () => ({
   })
 }))
 
-import Header from '././src/components/Header'
+import Header from '../../src/components/Header'
 
 // Helper
 const renderWithRouter = (ui) => render(<BrowserRouter>{ui}</BrowserRouter>)

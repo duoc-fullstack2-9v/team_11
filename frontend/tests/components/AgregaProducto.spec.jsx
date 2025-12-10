@@ -6,14 +6,14 @@ import '@testing-library/jest-dom'
 // 💡 Primero definimos el mock del contexto ANTES de importar el componente
 const mockAgregar = vi.fn()
 
-vi.mock('././src/context/CarritoContext.jsx', () => ({
+vi.mock('../../src/context/CarritoContext.jsx', () => ({
   useCarrito: () => ({
     agregarAlCarrito: mockAgregar
   })
 }))
 
 // 💡 Ahora sí importamos el componente (después del mock)
-import AgregaProducto from '././src/components/AgregaProducto.jsx'
+import AgregaProducto from '../../src/components/AgregaProducto.jsx'
 
 describe('AgregaProducto Component', () => {
   test('renderiza el botón correctamente', () => {

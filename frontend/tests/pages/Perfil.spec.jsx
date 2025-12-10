@@ -2,11 +2,11 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { BrowserRouter } from 'react-router-dom'
-import Perfil from '././src/pages/Perfil'
-import * as auth from '././src/utils/auth'
+import Perfil from '../../src/pages/Perfil'
+import * as auth from '../../src/utils/auth'
 
 // Mock de las funciones de autenticación
-vi.mock('././src/utils/auth', () => ({
+vi.mock('../../src/utils/auth', () => ({
   getSession: vi.fn(),
   endSession: vi.fn()
 }))

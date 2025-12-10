@@ -5,13 +5,13 @@ import '@testing-library/jest-dom'
 // 1) MOCKS ANTES DE IMPORTAR EL COMPONENTE Y EL MÓDULO
 
 // Mock de authService (API)
-vi.mock('././src/services/authService', () => ({
+vi.mock('../../src/services/authService', () => ({
   loginUsuario: vi.fn(),
   registrarUsuario: vi.fn()
 }))
 
 // Mock de utils/auth (solo startSession ahora)
-vi.mock('././src/utils/auth', () => ({
+vi.mock('../../src/utils/auth', () => ({
   startSession: vi.fn()
 }))
 
@@ -26,9 +26,9 @@ vi.mock('react-router-dom', async () => {
 
 // 2) IMPORTAMOS EL COMPONENTE REAL (InicioSesion)
 import { BrowserRouter } from 'react-router-dom'
-import InicioSesion from '././src/pages/Login'
-import * as authService from '././src/services/authService'
-import * as auth from '././src/utils/auth'
+import InicioSesion from '../../src/pages/Login'
+import * as authService from '../../src/services/authService'
+import * as auth from '../../src/utils/auth'
 
 // Helper para envolver con Router
 const renderWithRouter = (ui) => render(<BrowserRouter>{ui}</BrowserRouter>)

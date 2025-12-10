@@ -34,7 +34,7 @@ describe('productoService', () => {
     const result = await listarProductos()
 
     expect(mockedAxios.get).toHaveBeenCalledWith(
-      'http://localhost:8080/productos/'
+      'http://localhost:8080/productos'
     )
     expect(result).toEqual(fakeData)
   })
@@ -58,7 +58,7 @@ describe('productoService', () => {
     const result = await crearProducto(body)
 
     expect(mockedAxios.post).toHaveBeenCalledWith(
-      'http://localhost:8080/productos/',
+      'http://localhost:8080/productos',
       body
     )
     expect(result).toEqual(body)

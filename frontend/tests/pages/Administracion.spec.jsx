@@ -75,13 +75,22 @@ describe('Página de Administración', () => {
     const tabla = screen.getByRole('table')
     expect(tabla).toBeInTheDocument()
 
-    // Buscamos específicamente el encabezado de columna "Imagen"
-    const imagenHeader = screen.getByRole('columnheader', { name: /imagen/i })
-    expect(imagenHeader).toBeInTheDocument()
+    // Verificamos cada encabezado de columna por rol
+    expect(
+      screen.getByRole('columnheader', { name: /imagen/i })
+    ).toBeInTheDocument()
 
-    expect(screen.getByText(/título/i)).toBeInTheDocument()
-    expect(screen.getByText(/precio/i)).toBeInTheDocument()
-    expect(screen.getByText(/acciones/i)).toBeInTheDocument()
+    expect(
+      screen.getByRole('columnheader', { name: /título/i })
+    ).toBeInTheDocument()
+
+    expect(
+      screen.getByRole('columnheader', { name: /precio/i })
+    ).toBeInTheDocument()
+
+    expect(
+      screen.getByRole('columnheader', { name: /acciones/i })
+    ).toBeInTheDocument()
   })
 
   it('cuando no hay productos, muestra "No hay productos registrados."', () => {

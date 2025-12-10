@@ -2,7 +2,7 @@ import { describe, test, expect, vi } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
 
-import ProductoHome from '././src/components/ProductoHome.jsx'
+import ProductoHome from '../../src/components/ProductoHome.jsx'
 
 describe('ProductoHome Component', () => {
   const mockProducto = {

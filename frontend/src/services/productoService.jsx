@@ -1,7 +1,7 @@
 import axios from "axios";
 
-//const API_URL = "http://ec2-3-212-50-160.compute-1.amazonaws.com/productos"; // REEMPLAZAR CON LA URL DE NUESTRA API
-const API_URL = "http://localhost:8080/productos"; // PARA PROBAR LOCALMENTE
+const API_URL = "http://ec2-3-212-50-160.compute-1.amazonaws.com/productos"; // REEMPLAZAR CON LA URL DE NUESTRA API
+//const API_URL = "http://localhost:8080/productos"; // PARA PROBAR LOCALMENTE
 
 const urlConId = (id) => `${API_URL}/${id}`;
 

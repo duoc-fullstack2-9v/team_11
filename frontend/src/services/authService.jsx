@@ -1,7 +1,7 @@
 import axios from "axios";
 
-//const AUTH_BASE_URL = "http://ec2-3-212-50-160.compute-1.amazonaws.com/auth"; // REEMPLAZAR CON LA URL DE NUESTRA API
-const AUTH_BASE_URL = "http://localhost:8080/auth"; // PARA PROBAR LOCALMENTE
+const AUTH_BASE_URL = "http://ec2-3-212-50-160.compute-1.amazonaws.com/auth"; // REEMPLAZAR CON LA URL DE NUESTRA API
+//const AUTH_BASE_URL = "http://localhost:8080/auth"; // PARA PROBAR LOCALMENTE
 
 // POST /auth/login
 export const loginUsuario = async (email, password) => {

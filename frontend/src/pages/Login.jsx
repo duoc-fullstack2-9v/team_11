@@ -24,15 +24,22 @@ function InicioSesion() {
         }
 
         try {
-            await loginUsuario(correo, contrasena); // llama a post /auth/login
+            // await loginUsuario(correo, contrasena); // llama a post /auth/login
 
-            const datosSesion = {
-                correo,
-                email: correo,
-            };
-            startSession(datosSesion);
+            // const datosSesion = {
+            //     correo,
+            //     email: correo,
+            // };
+            // startSession(datosSesion);
+            // navigate("/perfil");
+
+            const resp = await loginUsuario(correo, contrasena);
+
+            // resp contiene lo que Isa devuelva: { id, email, token }
+            startSession(resp);
 
             navigate("/perfil");
+
         } catch (err) {
             console.error(err);
             setError("Usuario o contraseña incorrectos");

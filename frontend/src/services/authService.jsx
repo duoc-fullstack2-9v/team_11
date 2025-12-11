@@ -8,7 +8,7 @@ export const loginUsuario = async (email, password) => {
   const body = { email, password };
 
   const response = await axios.post(`${AUTH_BASE_URL}/login`, body); //si la contraseña está mal, se lanza un error 401
-  return response.data; // "Login exitoso"
+  return response.data; // Antes: "Login exitoso", Ahora: {id, email, token}
 };
 
 // POST /auth/registro

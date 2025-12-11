@@ -16,7 +16,7 @@ const mockNavigate = vi.fn()
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom')
   return {
-    ...actual,                        
+    ...actual,
     useNavigate: () => mockNavigate
   }
 })
@@ -38,20 +38,23 @@ describe('Perfil Component', () => {
   })
 
   it('muestra la información del perfil cuando existe sesión', () => {
-    const mockSession = { usuario: 'testuser', correo: 'test@example.com' }
+    const mockSession = { id: 1, email: 'test@example.com', token: 'fake-token' }
     auth.getSession.mockReturnValue(mockSession)
 
     renderWithRouter(<Perfil />)
 
     expect(screen.getByRole('heading', { name: /mi perfil/i })).toBeInTheDocument()
+    // expect(screen.getByText('Usuario:')).toBeInTheDocument()
+    // expect(screen.getByText('testuser')).toBeInTheDocument()
+    // expect(screen.getByText('Correo:')).toBeInTheDocument()
+    // expect(screen.getByText('test@example.com')).toBeInTheDocument()
     expect(screen.getByText('Usuario:')).toBeInTheDocument()
-    expect(screen.getByText('testuser')).toBeInTheDocument()
     expect(screen.getByText('Correo:')).toBeInTheDocument()
     expect(screen.getByText('test@example.com')).toBeInTheDocument()
   })
 
   it('cierra sesión correctamente', () => {
-    const mockSession = { usuario: 'testuser', correo: 'test@example.com' }
+    const mockSession = { id: 1, email: 'test@example.com', token: 'fake-token' }
     auth.getSession.mockReturnValue(mockSession)
 
     renderWithRouter(<Perfil />)
@@ -64,7 +67,7 @@ describe('Perfil Component', () => {
   })
 
   it('muestra la foto de perfil con clases y src correctos', () => {
-    const mockSession = { usuario: 'testuser', correo: 'test@example.com' }
+    const mockSession = { id: 1, email: 'test@example.com', token: 'fake-token' }
     auth.getSession.mockReturnValue(mockSession)
 
     renderWithRouter(<Perfil />)
@@ -76,7 +79,7 @@ describe('Perfil Component', () => {
   })
 
   it('oculta la imagen si ocurre un error de carga', () => {
-    const mockSession = { usuario: 'testuser', correo: 'test@example.com' }
+    const mockSession = { id: 1, email: 'test@example.com', token: 'fake-token' }
     auth.getSession.mockReturnValue(mockSession)
 
     renderWithRouter(<Perfil />)
@@ -88,7 +91,7 @@ describe('Perfil Component', () => {
   })
 
   it('contiene el enlace al catálogo', () => {
-    const mockSession = { usuario: 'testuser', correo: 'test@example.com' }
+    const mockSession = { id: 1, email: 'test@example.com', token: 'fake-token' }
     auth.getSession.mockReturnValue(mockSession)
 
     renderWithRouter(<Perfil />)
@@ -100,7 +103,7 @@ describe('Perfil Component', () => {
   })
 
   it('renderiza con las clases CSS principales', () => {
-    const mockSession = { usuario: 'testuser', correo: 'test@example.com' }
+    const mockSession = { id: 1, email: 'test@example.com', token: 'fake-token' }
     auth.getSession.mockReturnValue(mockSession)
 
     const { container } = renderWithRouter(<Perfil />)

@@ -19,20 +19,34 @@ describe('authService', () => {
     mockedAxios.post.mockReset()
   })
 
+  // it('loginUsuario llama a POST /auth/login con body correcto y devuelve data', async () => {
+  //   mockedAxios.post.mockResolvedValue({ data: 'Login exitoso' })
+
+  //   const result = await loginUsuario('test@test.com', 'pass123')
+
+  //   expect(mockedAxios.post).toHaveBeenCalledWith(
+  //     'http://localhost:8080/auth/login',
+  //     { email: 'test@test.com', password: 'pass123' }
+  //   )
+  //   expect(result).toBe('Login exitoso')
+  // })
   it('loginUsuario llama a POST /auth/login con body correcto y devuelve data', async () => {
-    mockedAxios.post.mockResolvedValue({ data: 'Login exitoso' })
+    const fakeLoginResponse = { id: 1, email: 'test@test.com', token: 'fake-token' }
+    mockedAxios.post.mockResolvedValue({ data: fakeLoginResponse })
 
     const result = await loginUsuario('test@test.com', 'pass123')
 
     expect(mockedAxios.post).toHaveBeenCalledWith(
-      'http://localhost:8080/auth/login',
+      'http://ec2-3-212-50-160.compute-1.amazonaws.com/auth/login',
       { email: 'test@test.com', password: 'pass123' }
     )
-    expect(result).toBe('Login exitoso')
+    expect(result).toEqual(fakeLoginResponse)
   })
 
   it('registrarUsuario llama a POST /auth/registro con body correcto y devuelve data', async () => {
-    const fakeUser = { id: 1, email: 'test@test.com' }
+    // const fakeUser = { id: 1, email: 'test@test.com' }
+    // mockedAxios.post.mockResolvedValue({ data: fakeUser })
+    const fakeUser = { id: 1, email: 'test@test.com', password: 'pass123' }
     mockedAxios.post.mockResolvedValue({ data: fakeUser })
 
     const result = await registrarUsuario('test@test.com', 'pass123')

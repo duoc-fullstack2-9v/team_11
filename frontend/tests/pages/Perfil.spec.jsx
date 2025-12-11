@@ -44,13 +44,10 @@ describe('Perfil Component', () => {
     renderWithRouter(<Perfil />)
 
     expect(screen.getByRole('heading', { name: /mi perfil/i })).toBeInTheDocument()
-    // expect(screen.getByText('Usuario:')).toBeInTheDocument()
-    // expect(screen.getByText('testuser')).toBeInTheDocument()
-    // expect(screen.getByText('Correo:')).toBeInTheDocument()
-    // expect(screen.getByText('test@example.com')).toBeInTheDocument()
     expect(screen.getByText('Usuario:')).toBeInTheDocument()
     expect(screen.getByText('Correo:')).toBeInTheDocument()
-    expect(screen.getByText('test@example.com')).toBeInTheDocument()
+    const emails = screen.getAllByText('test@example.com')
+    expect(emails).toHaveLength(2) // aparece en "Usuario" y en "Correo"
   })
 
   it('cierra sesión correctamente', () => {

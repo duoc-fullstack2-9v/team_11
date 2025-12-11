@@ -34,7 +34,7 @@ describe('productoService', () => {
     const result = await listarProductos()
 
     expect(mockedAxios.get).toHaveBeenCalledWith(
-      'http://localhost:8080/productos'
+      'http://ec2-3-212-50-160.compute-1.amazonaws.com/productos'
     )
     expect(result).toEqual(fakeData)
   })
@@ -46,7 +46,7 @@ describe('productoService', () => {
     const result = await obtenerProductoPorId(2)
 
     expect(mockedAxios.get).toHaveBeenCalledWith(
-      'http://localhost:8080/productos/2'
+      'http://ec2-3-212-50-160.compute-1.amazonaws.com/productos/2'
     )
     expect(result).toEqual(fakeData)
   })
@@ -58,7 +58,7 @@ describe('productoService', () => {
     const result = await crearProducto(body)
 
     expect(mockedAxios.post).toHaveBeenCalledWith(
-      'http://localhost:8080/productos',
+      'http://ec2-3-212-50-160.compute-1.amazonaws.com/productos',
       body
     )
     expect(result).toEqual(body)
@@ -71,7 +71,7 @@ describe('productoService', () => {
     const result = await actualizarProducto(5, body)
 
     expect(mockedAxios.put).toHaveBeenCalledWith(
-      'http://localhost:8080/productos/5',
+      'http://ec2-3-212-50-160.compute-1.amazonaws.com/productos/5',
       body
     )
     expect(result).toEqual(body)
@@ -83,7 +83,7 @@ describe('productoService', () => {
     const result = await eliminarProducto(10)
 
     expect(mockedAxios.delete).toHaveBeenCalledWith(
-      'http://localhost:8080/productos/10'
+      'http://ec2-3-212-50-160.compute-1.amazonaws.com/productos/10'
     )
     expect(result).toBeNull() 
   })

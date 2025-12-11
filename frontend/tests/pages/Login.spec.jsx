@@ -58,20 +58,6 @@ describe('Componente InicioSesion (login con API)', () => {
     renderWithRouter(<InicioSesion />)
     fireEvent.click(screen.getByRole('button', { name: 'Registrarse' }))
 
-    // expect(
-    //   screen.getByRole('heading', { name: 'Registrarse' })
-    // ).toBeInTheDocument()
-    // expect(
-    //   screen.getByLabelText('Nombre de usuario')
-    // ).toBeInTheDocument()
-    // expect(screen.getByLabelText('Correo')).toBeInTheDocument()
-    // expect(screen.getByLabelText('Contraseña')).toBeInTheDocument()
-    // expect(
-    //   screen.getByRole('button', { name: 'Crear cuenta' })
-    // ).toBeInTheDocument()
-    // expect(
-    //   screen.getByRole('button', { name: 'Iniciar sesión' })
-    // ).toBeInTheDocument()
     expect(
       screen.getByRole('heading', { name: 'Registrarse' })
     ).toBeInTheDocument()
@@ -121,10 +107,6 @@ describe('Componente InicioSesion (login con API)', () => {
       )
     })
 
-    // expect(auth.startSession).toHaveBeenCalledWith({
-    //   correo: 'test@test.com',
-    //   email: 'test@test.com'
-    // })
     expect(auth.startSession).toHaveBeenCalledWith({
       id: 1,
       email: 'test@test.com',
@@ -159,10 +141,6 @@ describe('Componente InicioSesion (login con API)', () => {
 
   test('registro exitoso llama a registrarUsuario, startSession y navega a /perfil', async () => {
 
-    // authService.registrarUsuario.mockResolvedValue({
-    //   id: 1,
-    //   email: 'nuevo@test.com'
-    // })
     authService.registrarUsuario.mockResolvedValue({
       id: 1,
       email: 'nuevo@test.com',
@@ -172,18 +150,6 @@ describe('Componente InicioSesion (login con API)', () => {
     renderWithRouter(<InicioSesion />)
 
     // Cambiamos a vista registro
-    // fireEvent.click(screen.getByRole('button', { name: 'Registrarse' }))
-
-    // fireEvent.change(screen.getByLabelText('Nombre de usuario'), {
-    //   target: { value: 'newuser' }
-    // })
-    // fireEvent.change(screen.getByLabelText('Correo'), {
-    //   target: { value: 'nuevo@test.com' }
-    // })
-    // fireEvent.change(screen.getByLabelText('Contraseña'), {
-    //   target: { value: 'newpass123' }
-    // })
-    // fireEvent.click(screen.getByRole('button', { name: 'Crear cuenta' }))
     fireEvent.click(screen.getByRole('button', { name: 'Registrarse' }))
 
     fireEvent.change(screen.getByLabelText('Correo'), {
@@ -205,11 +171,6 @@ describe('Componente InicioSesion (login con API)', () => {
       )
     })
 
-    // expect(auth.startSession).toHaveBeenCalledWith({
-    //   usuario: 'newuser',
-    //   correo: 'nuevo@test.com',
-    //   email: 'nuevo@test.com'
-    // })
     expect(auth.startSession).toHaveBeenCalledWith({
       id: 1,
       email: 'nuevo@test.com',
@@ -224,18 +185,6 @@ describe('Componente InicioSesion (login con API)', () => {
 
     renderWithRouter(<InicioSesion />)
 
-    // fireEvent.click(screen.getByRole('button', { name: 'Registrarse' }))
-
-    // fireEvent.change(screen.getByLabelText('Nombre de usuario'), {
-    //   target: { value: 'newuser' }
-    // })
-    // fireEvent.change(screen.getByLabelText('Correo'), {
-    //   target: { value: 'nuevo@test.com' }
-    // })
-    // fireEvent.change(screen.getByLabelText('Contraseña'), {
-    //   target: { value: 'newpass123' }
-    // })
-    // fireEvent.click(screen.getByRole('button', { name: 'Crear cuenta' }))
     fireEvent.click(screen.getByRole('button', { name: 'Registrarse' }))
 
     fireEvent.change(screen.getByLabelText('Correo'), {

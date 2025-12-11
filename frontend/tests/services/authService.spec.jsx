@@ -33,8 +33,6 @@ describe('authService', () => {
   })
 
   it('registrarUsuario llama a POST /auth/registro con body correcto y devuelve data', async () => {
-    // const fakeUser = { id: 1, email: 'test@test.com' }
-    // mockedAxios.post.mockResolvedValue({ data: fakeUser })
     const fakeUser = { id: 1, email: 'test@test.com', password: 'pass123' }
     mockedAxios.post.mockResolvedValue({ data: fakeUser })
 

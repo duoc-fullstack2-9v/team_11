@@ -1,14 +1,28 @@
-import { useCarrito } from "../context/CarritoContext.jsx"; 
+import { useState } from "react";
+import { useCarrito } from "../context/CarritoContext.jsx";
 import { Link } from "react-router-dom";
 
 function Carrito() {
-    const { carrito, eliminarDelCarrito } = useCarrito(); 
+    //const { carrito, eliminarDelCarrito } = useCarrito(); 
+    // Desestructuramos para obtener las funciones y el estado del carrito
+    const { carrito, eliminarDelCarrito, vaciarCarrito } = useCarrito();
+    
+    // Estado para manejar la confirmación de compra
+    const [compraRealizada, setCompraRealizada] = useState(false);
 
     // Calcula el total a pagar
     const totalPagar = carrito.reduce((acc, prod) => acc + (prod.precio * prod.cantidad), 0);
 
     // Formatea precios con separador de miles en formato chileno
     const formatPrecio = (precio) => new Intl.NumberFormat('es-CL').format(precio);
+
+    // Maneja la acción de pagar (simulación)
+    const handlePagar = () => {
+        if (carrito.length === 0) return;
+
+        vaciarCarrito();
+        setCompraRealizada(true);
+    };
 
     return (
         <main>
@@ -25,10 +39,10 @@ function Carrito() {
                         {carrito.map((producto) => (
                             <div className="carrito-producto" key={producto.id}>
                                 {/*  Imagen directa desde el import */}
-                                <img 
-                                    className="carrito-producto-imagen" 
-                                    src={producto.imagen} 
-                                    alt={producto.titulo} 
+                                <img
+                                    className="carrito-producto-imagen"
+                                    src={producto.imagen}
+                                    alt={producto.titulo}
                                 />
 
                                 <div className="carrito-producto-titulo">
@@ -51,11 +65,11 @@ function Carrito() {
                                     <p>${formatPrecio(producto.precio * producto.cantidad)}</p>
                                 </div>
 
-                                <button 
+                                <button
                                     className="carrito-producto-eliminar"
                                     onClick={() => eliminarDelCarrito(producto.id)}
                                     title="Eliminar del carrito"
-                                > 
+                                >
                                     <i className="bi bi-trash-fill"></i>
                                 </button>
                             </div>
@@ -70,13 +84,24 @@ function Carrito() {
                                 <p id="total">${formatPrecio(totalPagar)}</p>
                             </div>
 
-                            <button className="carrito-acciones-comprar">
+                            {/* <button className="carrito-acciones-comprar">
+                                Paga de forma segura
+                            </button> */}
+                            <button
+                                className="carrito-acciones-comprar"
+                                onClick={handlePagar}
+                            >
                                 Paga de forma segura
                             </button>
 
-                            <p className="carrito-comprado disabled">
+                            {/* <p className="carrito-comprado disabled">
                                 ¡Gracias por tu compra! <i className="bi bi-emoji-laughing-fill"></i>
-                            </p>
+                            </p> */}
+                            {compraRealizada && (
+                                <p className="carrito-comprado">
+                                    ¡Gracias por tu compra! <i className="bi bi-emoji-laughing-fill"></i>
+                                </p>
+                            )}
                         </div>
                     </div>
                 </div>

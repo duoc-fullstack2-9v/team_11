@@ -49,10 +49,15 @@ export const CarritoProvider = ({ children }) => {
     });
   };
 
+  const vaciarCarrito = () => {
+    setCarrito([]);
+  };
+
   const contextValue = {
     carrito,
     agregarAlCarrito,
     eliminarDelCarrito,
+    vaciarCarrito
   };
 
   return (

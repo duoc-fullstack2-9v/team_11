@@ -33,10 +33,11 @@ function InicioSesion() {
             // startSession(datosSesion);
             // navigate("/perfil");
 
-            const resp = await loginUsuario(correo, contrasena);
+            // Ahora el backend devuelve un JSON: { id, email, token }
+            const datosSesion = await loginUsuario(correo, contrasena);
 
-            // resp contiene lo que Isa devuelva: { id, email, token }
-            startSession(resp);
+            // Guardamos directamente lo que vino del backend
+            startSession(datosSesion);
 
             navigate("/perfil");
 
@@ -92,14 +93,12 @@ function InicioSesion() {
         }
 
         try {
-            await registrarUsuario(correo, contrasena); // llama al post auth/registro
+            // El backend devuelve el usuario creado: { id, email, password }
+            const usuarioCreado = await registrarUsuario(correo, contrasena);
 
-            const nuevoUsuarioSesion = {
-                correo,
-                email: correo
-            };
+            // Guardamos la sesión usando lo que devuelve el backend
+            startSession(usuarioCreado);
 
-            startSession(nuevoUsuarioSesion);
             navigate("/perfil");
 
         } catch (err) {

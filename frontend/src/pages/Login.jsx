@@ -10,94 +10,97 @@ function InicioSesion() {
     const [error, setError] = useState("");
     const navigate = useNavigate(); //esto debería redirigir tras inicioSesion
 
-    // const iniciarSesion = e => {
-    //     e.preventDefault();
-    //     const formulario = new FormData(e.target);
-    //     const usuario = formulario.get("usuario");
-    //     const contrasena = formulario.get("contrasena");
-
-    //     const user = findUser(usuario);
-    //     if (!user || user.contrasena !== contrasena){
-    //         setError("Usuario o contraseña incorrectos");
-    //         return;
-    //     }
-    //     startSession(user);
-    //     navigate("/perfil"); //redirige a perfil
-    // }
-
     const iniciarSesion = async (e) => {
-    e.preventDefault();
-    setError("");
+        e.preventDefault();
+        setError("");
 
-    const formulario = new FormData(e.target);
-    const correo = formulario.get("correo");
-    const contrasena = formulario.get("contrasena");
+        const formulario = new FormData(e.target);
+        const correo = formulario.get("correo");
+        const contrasena = formulario.get("contrasena");
 
-    if (!correo || !contrasena) {
-        setError("Todos los campos son obligatorios");
-        return;
-    }
+        if (!correo || !contrasena) {
+            setError("Todos los campos son obligatorios");
+            return;
+        }
 
-    try {
-        await loginUsuario(correo, contrasena); // llama a post /auth/login
+        try {
+            await loginUsuario(correo, contrasena); // llama a post /auth/login
 
-        const datosSesion = {
-        correo,
-        email: correo,
-        };
-        startSession(datosSesion);
+            const datosSesion = {
+                correo,
+                email: correo,
+            };
+            startSession(datosSesion);
 
-        navigate("/perfil");
-    } catch (err) {
-        console.error(err);
-        setError("Usuario o contraseña incorrectos");
+            navigate("/perfil");
+        } catch (err) {
+            console.error(err);
+            setError("Usuario o contraseña incorrectos");
         }
     };
 
+    // const registrarse = async (e) => {
+    // e.preventDefault();
+    // setError("");
 
-    // const registrarse = (e) => {
-    //     e.preventDefault();
-    //     const formulario_reg = new FormData(e.target);
-    //     const usuario = formulario_reg.get("usuario");
-    //     const correo = formulario_reg.get("correo");
-    //     const contrasena = formulario_reg.get("contrasena");
+    // const formulario_reg = new FormData(e.target);
+    // const usuario = formulario_reg.get("usuario");  // solo lo guardaremos en la sesión
+    // const correo = formulario_reg.get("correo");    // este va como email al backend
+    // const contrasena = formulario_reg.get("contrasena");
 
-    //     if (findUser(usuario)) {
-    //         setError("Ese usuario ya existe");
-    //         return;
-    //     }
+    // try {
+    //     await registrarUsuario(correo, contrasena); //llama al post auth/registro 
 
-    //     const nuevoUsuario = {usuario, correo, contrasena}; 
-    //     saveUser(nuevoUsuario);
-    //     startSession(nuevoUsuario);
+    //     const nuevoUsuarioSesion = { //Se guarda nombre de usuario a nivel de frontend
+    //         usuario,
+    //         correo,
+    //         email: correo
+    //     };
+
+    //     startSession(nuevoUsuarioSesion);
     //     navigate("/perfil");
-    // }
+
+    // } catch (err) {
+    //     console.error(err);
+    //     setError("No se pudo registrar el usuario.");
+    //     }
+    // };
     const registrarse = async (e) => {
-    e.preventDefault();
-    setError("");
+        e.preventDefault();
+        setError("");
 
-    const formulario_reg = new FormData(e.target);
-    const usuario = formulario_reg.get("usuario");  // solo lo guardaremos en la sesión
-    const correo = formulario_reg.get("correo");    // este va como email al backend
-    const contrasena = formulario_reg.get("contrasena");
+        const formulario_reg = new FormData(e.target);
+        const correo = formulario_reg.get("correo");
+        const contrasena = formulario_reg.get("contrasena");
+        const confirmarContrasena = formulario_reg.get("confirmarContrasena");
 
-    try {
-        await registrarUsuario(correo, contrasena); //llama al post auth/registro 
+        if (!correo || !contrasena || !confirmarContrasena) {
+            setError("Todos los campos son obligatorios");
+            return;
+        }
 
-        const nuevoUsuarioSesion = { //Se guarda nombre de usuario a nivel de frontend
-            usuario,
-            correo,
-            email: correo
-        };
+        if (contrasena !== confirmarContrasena) {
+            setError("Las contraseñas no coinciden");
+            return;
+        }
 
-        startSession(nuevoUsuarioSesion);
-        navigate("/perfil");
+        try {
+            await registrarUsuario(correo, contrasena); // llama al post auth/registro
 
-    } catch (err) {
-        console.error(err);
-        setError("No se pudo registrar el usuario.");
+            const nuevoUsuarioSesion = {
+                correo,
+                email: correo
+            };
+
+            startSession(nuevoUsuarioSesion);
+            navigate("/perfil");
+
+        } catch (err) {
+            console.error(err);
+            setError("No se pudo registrar el usuario.");
         }
     };
+
 
     return (
         <>
@@ -149,7 +152,7 @@ function InicioSesion() {
                             <section className="auth-card">
                                 <h2>Registrarse</h2>
                                 <form className="formulario" onSubmit={registrarse}>
-                                    <div className="formulario-grupo">
+                                    {/* <div className="formulario-grupo">
                                         <label htmlFor="reg-usuario">Nombre de usuario</label>
                                         <input
                                             id="reg-usuario"
@@ -177,7 +180,40 @@ function InicioSesion() {
                                         />
                                     </div>
                                     <button className="boton-primario">Crear cuenta
-                                    </button>
+                                    </button> */}
+                                    <div className="formulario-grupo">
+                                        <label htmlFor="reg-correo">Correo</label>
+                                        <input
+                                            type="email"
+                                            id="reg-correo"
+                                            name="correo"
+                                            required
+                                            className="formulario-control"
+                                        />
+                                    </div>
+
+                                    <div className="formulario-grupo">
+                                        <label htmlFor="reg-contrasena">Contraseña</label>
+                                        <input
+                                            type="password"
+                                            id="reg-contrasena"
+                                            name="contrasena"
+                                            className="formulario-control"
+                                            required
+                                        />
+                                    </div>
+
+                                    <div className="formulario-grupo">
+                                        <label htmlFor="reg-confirmar-contrasena">Confirmar contraseña</label>
+                                        <input
+                                            type="password"
+                                            id="reg-confirmar-contrasena"
+                                            name="confirmarContrasena"
+                                            className="formulario-control"
+                                            required
+                                        />
+                                    </div>
+                                    <button className="boton-primario">Crear cuenta</button>
                                 </form>
                             </section>
                         )}

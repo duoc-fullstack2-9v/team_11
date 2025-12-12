@@ -123,6 +123,7 @@ export function Administracion() {
 
     // armado del producto
     const producto = {
+      id: null, // esto es porque el backend pide id  
       titulo: datosProducto.nombre,
       precio: Number(datosProducto.precio),
       imagen: datosProducto.imagen,

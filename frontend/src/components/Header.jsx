@@ -3,7 +3,6 @@ import { useCarrito } from "../context/CarritoContext.jsx";
 import { useNavigate } from "react-router-dom";
 import { getSession, endSession } from "../utils/auth";
 
-
 import logo from "../assets/imgs/imagen_2025-09-05_021420718-removebg-preview.png";
 
 function Header() {
@@ -20,11 +19,13 @@ function Header() {
   };
 
   // Calcular total de ítems
-  const totalItems = carrito.reduce((acc, producto) => acc + producto.cantidad, 0);
+  const totalItems = carrito.reduce(
+    (acc, producto) => acc + producto.cantidad,
+    0
+  );
 
   return (
     <aside>
-
       <img className="logo-imagen" src={logo} alt="Logo de mi tienda" />
 
       <header>
@@ -59,13 +60,27 @@ function Header() {
                   background: "none",
                   cursor: "pointer",
                   width: "100%",
-                  textAlign: "left"
+                  textAlign: "left",
                 }}
               >
                 <i className="bi bi-box-arrow-right"></i> Cerrar sesión
               </button>
             </li>
           )}
+          {/* Administración (solo para admin) */}
+          {sesion &&
+            (sesion.correo || sesion.email) &&
+            (sesion.correo || sesion.email).trim().toLowerCase() ===
+              "admin@levelupgamer.com" && (
+              <li>
+                <NavLink
+                  className="boton-menu boton categoria"
+                  to="/administracion"
+                >
+                  <i className="bi bi-gear-fill"></i> Administración
+                </NavLink>
+              </li>
+            )}
 
           {/* Home */}
           <li>

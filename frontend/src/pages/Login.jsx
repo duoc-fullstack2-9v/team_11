@@ -4,161 +4,166 @@ import { startSession } from "../utils/auth";
 import { loginUsuario, registrarUsuario } from "../services/authService";
 import "../styles/Login.css";
 
-
 function InicioSesion() {
-    const [view, setView] = useState("inicioSesion");
-    const [error, setError] = useState("");
-    const navigate = useNavigate(); //esto debería redirigir tras inicioSesion
+  const [view, setView] = useState("inicioSesion");
+  const [error, setError] = useState("");
+  const navigate = useNavigate(); //esto debería redirigir tras inicioSesion
 
-    const iniciarSesion = async (e) => {
-        e.preventDefault();
-        setError("");
+  const iniciarSesion = async (e) => {
+    e.preventDefault();
+    setError("");
 
-        const formulario = new FormData(e.target);
-        const correo = formulario.get("correo");
-        const contrasena = formulario.get("contrasena");
+    const formulario = new FormData(e.target);
+    const correo = formulario.get("correo");
+    const contrasena = formulario.get("contrasena");
 
-        if (!correo || !contrasena) {
-            setError("Todos los campos son obligatorios");
-            return;
-        }
+    if (!correo || !contrasena) {
+      setError("Todos los campos son obligatorios");
+      return;
+    }
 
-        try {
-            // await loginUsuario(correo, contrasena); // llama a post /auth/login
+    try {
+      // Llamamos al backend: devuelve { id, email, token }
+      const resp = await loginUsuario(correo, contrasena);
 
-            // const datosSesion = {
-            //     correo,
-            //     email: correo,
-            // };
-            // startSession(datosSesion);
-            // navigate("/perfil");
+      // Normalizamos y armamos el objeto de sesión
+      const datosSesion = {
+        id: resp.id,
+        correo: resp.email, // para que exista 'correo'
+        email: resp.email,
+        usuario: resp.email, // por si en otro lado usan 'usuario'
+        token: resp.token,
+      };
 
-            // Ahora el backend devuelve un JSON: { id, email, token }
-            const datosSesion = await loginUsuario(correo, contrasena);
+      // Guardamos sesión
+      startSession(datosSesion);
 
-            // Guardamos directamente lo que vino del backend
-            startSession(datosSesion);
+      // Redirigimos al perfil
+      navigate("/perfil");
+    } catch (err) {
+      console.error(err);
+      setError("Usuario o contraseña incorrectos");
+    }
+  };
 
-            navigate("/perfil");
+  // const registrarse = async (e) => {
+  // e.preventDefault();
+  // setError("");
 
-        } catch (err) {
-            console.error(err);
-            setError("Usuario o contraseña incorrectos");
-        }
-    };
+  // const formulario_reg = new FormData(e.target);
+  // const usuario = formulario_reg.get("usuario");  // solo lo guardaremos en la sesión
+  // const correo = formulario_reg.get("correo");    // este va como email al backend
+  // const contrasena = formulario_reg.get("contrasena");
 
-    // const registrarse = async (e) => {
-    // e.preventDefault();
-    // setError("");
+  // try {
+  //     await registrarUsuario(correo, contrasena); //llama al post auth/registro
 
-    // const formulario_reg = new FormData(e.target);
-    // const usuario = formulario_reg.get("usuario");  // solo lo guardaremos en la sesión
-    // const correo = formulario_reg.get("correo");    // este va como email al backend
-    // const contrasena = formulario_reg.get("contrasena");
+  //     const nuevoUsuarioSesion = { //Se guarda nombre de usuario a nivel de frontend
+  //         usuario,
+  //         correo,
+  //         email: correo
+  //     };
 
-    // try {
-    //     await registrarUsuario(correo, contrasena); //llama al post auth/registro 
+  //     startSession(nuevoUsuarioSesion);
+  //     navigate("/perfil");
 
-    //     const nuevoUsuarioSesion = { //Se guarda nombre de usuario a nivel de frontend
-    //         usuario,
-    //         correo,
-    //         email: correo
-    //     };
+  // } catch (err) {
+  //     console.error(err);
+  //     setError("No se pudo registrar el usuario.");
+  //     }
+  // };
+  const registrarse = async (e) => {
+    e.preventDefault();
+    setError("");
 
-    //     startSession(nuevoUsuarioSesion);
-    //     navigate("/perfil");
+    const formulario_reg = new FormData(e.target);
+    const correo = formulario_reg.get("correo");
+    const contrasena = formulario_reg.get("contrasena");
+    const confirmarContrasena = formulario_reg.get("confirmarContrasena");
 
-    // } catch (err) {
-    //     console.error(err);
-    //     setError("No se pudo registrar el usuario.");
-    //     }
-    // };
-    const registrarse = async (e) => {
-        e.preventDefault();
-        setError("");
+    if (!correo || !contrasena || !confirmarContrasena) {
+      setError("Todos los campos son obligatorios");
+      return;
+    }
 
-        const formulario_reg = new FormData(e.target);
-        const correo = formulario_reg.get("correo");
-        const contrasena = formulario_reg.get("contrasena");
-        const confirmarContrasena = formulario_reg.get("confirmarContrasena");
+    if (contrasena !== confirmarContrasena) {
+      setError("Las contraseñas no coinciden");
+      return;
+    }
 
-        if (!correo || !contrasena || !confirmarContrasena) {
-            setError("Todos los campos son obligatorios");
-            return;
-        }
+    try {
+      // El backend devuelve: { id, email, password }
+      const usuarioCreado = await registrarUsuario(correo, contrasena);
 
-        if (contrasena !== confirmarContrasena) {
-            setError("Las contraseñas no coinciden");
-            return;
-        }
+      // Armamos la sesión igual que en login (sin token)
+      const datosSesion = {
+        id: usuarioCreado.id,
+        correo: usuarioCreado.email,
+        email: usuarioCreado.email,
+        usuario: usuarioCreado.email,
+      };
 
-        try {
-            // El backend devuelve el usuario creado: { id, email, password }
-            const usuarioCreado = await registrarUsuario(correo, contrasena);
+      startSession(datosSesion);
+      navigate("/perfil");
+    } catch (err) {
+      console.error(err);
+      setError("No se pudo registrar el usuario.");
+    }
+  };
 
-            // Guardamos la sesión usando lo que devuelve el backend
-            startSession(usuarioCreado);
+  return (
+    <>
+      <main className="auth-page">
+        <div className="contenedor-auth">
+          <div className="auth-caja">
+            <button
+              className="auth-switch"
+              onClick={() => {
+                setError("");
+                setView((v) =>
+                  v === "inicioSesion" ? "registro" : "inicioSesion"
+                );
+              }}
+            >
+              {view === "inicioSesion" ? "Registrarse" : "Iniciar sesión"}
+            </button>
 
-            navigate("/perfil");
+            {error && <p className="mensaje-error">{error}</p>}
 
-        } catch (err) {
-            console.error(err);
-            setError("No se pudo registrar el usuario.");
-        }
-    };
+            {view === "inicioSesion" && (
+              <section className="auth-card">
+                <h2>Iniciar sesión</h2>
+                <form className="formulario" onSubmit={iniciarSesion}>
+                  <div className="formulario-grupo">
+                    <label htmlFor="correo-login">Correo</label>
+                    <input
+                      type="email"
+                      id="correo-login"
+                      name="correo"
+                      required
+                      className="formulario-control"
+                    />
+                  </div>
+                  <div className="formulario-grupo">
+                    <label htmlFor="contrasena">Contraseña</label>
+                    <input
+                      type="password"
+                      id="contrasena"
+                      name="contrasena"
+                      required
+                      className="formulario-control"
+                    />
+                  </div>
+                  <button className="boton-primario">Ingresar</button>
+                </form>
+              </section>
+            )}
 
-
-    return (
-        <>
-            <main className="auth-page">
-                <div className="contenedor-auth">
-                    <div className="auth-caja">
-
-                        <button
-                            className="auth-switch"
-                            onClick={() => {
-                                setError("");
-                                setView(v => (v === "inicioSesion" ? "registro" : "inicioSesion"));
-                            }}
-                        >
-                            {view === "inicioSesion" ? "Registrarse" : "Iniciar sesión"}
-                        </button>
-
-                        {error && <p className="mensaje-error">{error}</p>}
-
-                        {view === "inicioSesion" && (
-                            <section className="auth-card">
-                                <h2>Iniciar sesión</h2>
-                                <form className="formulario" onSubmit={iniciarSesion}>
-                                    <div className="formulario-grupo">
-                                        <label htmlFor="correo-login">Correo</label>
-                                        <input
-                                            type="email"
-                                            id="correo-login"
-                                            name="correo"
-                                            required className="formulario-control"
-                                        />
-                                    </div>
-                                    <div className="formulario-grupo">
-                                        <label htmlFor="contrasena">Contraseña</label>
-                                        <input
-                                            type="password"
-                                            id="contrasena"
-                                            name="contrasena"
-                                            required className="formulario-control"
-                                        />
-                                    </div>
-                                    <button className="boton-primario">Ingresar
-                                    </button>
-                                </form>
-                            </section>
-                        )}
-
-                        {view === "registro" && (
-                            <section className="auth-card">
-                                <h2>Registrarse</h2>
-                                <form className="formulario" onSubmit={registrarse}>
-                                    {/* <div className="formulario-grupo">
+            {view === "registro" && (
+              <section className="auth-card">
+                <h2>Registrarse</h2>
+                <form className="formulario" onSubmit={registrarse}>
+                  {/* <div className="formulario-grupo">
                                         <label htmlFor="reg-usuario">Nombre de usuario</label>
                                         <input
                                             id="reg-usuario"
@@ -187,47 +192,49 @@ function InicioSesion() {
                                     </div>
                                     <button className="boton-primario">Crear cuenta
                                     </button> */}
-                                    <div className="formulario-grupo">
-                                        <label htmlFor="reg-correo">Correo</label>
-                                        <input
-                                            type="email"
-                                            id="reg-correo"
-                                            name="correo"
-                                            required
-                                            className="formulario-control"
-                                        />
-                                    </div>
+                  <div className="formulario-grupo">
+                    <label htmlFor="reg-correo">Correo</label>
+                    <input
+                      type="email"
+                      id="reg-correo"
+                      name="correo"
+                      required
+                      className="formulario-control"
+                    />
+                  </div>
 
-                                    <div className="formulario-grupo">
-                                        <label htmlFor="reg-contrasena">Contraseña</label>
-                                        <input
-                                            type="password"
-                                            id="reg-contrasena"
-                                            name="contrasena"
-                                            className="formulario-control"
-                                            required
-                                        />
-                                    </div>
+                  <div className="formulario-grupo">
+                    <label htmlFor="reg-contrasena">Contraseña</label>
+                    <input
+                      type="password"
+                      id="reg-contrasena"
+                      name="contrasena"
+                      className="formulario-control"
+                      required
+                    />
+                  </div>
 
-                                    <div className="formulario-grupo">
-                                        <label htmlFor="reg-confirmar-contrasena">Confirmar contraseña</label>
-                                        <input
-                                            type="password"
-                                            id="reg-confirmar-contrasena"
-                                            name="confirmarContrasena"
-                                            className="formulario-control"
-                                            required
-                                        />
-                                    </div>
-                                    <button className="boton-primario">Crear cuenta</button>
-                                </form>
-                            </section>
-                        )}
-                    </div>
-                </div>
-            </main>
-        </>
-    )
+                  <div className="formulario-grupo">
+                    <label htmlFor="reg-confirmar-contrasena">
+                      Confirmar contraseña
+                    </label>
+                    <input
+                      type="password"
+                      id="reg-confirmar-contrasena"
+                      name="confirmarContrasena"
+                      className="formulario-control"
+                      required
+                    />
+                  </div>
+                  <button className="boton-primario">Crear cuenta</button>
+                </form>
+              </section>
+            )}
+          </div>
+        </div>
+      </main>
+    </>
+  );
 }
 
 export default InicioSesion;

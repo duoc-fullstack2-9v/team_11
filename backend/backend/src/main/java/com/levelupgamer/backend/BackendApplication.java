@@ -17,14 +17,18 @@ public class BackendApplication {
 
     // Configuración CORS para permitir que tu frontend en S3 acceda a la API
     @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("http://react-level-up-gamer.s3-website-us-east-1.amazonaws.com")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
-            }
-        };
-    }
+public WebMvcConfigurer corsConfigurer() {
+    return new WebMvcConfigurer() {
+        @Override
+        public void addCorsMappings(CorsRegistry registry) {
+            registry.addMapping("/**") // TODAS las rutas
+                    .allowedOrigins(
+                        "http://react-level-up-gamer.s3-website-us-east-1.amazonaws.com",
+                        "http://localhost:5173" // opcional, para pruebas locales
+                    )
+                    .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                    .allowedHeaders("*");
+        }
+    };
+}
 }
